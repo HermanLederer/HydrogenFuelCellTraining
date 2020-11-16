@@ -1,2 +1,2 @@
-# HydrogenFuelCellTraining
-VR hydrojen bus maintenance training application
+# Hydrogen fuel cell training
+VR hydrogen bus maintenance training application
