@@ -9,7 +9,7 @@ namespace UnityEngine.Rendering.Universal
         public MinFloatParameter threshold = new MinFloatParameter(0.9f, 0f);
 
         [Tooltip("Strength of the bloom filter.")]
-        public MinFloatParameter intensity = new MinFloatParameter(0f, 0f);
+        public ClampedFloatParameter intensity = new ClampedFloatParameter(0f, 0f, 1f);
 
         [Tooltip("Changes the extent of veiling effects.")]
         public ClampedFloatParameter scatter = new ClampedFloatParameter(0.7f, 0f, 1f);

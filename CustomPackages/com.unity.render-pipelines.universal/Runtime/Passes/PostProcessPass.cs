@@ -856,6 +856,9 @@ namespace UnityEngine.Rendering.Universal.Internal
                 int highMip = ShaderConstants._BloomMipDown[i];
                 int dst = ShaderConstants._BloomMipUp[i];
 
+                if (i == mipCount) bloomMaterial.SetVector(ShaderConstants._Params, new Vector4(0, clamp, threshold, thresholdKnee));
+                else bloomMaterial.SetVector(ShaderConstants._Params, new Vector4(scatter, clamp, threshold, thresholdKnee));
+
                 cmd.SetGlobalTexture(ShaderConstants._MainTexLowMip, lowMip);
                 cmd.Blit(highMip, BlitDstDiscardContent(cmd, dst), bloomMaterial, 3);
             }
