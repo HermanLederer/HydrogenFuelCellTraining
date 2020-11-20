@@ -5,6 +5,7 @@
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Packing.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Version.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Input.hlsl"
+//#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Atmosphere.hlsl"
 
 #if !defined(SHADER_HINT_NICE_QUALITY)
 #if defined(SHADER_API_MOBILE) || defined(SHADER_API_SWITCH)
@@ -196,6 +197,31 @@ real ComputeFogIntensity(real fogFactor)
     return fogIntensity;
 }
 
+half3 GetFogColor(float3 ray)
+{
+	half3 col = half3(0.0, 0.0, 0.0);
+
+	// if y > 1 [eyeRay.y < -SKY_GROUND_THRESHOLD] - ground
+	// if y >= 0 and < 1 [eyeRay.y <= 0 and > -SKY_GROUND_THRESHOLD] - horizon
+	// if y < 0 [eyeRay.y > 0] - sky
+
+	ray = normalize(ray);
+	//half y = ray.y / SKY_GROUND_THRESHOLD;
+
+	//col = lerp(IN.skyColor, IN.groundColor, saturate(y));
+
+	// if(y < 0.0)
+	// {
+	//     col += IN.sunColor * max(0, calcSunAttenuation(_WorldSpaceLightPos0.xyz, -ray) - _SunConvergenceBias);
+	// }
+
+	// #if defined(UNITY_COLORSPACE_GAMMA) && !SKYBOX_COLOR_IN_TARGET_COLOR_SPACE
+	//     col = LINEAR_2_OUTPUT(col);
+	// #endif
+
+	return half4(col,1.0);
+}
+
 half3 MixFogColor(real3 fragColor, real3 fogColor, real fogFactor)
 {
 #if defined(FOG_LINEAR) || defined(FOG_EXP) || defined(FOG_EXP2)
@@ -208,6 +234,12 @@ half3 MixFogColor(real3 fragColor, real3 fogColor, real fogFactor)
 half3 MixFog(real3 fragColor, real fogFactor)
 {
     return MixFogColor(fragColor, unity_FogColor.rgb, fogFactor);
+}
+
+half3 MixAtmosphere(real3 fragColor, float3 ray)
+{
+    return GetFogColor(ray);
+    //return MixFogColor(fragColor, GetFogColor(ray), fogFactor);
 }
 
 // Stereo-related bits

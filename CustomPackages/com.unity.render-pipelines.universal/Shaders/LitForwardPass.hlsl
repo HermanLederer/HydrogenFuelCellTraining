@@ -18,9 +18,9 @@ struct Varyings
     float2 uv                       : TEXCOORD0;
     DECLARE_LIGHTMAP_OR_SH(lightmapUV, vertexSH, 1);
 
-#if defined(REQUIRES_WORLD_SPACE_POS_INTERPOLATOR)
+//#if defined(REQUIRES_WORLD_SPACE_POS_INTERPOLATOR)
     float3 positionWS               : TEXCOORD2;
-#endif
+//#endif
 
     float3 normalWS                 : TEXCOORD3;
 #ifdef _NORMALMAP
@@ -43,29 +43,29 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 {
     inputData = (InputData)0;
 
-#if defined(REQUIRES_WORLD_SPACE_POS_INTERPOLATOR)
-    inputData.positionWS = input.positionWS;
-#endif
+    #if defined(REQUIRES_WORLD_SPACE_POS_INTERPOLATOR)
+        inputData.positionWS = input.positionWS;
+    #endif
 
-    half3 viewDirWS = SafeNormalize(input.viewDirWS);
-#ifdef _NORMALMAP 
-    float sgn = input.tangentWS.w;      // should be either +1 or -1
-    float3 bitangent = sgn * cross(input.normalWS.xyz, input.tangentWS.xyz);
-    inputData.normalWS = TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz));
-#else
-    inputData.normalWS = input.normalWS;
-#endif
+        half3 viewDirWS = SafeNormalize(input.viewDirWS);
+    #ifdef _NORMALMAP 
+        float sgn = input.tangentWS.w;      // should be either +1 or -1
+        float3 bitangent = sgn * cross(input.normalWS.xyz, input.tangentWS.xyz);
+        inputData.normalWS = TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, bitangent.xyz, input.normalWS.xyz));
+    #else
+        inputData.normalWS = input.normalWS;
+    #endif
 
     inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
     inputData.viewDirectionWS = viewDirWS;
 
-#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
-    inputData.shadowCoord = input.shadowCoord;
-#elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
-    inputData.shadowCoord = TransformWorldToShadowCoord(inputData.positionWS);
-#else
-    inputData.shadowCoord = float4(0, 0, 0, 0);
-#endif
+    #if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
+        inputData.shadowCoord = input.shadowCoord;
+    #elif defined(MAIN_LIGHT_CALCULATE_SHADOWS)
+        inputData.shadowCoord = TransformWorldToShadowCoord(inputData.positionWS);
+    #else
+        inputData.shadowCoord = float4(0, 0, 0, 0);
+    #endif
 
     inputData.fogCoord = input.fogFactorAndVertexLight.x;
     inputData.vertexLighting = input.fogFactorAndVertexLight.yzw;
@@ -137,7 +137,7 @@ half4 LitPassFragment(Varyings input) : SV_Target
 
     half4 color = UniversalFragmentPBR(inputData, surfaceData.albedo, surfaceData.metallic, surfaceData.specular, surfaceData.smoothness, surfaceData.occlusion, surfaceData.emission, surfaceData.alpha);
     
-    color.rgb = MixFog(color.rgb, inputData.fogCoord);
+    //color.rgb = MixAtmosphere(color.rgb, saturate(GetCameraPositionWS() - input.positionWS));
     color.a = OutputAlpha(color.a);
 
     return color;

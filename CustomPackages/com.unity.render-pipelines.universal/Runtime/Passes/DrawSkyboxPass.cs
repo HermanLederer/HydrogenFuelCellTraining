@@ -15,7 +15,7 @@ namespace UnityEngine.Rendering.Universal
         /// <inheritdoc/>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            context.DrawSkybox(renderingData.cameraData.camera);
+            //context.DrawSkybox(renderingData.cameraData.camera);
         }
     }
 }
