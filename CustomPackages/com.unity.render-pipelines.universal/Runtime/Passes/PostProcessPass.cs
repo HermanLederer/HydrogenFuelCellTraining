@@ -288,7 +288,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 			}
 
 			// CUSTOM: Skybox
-			Material atmoMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/Atmosphere"));
+			/*Material atmoMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/Atmosphere"));
 			cmd.SetGlobalTexture("_BlitTex", GetSource());
 
 			Vector4[] vectorArray;
@@ -320,7 +320,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 			atmoMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
 
 			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), atmoMaterial);
-			Swap();
+			Swap();*/
 
 			// Anti-aliasing
 			if (cameraData.antialiasing == AntialiasingMode.SubpixelMorphologicalAntiAliasing && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2)
