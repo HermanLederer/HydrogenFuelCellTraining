@@ -96,7 +96,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             distThroughVolume = min(distThroughVolume, max(0, viewDistance - distToVolume));
 
             //color += distThroughVolume.xxx * 1;
-            color += distThroughVolume;
+            color = distThroughVolume / (volumetricLightRadius * 2);
             //color = linearDepth / 100;
             //color = cameraDirection;
             //color = lerp(color, distThroughVolume, step(0.5, uv.x));
