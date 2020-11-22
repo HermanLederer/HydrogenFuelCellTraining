@@ -39,7 +39,7 @@ Shader "Hidden/Universal Render Pipeline/Atmosphere"
             return output;
         }
 
-        inline half3 TransformUVToWorldPos(half2 uv, float depth)
+        inline half3 GetCameraDirection(half2 uv, float depth)
         {
             #ifndef SHADER_API_GLCORE
                 half4 positionCS = half4(uv * 2 - 1, depth, 1) * LinearEyeDepth(depth, _ZBufferParams);
@@ -61,7 +61,7 @@ Shader "Hidden/Universal Render Pipeline/Atmosphere"
             float viewDistance = depth * _ProjectionParams.z - _ProjectionParams.y;
             viewDistance = length(input.ray * Linear01Depth(depth, _ZBufferParams));
             
-            float3 ray = normalize(_CameraPosition - TransformUVToWorldPos(uv, depth));
+            float3 ray = normalize(_CameraPosition - GetCameraDirection(uv, depth));
             float3 skyColor = lerp(float3(0.5, 0.6, 1), float3(0.1, 0.3, 1.25), saturate(-ray.y + 0.5));
             Light sun = GetMainLight();
             skyColor = lerp(skyColor, float3(10000, 10000, 10000), smoothstep(0.999, 1, -dot(ray, sun.direction)));

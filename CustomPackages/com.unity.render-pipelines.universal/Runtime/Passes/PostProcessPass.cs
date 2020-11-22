@@ -326,15 +326,33 @@ namespace UnityEngine.Rendering.Universal.Internal
 			Material volumeMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
 			cmd.SetGlobalTexture("_BlitTex", GetSource());
 
-			Camera deferredCamera = cameraData.camera;
+			Vector4[] vectorArray;
+			Vector3[] frustumCorners;
+			Camera deferredCamera;
 
+			deferredCamera = cameraData.camera;
+			frustumCorners = new Vector3[4];
+			vectorArray = new Vector4[4];
+
+			deferredCamera.CalculateFrustumCorners(
+				new Rect(0f, 0f, 1f, 1f),
+				deferredCamera.farClipPlane,
+				deferredCamera.stereoActiveEye,
+				frustumCorners
+			);
+
+			vectorArray[0] = frustumCorners[0];
+			vectorArray[1] = frustumCorners[3];
+			vectorArray[2] = frustumCorners[1];
+			vectorArray[3] = frustumCorners[2];
+			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
 
 			Matrix4x4 matrixCameraToWorld = deferredCamera.cameraToWorldMatrix;
 			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(deferredCamera.projectionMatrix, false).inverse;
 			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
 
 			volumeMaterial.SetMatrix("_MatrixHClipToWorld", matrixHClipToWorld);
-			//volumeMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
+			volumeMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
 
 			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), volumeMaterial);
 			Swap();
