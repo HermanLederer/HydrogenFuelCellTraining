@@ -116,8 +116,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             if (distToVolume > 0)
             {
                 float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
-                float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
-                color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 64) * 2;
+                float3 volumeEdgeToMiddleDirection = normalize(float3(0, 5, 0) - volumeEdge);
+                color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 16) * 2;
             }
 
             //color += (distThroughVolume / (volumetricLightDiameter));
