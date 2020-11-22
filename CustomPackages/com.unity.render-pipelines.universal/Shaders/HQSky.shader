@@ -304,7 +304,7 @@ Shader "Universal Render Pipeline/HQSky"
                 return getMiePhase(-focusedEyeCos, focusedEyeCos * focusedEyeCos);
             }
 
-            half4 frag (v2f IN) : SV_Target
+            half4 frag(v2f IN) : SV_Target
             {
                 half3 col = half3(0.0, 0.0, 0.0);
 

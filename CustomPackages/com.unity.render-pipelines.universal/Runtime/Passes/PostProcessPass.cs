@@ -322,6 +322,23 @@ namespace UnityEngine.Rendering.Universal.Internal
 			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), atmoMaterial);
 			Swap();*/
 
+			// CUSTOM: Volumetric lights
+			Material volumeMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
+			cmd.SetGlobalTexture("_BlitTex", GetSource());
+
+			Camera deferredCamera = cameraData.camera;
+
+
+			Matrix4x4 matrixCameraToWorld = deferredCamera.cameraToWorldMatrix;
+			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(deferredCamera.projectionMatrix, false).inverse;
+			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
+
+			volumeMaterial.SetMatrix("_MatrixHClipToWorld", matrixHClipToWorld);
+			//volumeMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
+
+			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), volumeMaterial);
+			Swap();
+
 			// Anti-aliasing
 			if (cameraData.antialiasing == AntialiasingMode.SubpixelMorphologicalAntiAliasing && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2)
 			{
