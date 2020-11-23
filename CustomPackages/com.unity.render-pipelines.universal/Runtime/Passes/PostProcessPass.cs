@@ -496,7 +496,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 			vectorArray[3] = frustumCorners[2];
 			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
 
-			Matrix4x4 matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right);
+			Matrix4x4 matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right).inverse;
 			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right), false).inverse;
 			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
 			volumeMaterial.SetMatrix("_MatrixLololol", matrixHClipToWorld);
