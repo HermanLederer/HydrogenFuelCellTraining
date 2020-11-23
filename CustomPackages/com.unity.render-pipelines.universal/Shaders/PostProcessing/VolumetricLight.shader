@@ -51,7 +51,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             return mul(_MatrixHClipToWorld, positionCS).xyz;
         }
 
-        float2 raySphereIntersection(float3 spherePos, float sphereRadius, float3 rayPos, float3 rayDirection)
+        float2 raySphereIntersection(float3 rayPos, float3 rayDirection, float3 spherePos, float sphereRadius)
         {
             float3 sphereDirection = spherePos - rayPos;
             float tMiddle = dot(sphereDirection, rayDirection);
@@ -65,25 +65,33 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 float distThroughVolume = distancePosMiddleToSphereEdge * 2;
                 return float2(distToVolume, distThroughVolume);
             }
-            else return float2(0, 9);
+            else return float2(0, -1);
         }
 
-        /*float2 rayConeIntersection(float3 ap_, float3 ad_, float3 coneBasePos, float3 conePointPos, float coneRadius)
+        float2 rayConeIntersection(float3 rayPos, float3 rayDirection, float3 conePointPos, float3 coneBasePos, float coneRadius)
         {
             float3 axis = (coneBasePos - conePointPos);
             float3 theta = (axis / length(axis));
             float m = pow(coneRadius, 2) / pow(length(axis), 2);
-            float3 w = (ap_ - conePointPos);
+            float3 w = (rayPos - conePointPos);
 
-            float a = dot(ad_, ad_) - m * (pow(dot(ad_, theta), 2)) - pow(dot(ad_,theta), 2);
-            float b = 2 * (dot(ad_, w) - m * dot(ad_, theta) * dot(w, theta) - dot(ad_, theta) * dot(w, theta));
+            float a = dot(rayDirection, rayDirection) - m * (pow(dot(rayDirection, theta), 2)) - pow(dot(rayDirection, theta), 2);
+            float b = 2 * (dot(rayDirection, w) - m * dot(rayDirection, theta) * dot(w, theta) - dot(rayDirection, theta) * dot(w, theta));
             float c = dot(w, w) - m * pow(dot(w, theta), 2) - pow(dot(w, theta), 2);
 
             float discriminant = pow(b, 2) - (4 * a * c);
 
-            if (discriminant >= 0) return float2(ap_ + (-b - sqrt(Discriminant) / (2 * a)) * ad_, );
-            return float2(0, 0);
-        }*/
+            //if (discriminant > 0)
+            //{
+                float t1 = ((-b - sqrt(discriminant)) / (2 * a));
+                float t2 = ((-b + sqrt(discriminant)) / (2 * a));
+
+                float distToVolume = t1;
+                float distThroughVolume = t2 - t1;
+                return float2(distToVolume, distThroughVolume);
+            //}
+           // return float2(0, -1);
+        }
 
         half4 Frag(Interpolators input) : SV_Target
         {
@@ -98,38 +106,59 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float viewDistance = depth * _ProjectionParams.z - _ProjectionParams.y;
             viewDistance = length(input.ray * Linear01Depth(depth, _ZBufferParams));
 
-            float3 volumetricLightPositionWS = float3(1, 1, 0);
-            float3 volumetricLightDirection = float3(0, 1, 0);
+            // Volumetric light parameters
+            float3 volumetricLightPositionWS = float3(1, 5, 0);
+            float3 volumetricLightDirection = float3(0, -8, 0);
             float3 volumetricLightColor = float3(0.2, 0.2, 0.1);
-            float  volumetricLightRadius = 4;
+            float  volumetricLightRadius = 5;
             float  volumetricLightDiameter = volumetricLightRadius * 2;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
             float3 volumetricLightViewDirectionNormalized = normalize(volumetricLightViewDirection);
             
-            float cameraLightDot = max(0, dot(volumetricLightViewDirectionNormalized, cameraDirection));
-            float2 volumeIntersection = raySphereIntersection(volumetricLightPositionWS, volumetricLightRadius, GetCameraPositionWS(), cameraDirection);
+            // Sphere volume intersecion
+            // float2 volumeIntersection = raySphereIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightRadius);
+            // float distToVolume = volumeIntersection.x;
+            // float distThroughVolume = volumeIntersection.y;
+            // distThroughVolume = min(distThroughVolume / 2, max(0, viewDistance - distToVolume));
+
+            // if (distToVolume != 0)
+            // {
+            //     float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
+            //     float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
+            //     color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 0.4;
+            // }
+
+            // Cone volume intersection
+            float2 volumeIntersection = rayConeIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection, volumetricLightRadius);
             float distToVolume = volumeIntersection.x;
             float distThroughVolume = volumeIntersection.y;
-            distThroughVolume = min(distThroughVolume / 2, max(0, viewDistance - distToVolume));
+            distThroughVolume = min(distThroughVolume, max(0, viewDistance - distToVolume));
 
-            if (distToVolume != 0)
+            if (distThroughVolume > 0)
             {
+                // Cone
                 float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
-                float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
-                color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 1;
-                //step(0, dot(volumeEdgeToMiddleDirection, volumetricLightDirection))
-            }
+                float3 volumeMiddle = GetCameraPositionWS() + cameraDirection * (distToVolume + distThroughVolume / 2);
+                float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddle);
 
-            //color += (distThroughVolume / (volumetricLightDiameter));
-            //color = cameraLightDot;
-            //color = linearDepth / 100;
-            //color = cameraDirection;
-            //color = lerp(color, distThroughVolume, step(0.5, uv.x));
-            //color += lerp((0).xxx, volumetricLightColor, pow(cameraLightDot, 256));
-            //color += lerp((0).xxx, volumetricLightColor, step(0.9, cameraLightDot));
-            //color = ray;
+                if (dot(volumeMiddleSourceDirection, normalize(volumetricLightDirection)) < 0)
+                {
+                    //color = lerp(color, 1, step(0, distThroughVolume));
+
+                    color += max(0, (1 - length(volumeMiddle - volumetricLightPositionWS) / length(volumetricLightDirection)))   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 16) * 0.04;
+                    //color = max(0, (1 - length(volumeMiddle - volumetricLightPositionWS) / length(volumetricLightDirection)));
+                    //color = pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 32);
+                    //color *= step(length(volumeMiddle - volumetricLightPositionWS), 5);
+                    //color += max(0, dot(float3(0, 0, 1), volumeMiddleSourceDirection)) * 100;
+
+                    // Sphere
+                    //float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
+                    //float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
+                    //color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 0.4;
+                }
+            }
 
             return half4(color, 1.0);
         }
