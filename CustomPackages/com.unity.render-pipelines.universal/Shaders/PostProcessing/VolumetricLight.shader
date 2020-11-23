@@ -12,8 +12,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
         TEXTURE2D_X(_BlitTex);
         float3 _FrustumCorners[4];
-        float4x4 _MatrixLololol;
-        float4x4 _MatrixRororor;
+        float4x4 _MatrixScreenToWorldLeft;
+        float4x4 _MatrixScreenToWorldRight;
 
         struct VertexData {
             float4 positionOS : POSITION;
@@ -49,7 +49,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             #else
                 half4 positionCS = half4(uv * 2 - 1, depth * 2 - 1, 1) * LinearEyeDepth(depth, _ZBufferParams);
             #endif
-            return mul(_MatrixLololol, positionCS).xyz;
+            return mul(lerp(_MatrixScreenToWorldLeft, _MatrixScreenToWorldRight, unity_StereoEyeIndex), positionCS).xyz;
         }
 
         float2 raySphereIntersection(float3 rayPos, float3 rayDirection, float3 spherePos, float sphereRadius)
@@ -155,6 +155,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             }
 
             //color = cameraDirection;
+            //color = lerp(float3(1, 0, 0), float3(0, 0, 1), unity_StereoEyeIndex);
 
             return half4(color, 1.0);
         }

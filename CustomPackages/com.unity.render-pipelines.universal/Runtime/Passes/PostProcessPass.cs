@@ -496,10 +496,28 @@ namespace UnityEngine.Rendering.Universal.Internal
 			vectorArray[3] = frustumCorners[2];
 			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
 
-			Matrix4x4 matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right).inverse;
-			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right), false).inverse;
-			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
-			volumeMaterial.SetMatrix("_MatrixLololol", matrixHClipToWorld);
+			Matrix4x4 matrixCameraToWorld;
+			Matrix4x4 matrixProjectionInverse;
+			Matrix4x4 matrixHClipToWorld;
+			if (camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
+			{
+				matrixCameraToWorld = camera.cameraToWorldMatrix;
+				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.projectionMatrix, false).inverse;
+				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
+				volumeMaterial.SetMatrix("_MatrixScreenToWorldLeft", matrixHClipToWorld); // Left is the eye unity uses in shaders when in mono rendering so there is no need to make a separate matrix or set the right eye matrix at all
+			}
+			else
+			{
+				matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Left).inverse;
+				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left), false).inverse;
+				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
+				volumeMaterial.SetMatrix("_MatrixScreenToWorldLeft", matrixHClipToWorld);
+
+				matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right).inverse;
+				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right), false).inverse;
+				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
+				volumeMaterial.SetMatrix("_MatrixScreenToWorldRight", matrixHClipToWorld);
+			}
 
 			cmd.Blit(source, BlitDstDiscardContent(cmd, destination), volumeMaterial);
 		}
