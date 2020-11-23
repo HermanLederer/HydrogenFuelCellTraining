@@ -12,31 +12,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
         TEXTURE2D_X(_BlitTex);
         float3 _FrustumCorners[4];
-        float4x4 _MatrixHClipToWorld;
-
-        struct AttributesDef
-        {
-            float4 positionOS   : POSITION;
-            float2 uv           : TEXCOORD0;
-            UNITY_VERTEX_INPUT_INSTANCE_ID
-        };
-
-        struct VaryingsDef
-        {
-            float4 positionCS    : SV_POSITION;
-            float2 uv            : TEXCOORD0;
-            UNITY_VERTEX_OUTPUT_STEREO
-        };
-
-        Varyings VertDef(AttributesDef input)
-        {
-            VaryingsDef output;
-            UNITY_SETUP_INSTANCE_ID(input);
-            UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-            output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
-            output.uv = input.uv;
-            return output;
-        }
+        float4x4 _MatrixLololol;
+        float4x4 _MatrixRororor;
 
         struct VertexData {
             float4 positionOS : POSITION;
@@ -59,11 +36,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             UNITY_SETUP_INSTANCE_ID(input);
             //UNITY_INITIALIZE_OUTPUT(Interpolators, output);
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-
             output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
             output.uv = input.uv;
             output.ray = _FrustumCorners[input.uv.x + 2 * input.uv.y];
-
             return output;
         }
 
@@ -74,7 +49,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             #else
                 half4 positionCS = half4(uv * 2 - 1, depth * 2 - 1, 1) * LinearEyeDepth(depth, _ZBufferParams);
             #endif
-            return mul(_MatrixHClipToWorld, positionCS).xyz;
+            return mul(_MatrixLololol, positionCS).xyz;
         }
 
         float2 raySphereIntersection(float3 rayPos, float3 rayDirection, float3 spherePos, float sphereRadius)
@@ -125,7 +100,6 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
 
-            //fixed4 col = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, i.uv); //Insert
             half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
             float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, uv).x;
             float linearDepth = LinearEyeDepth(depth, _ZBufferParams);
@@ -154,7 +128,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             // {
             //     float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
             //     float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
-            //     color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 0.4;
+            //     color += (distThroughVolume / volumetricLightRadius)   *   pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8)   *   0.4;
             // }
 
             // Cone volume intersection
@@ -172,32 +146,15 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
                 if (dot(volumeMiddleSourceDirection, normalize(volumetricLightDirection)) < 0)
                 {
-                    //color = lerp(color, 1, step(0, distThroughVolume));
-
-                    color += max(0, (1 - length(volumeMiddle - volumetricLightPositionWS) / length(volumetricLightDirection)))   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 16) * 0.04;
+                    color += max(0, (1 - length(volumeMiddle - volumetricLightPositionWS) / length(volumetricLightDirection)))   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 16)   *   0.04;
                     //color = max(0, (1 - length(volumeMiddle - volumetricLightPositionWS) / length(volumetricLightDirection)));
                     //color = pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 32);
                     //color *= step(length(volumeMiddle - volumetricLightPositionWS), 5);
                     //color += max(0, dot(float3(0, 0, 1), volumeMiddleSourceDirection)) * 100;
-
-                    // Sphere
-                    //float3 volumeEdge = GetCameraPositionWS() + cameraDirection * distToVolume;
-                    //float3 volumeEdgeToMiddleDirection = normalize(volumetricLightPositionWS - volumeEdge);
-                    //color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 0.4;
                 }
             }
 
-            return half4(color, 1.0);
-        }
-
-        half4 FragPassthrough(Interpolators input) : SV_Target
-        {
-            UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-
-            float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
-
-            //fixed4 col = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, i.uv); //Insert
-            half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
+            //color = cameraDirection;
 
             return half4(color, 1.0);
         }
@@ -212,7 +169,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
         Pass
         {
-            Name "Atmosphere"
+            Name "VolumetricLights"
 
             HLSLPROGRAM
                 #pragma vertex VertMy

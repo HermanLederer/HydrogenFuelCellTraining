@@ -323,38 +323,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 			Swap();*/
 
 			// CUSTOM: Volumetric lights
-			Material volumeMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
-			cmd.SetGlobalTexture("_BlitTex", GetSource());
-
-			Vector4[] vectorArray;
-			Vector3[] frustumCorners;
-			Camera deferredCamera;
-
-			deferredCamera = cameraData.camera;
-			frustumCorners = new Vector3[4];
-			vectorArray = new Vector4[4];
-
-			deferredCamera.CalculateFrustumCorners(
-				new Rect(0f, 0f, 1f, 1f),
-				deferredCamera.farClipPlane,
-				deferredCamera.stereoActiveEye,
-				frustumCorners
-			);
-
-			vectorArray[0] = frustumCorners[0];
-			vectorArray[1] = frustumCorners[3];
-			vectorArray[2] = frustumCorners[1];
-			vectorArray[3] = frustumCorners[2];
-			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
-
-			Matrix4x4 matrixCameraToWorld = deferredCamera.cameraToWorldMatrix;
-			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(deferredCamera.projectionMatrix, false).inverse;
-			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
-
-			volumeMaterial.SetMatrix("_MatrixHClipToWorld", matrixHClipToWorld);
-			volumeMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
-
-			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), volumeMaterial);
+			DoVolumetricLights(ref cameraData, cmd, GetSource(), GetDestination());
 			Swap();
 
 			// Anti-aliasing
@@ -503,6 +472,39 @@ namespace UnityEngine.Rendering.Universal.Internal
 				RenderBufferLoadAction.DontCare, RenderBufferStoreAction.DontCare);
 			return BuiltinRenderTextureType.CurrentActive;
 		}
+
+		#region Volumetric Lights
+
+		void DoVolumetricLights(ref CameraData cameraData, CommandBuffer cmd, int source, int destination)
+		{
+			Camera camera = cameraData.camera;
+			Material volumeMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
+			Vector3[] frustumCorners = new Vector3[4];
+			Vector4[] vectorArray = new Vector4[4];
+
+			cmd.SetGlobalTexture("_BlitTex", source);
+
+			camera.CalculateFrustumCorners(
+				new Rect(0f, 0f, 1f, 1f),
+				camera.farClipPlane,
+				camera.stereoActiveEye,
+				frustumCorners
+			);
+			vectorArray[0] = frustumCorners[0];
+			vectorArray[1] = frustumCorners[3];
+			vectorArray[2] = frustumCorners[1];
+			vectorArray[3] = frustumCorners[2];
+			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
+
+			Matrix4x4 matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right);
+			Matrix4x4 matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right), false).inverse;
+			Matrix4x4 matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
+			volumeMaterial.SetMatrix("_MatrixLololol", matrixHClipToWorld);
+
+			cmd.Blit(source, BlitDstDiscardContent(cmd, destination), volumeMaterial);
+		}
+
+		#endregion
 
 		#region Sub-pixel Morphological Anti-aliasing
 
