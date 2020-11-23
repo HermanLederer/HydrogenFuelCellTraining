@@ -9,6 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/BusScene.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: b9a6f0fb24bee60438b07e057e634629, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 8d68430ffc93cce45bba088c94bde9f2, type: 2}
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: 6d6f597a7a903524e88581c435681a0d, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c1dd6a0ea736dc84899e772365b5261c, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: d9c87c602ffd5c447b1a8d71f93bb402, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 73e7b0a86ac32be4797bbbd708548cf3, type: 2}

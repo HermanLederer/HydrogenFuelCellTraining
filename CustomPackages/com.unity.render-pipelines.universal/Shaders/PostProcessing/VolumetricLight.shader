@@ -3,9 +3,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
     HLSLINCLUDE
 
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
-        #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
-        //#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/SpaceTransforms.hlsl"
 
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -33,7 +31,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             Interpolators output;
 
             UNITY_SETUP_INSTANCE_ID(input);
+            //UNITY_INITIALIZE_OUTPUT(Interpolators, output);
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
             output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
             output.uv = input.uv;
             output.ray = _FrustumCorners[input.uv.x + 2 * input.uv.y];
@@ -99,6 +99,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
 
+            //fixed4 col = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, i.uv); //Insert
             half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
             float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, uv).x;
             float linearDepth = LinearEyeDepth(depth, _ZBufferParams);

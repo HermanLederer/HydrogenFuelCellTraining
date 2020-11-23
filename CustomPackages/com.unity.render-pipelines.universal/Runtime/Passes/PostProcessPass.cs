@@ -354,8 +354,8 @@ namespace UnityEngine.Rendering.Universal.Internal
 			volumeMaterial.SetMatrix("_MatrixHClipToWorld", matrixHClipToWorld);
 			volumeMaterial.SetVector("_CameraPosition", deferredCamera.transform.position);
 
-			cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), volumeMaterial);
-			Swap();
+			//cmd.Blit(GetSource(), BlitDstDiscardContent(cmd, GetDestination()), volumeMaterial);
+			//Swap();
 
 			// Anti-aliasing
 			if (cameraData.antialiasing == AntialiasingMode.SubpixelMorphologicalAntiAliasing && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2)
