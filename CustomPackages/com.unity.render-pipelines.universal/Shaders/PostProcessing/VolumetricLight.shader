@@ -14,16 +14,42 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
         float3 _FrustumCorners[4];
         float4x4 _MatrixHClipToWorld;
 
+        struct AttributesDef
+        {
+            float4 positionOS   : POSITION;
+            float2 uv           : TEXCOORD0;
+            UNITY_VERTEX_INPUT_INSTANCE_ID
+        };
+
+        struct VaryingsDef
+        {
+            float4 positionCS    : SV_POSITION;
+            float2 uv            : TEXCOORD0;
+            UNITY_VERTEX_OUTPUT_STEREO
+        };
+
+        Varyings VertDef(AttributesDef input)
+        {
+            VaryingsDef output;
+            UNITY_SETUP_INSTANCE_ID(input);
+            UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+            output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+            output.uv = input.uv;
+            return output;
+        }
+
+        struct VertexData {
+            float4 positionOS : POSITION;
+            float2 uv : TEXCOORD0;
+            UNITY_VERTEX_INPUT_INSTANCE_ID
+        };
+
         struct Interpolators
         {
             float4 positionCS : SV_POSITION;
             float2 uv : TEXCOORD0;
             float3 ray : TEXCOORD1;
-        };
-
-        struct VertexData {
-            float4 positionOS : POSITION;
-            float2 uv : TEXCOORD0;
+            UNITY_VERTEX_OUTPUT_STEREO
         };
 
         Interpolators VertMy(VertexData input)
@@ -160,6 +186,18 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     //color += (distThroughVolume / volumetricLightRadius) * pow(dot(cameraDirection, volumeEdgeToMiddleDirection), 8) * 0.4;
                 }
             }
+
+            return half4(color, 1.0);
+        }
+
+        half4 FragPassthrough(Interpolators input) : SV_Target
+        {
+            UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+
+            float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
+
+            //fixed4 col = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, i.uv); //Insert
+            half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
 
             return half4(color, 1.0);
         }
