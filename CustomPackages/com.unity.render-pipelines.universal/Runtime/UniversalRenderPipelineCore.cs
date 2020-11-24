@@ -430,6 +430,7 @@ namespace UnityEngine.Rendering.Universal
 
     internal enum URPProfileId
     {
+        VolumetricLights,
         StopNaNs,
         SMAA,
         GaussianDepthOfField,

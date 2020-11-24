@@ -323,8 +323,11 @@ namespace UnityEngine.Rendering.Universal.Internal
 			Swap();*/
 
 			// CUSTOM: Volumetric lights
-			DoVolumetricLights(ref cameraData, cmd, GetSource(), GetDestination());
-			Swap();
+			using (new ProfilingScope(cmd, ProfilingSampler.Get(URPProfileId.VolumetricLights)))
+			{
+				DoVolumetricLights(cameraData.camera, cmd, GetSource(), GetDestination());
+				Swap();
+			}
 
 			// Anti-aliasing
 			if (cameraData.antialiasing == AntialiasingMode.SubpixelMorphologicalAntiAliasing && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2)
@@ -475,12 +478,15 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 		#region Volumetric Lights
 
-		void DoVolumetricLights(ref CameraData cameraData, CommandBuffer cmd, int source, int destination)
+		private Vector3[] frustumCorners;
+		private Vector4[] vectorArray;
+		private Material volumeMaterial;
+		void DoVolumetricLights(Camera camera, CommandBuffer cmd, int source, int destination)
 		{
-			Camera camera = cameraData.camera;
-			Material volumeMaterial = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
-			Vector3[] frustumCorners = new Vector3[4];
-			Vector4[] vectorArray = new Vector4[4];
+			volumeMaterial = m_Materials.volumetricLights; // this line costs 300+ fps???? // perhaps not
+			//volumeMaterial = m_Materials.blank;
+			frustumCorners = new Vector3[4];
+			vectorArray = new Vector4[4];
 
 			cmd.SetGlobalTexture("_BlitTex", source);
 
@@ -1196,6 +1202,11 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 		class MaterialLibrary
 		{
+			// CUSTOM
+			public readonly Material blank;
+			public readonly Material volumetricLights;
+
+			// STOCK
 			public readonly Material stopNaN;
 			public readonly Material subpixelMorphologicalAntialiasing;
 			public readonly Material gaussianDepthOfField;
@@ -1208,6 +1219,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 			public MaterialLibrary(PostProcessData data)
 			{
+				blank = Load(data.shaders.blank);
+				volumetricLights = Load(data.shaders.volumetricLights);
+
 				stopNaN = Load(data.shaders.stopNanPS);
 				subpixelMorphologicalAntialiasing = Load(data.shaders.subpixelMorphologicalAntialiasingPS);
 				gaussianDepthOfField = Load(data.shaders.gaussianDepthOfFieldPS);
@@ -1236,6 +1250,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 			internal void Cleanup()
 			{
+				CoreUtils.Destroy(blank);
+				CoreUtils.Destroy(volumetricLights);
+
 				CoreUtils.Destroy(stopNaN);
 				CoreUtils.Destroy(subpixelMorphologicalAntialiasing);
 				CoreUtils.Destroy(gaussianDepthOfField);
