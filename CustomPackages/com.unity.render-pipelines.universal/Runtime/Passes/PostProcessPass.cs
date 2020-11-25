@@ -511,6 +511,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.projectionMatrix, false).inverse;
 				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
 				volumeMaterial.SetMatrix("_MatrixScreenToWorldLeft", matrixHClipToWorld); // Left is the eye unity uses in shaders when in mono rendering so there is no need to make a separate matrix or set the right eye matrix at all
+
+				volumeMaterial.SetMatrix("_MV", camera.worldToCameraMatrix);
+				volumeMaterial.SetMatrix("_MP", GL.GetGPUProjectionMatrix(camera.projectionMatrix, false));
 			}
 			else
 			{
