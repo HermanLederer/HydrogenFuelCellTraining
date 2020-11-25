@@ -351,7 +351,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float3 volumetricLightPositionWS = float3(0, 5, 0);
             float3 volumetricLightRotation = float3(0, 0, 0);
             float3 volumetricLightDirection = float3(0, -1, 0);
-            float3 volumetricLightColor = float3(0.2, 0.2, 0.1);
+            float3 volumetricLightColor = float3(0, 1, 0.4117647);
             float volumetricLightRadius = 4;
             float volumetricLightHeight = 6;
 
@@ -375,7 +375,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (distToVolume + distThroughVolume / 2);
                     float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddlePos);
 
-                    color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1;
+                    color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
                     //color += (distThroughVolume / volumetricLightRadius)   *    pow((1 - (length(volumeMiddle - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1;
                 }
             #else
@@ -425,7 +425,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     {
                         //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
                         //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
-                        color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 8)  *   0.1;
+                        color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 8)  *   0.1 * volumetricLightColor;
                         //color += distThroughVolume;
                         //color = 1;
                         //float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddle);
