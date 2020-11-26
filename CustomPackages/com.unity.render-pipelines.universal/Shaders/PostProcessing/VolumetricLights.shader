@@ -287,45 +287,42 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
         {
             float2 result = float2(0, -1);
 
-            float3 ba = coneBase - coneTop;
-            float3 oa = rayOrigin - coneTop;
-            float3 ob = rayOrigin - coneBase;
+            float3 rayBaseToTop     = coneBase  - coneTop;
+            float3 rayOriginToTop   = rayOrigin - coneTop;
+            float3 rayOriginToBase  = rayOrigin - coneBase;
             
-            float m0 = dot(ba,ba);
-            float m1 = dot(oa,ba);
-            float m2 = dot(ob,ba); 
-            float m3 = dot(rayDirection,ba);
-            
-            //caps
-            //     if( m1<0.0 ) { if( dot2(oa*m3-rayDirection*m1)<(0*0*m3*m3) ) return float2(-m1/m3, 100); }
-            //else if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) return float2(-m2/m3, 100); }
+            float m0 = dot(rayBaseToTop,    rayBaseToTop);
+            float m1 = dot(rayOriginToTop,  rayBaseToTop);
+            float m2 = dot(rayOriginToBase, rayBaseToTop); 
+            float m3 = dot(rayDirection,    rayBaseToTop);
 
             // body
-            float m4 = dot(rayDirection,oa);
-            float m5 = dot(oa,oa);
+            float m4 = dot(rayDirection,    rayOriginToTop);
+            float m5 = dot(rayOriginToTop,  rayOriginToTop);
             float rr = 0 - radiusBase;
             float hy = m0 + rr*rr;
             
             float k2 = m0*m0    - m3*m3*hy;
-            float k1 = m0*m0*m4 - m1*m3*hy + m0*0*(rr*m3*1.0        );
-            float k0 = m0*m0*m5 - m1*m1*hy + m0*0*(rr*m1*2.0 - m0*0);
+            float k1 = m0*m0*m4 - m1*m3*hy;
+            float k0 = m0*m0*m5 - m1*m1*hy;
             
             float h = k1*k1 - k2*k0;
-            if( h<0.0 ) return float2(0, -1);
+            if(h < 0) return float2(0, -1);
 
             float t1 = (-k1-sqrt(h))/k2;
             float t2 = (-k1+sqrt(h))/k2;
 
-            float y = m1 + t1*m3;
-            if( y>0.0 && y<m0 ) 
-            {
+            // filter out the top part, not necessary for spotlights
+            //float y = m1 + t1*m3;
+            //if(y > 0 && y < m0)
                 result = float2(t1, t2);
-            }
             
             // caps again
-            if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
-            else { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(t1, -m2/m3); }
+            // uncommet!
+            //if(m2 > 0) { if( dot2(rayOriginToBase*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
+            //else { if(dot2(rayOriginToBase*m3-rayDirection*m2) < (radiusBase*radiusBase*m3*m3)) result = float2(t1, -m2/m3); }
 
+            //return float2(min(result.x, result.y), max(result.x, result.y));
             return result;
         }
 
@@ -396,15 +393,15 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     float distThroughVolume = far - max(0, near);
                     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (near + distThroughVolume / 2);
                     
-                    if (distThroughVolume > 0)
+                    //if (distThroughVolume > 0)
                     //if (near > 0)
-                    {
+                    //{
                         //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
                         //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
                         color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))  *   0.1 * volumetricLightColor;
                         //color = distThroughVolume / 10;
-                        //color = 1;
-                    }
+                        //color += abs(near);
+                    //}
                 }
             #endif
 
