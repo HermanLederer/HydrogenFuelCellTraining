@@ -138,7 +138,11 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float2(0, 0);
         }
 
-        float2 rayConeIntersectionOld(float3 rayPos, float3 rayDirection, float3 conePointPos, float3 coneBasePos, float coneRadius)
+        float2 rayConeIntersectionOld(
+            float3 rayPos, float3 rayDirection,
+            float3 conePointPos, float3 coneBasePos,
+            float coneRadius
+        )
         {
             float3 axis = (coneBasePos - conePointPos);
             float3 theta = (axis / length(axis));
@@ -156,11 +160,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 float t1 = ((-b - sqrt(discriminant)) / (2 * a));
                 float t2 = ((-b + sqrt(discriminant)) / (2 * a));
 
-                float distToVolume = t1;
-                float distThroughVolume = t2 - t1;
-                return float2(distToVolume, distThroughVolume);
+                return float2(t1, t2);
             //}
-           // return float2(0, -1);
+            // return float2(0, -1);
         }
 
         float2 iRoundedConeWithDepthBugs(
@@ -232,13 +234,17 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float2 result = float2(0, -1);
 
             float3 rayBaseToTop     = coneBase  - coneTop;
+            float3 rayBaseToTopInv     = coneTop - coneBase;
             float3 rayOriginToTop   = rayOrigin - coneTop;
             float3 rayOriginToBase  = rayOrigin - coneBase;
+            float3 rayOriginToBaseInv  = coneBase - rayOrigin;
             
             float m0 = dot(rayBaseToTop,    rayBaseToTop);
             float m1 = dot(rayOriginToTop,  rayBaseToTop);
             float m2 = dot(rayOriginToBase, rayBaseToTop); 
+            float m22 = dot(rayBaseToTopInv, rayOriginToBaseInv);
             float m3 = dot(rayDirection,    rayBaseToTop);
+            float m33 = dot(  rayBaseToTopInv, rayDirection);
 
             // body
             float m4 = dot(rayDirection,    rayOriginToTop);
@@ -257,14 +263,19 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float t2 = (-k1+sqrt(h))/k2;
 
             // filter out the top part, not necessary for spotlights
-            //float y = m1 + t1*m3;
-            //if(y > 0 && y < m0)
+            float y = m1 + t1*m3;
+            if(y > 0 && y < m0)
+            //if(y > -m0 && y < m0)
                 result = float2(t1, t2);
             
-            // caps again
-            // uncommet!
-            //if(m2 > 0) { if( dot2(rayOriginToBase*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
-            //else { if(dot2(rayOriginToBase*m3-rayDirection*m2) < (radiusBase*radiusBase*m3*m3)) result = float2(t1, -m2/m3); }
+            // caps
+            // bottom cap (the visible one)
+            if(m2 > 0) { if( dot2(rayOriginToBase*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
+            else { if(dot2(rayOriginToBase*m3-rayDirection*m2) < (radiusBase*radiusBase*m3*m3)) result = float2(t1, -m2/m3); }
+
+            // TODO: implement the top cap
+            // top cap, just to prevent cone cutout
+            //if(dot2(rayOriginToBase*m33-rayDirection*m22) < (radiusBase*radiusBase*m33*m33)) result = float2(1, 100);
 
             //return float2(min(result.x, result.y), max(result.x, result.y));
             return result;
@@ -327,10 +338,11 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 // capped cone is an inaccurate representation of the volume shape and
                 // results in artifacts on the bottom edges
                 //float2 rc = iRoundedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
+                //float2 rc = rayConeIntersectionOld(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
                 float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
                 near = rc.x;
                 far = rc.y;
-                if (rc.x > 0)
+                if (rc.y > 0)
                 {
                     far = min(far, viewDistance);
                     near = min(near, viewDistance);
@@ -343,8 +355,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                         //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
                         //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
                         color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))  *   0.1 * volumetricLightColor;
-                        //color = distThroughVolume / 10;
-                        //color += abs(near);
+                        //color = distThroughVolume / 6;
                     //}
                 }
             #endif
