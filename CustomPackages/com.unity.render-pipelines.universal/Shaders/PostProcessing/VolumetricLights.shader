@@ -219,62 +219,6 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             return far > 0.0;
         }
 
-        float4 iRoundedConeDistanceAndNormals(
-            in float3 ro, in float3 rd, 
-            in float3 pa, in float3 pb, 
-            in float ra, in float rb
-        )
-        {
-            float3  ba = pb - pa;
-            float3  oa = ro - pa;
-            float3  ob = ro - pb;
-            float rr = ra - rb;
-            float m0 = dot(ba,ba);
-            float m1 = dot(ba,oa);
-            float m2 = dot(ba,rd);
-            float m3 = dot(rd,oa);
-            float m5 = dot(oa,oa);
-            float m6 = dot(ob,rd);
-            float m7 = dot(ob,ob);
-            
-            float d2 = m0-rr*rr;
-            
-            float k2 = d2    - m2*m2;
-            float k1 = d2*m3 - m1*m2 + m2*rr*ra;
-            float k0 = d2*m5 - m1*m1 + m1*rr*ra*2.0 - m0*ra*ra;
-            
-            float h = k1*k1 - k0*k2;
-            if(h < 0.0) return float4(-1.0, -1.0, -1.0, -1.0);
-            float t = (-sqrt(h)-k1)/k2;
-            //if( t<0.0 ) return float4(-1.0);
-
-            float y = m1 - ra*rr + t*m2;
-            if( y>0.0 && y<d2 ) 
-            {
-                return float4(t, normalize( d2*(oa + t*rd)-ba*y) );
-            }
-
-            // Caps. I feel this can be done with a single square root instead of two
-            float h1 = m3*m3 - m5 + ra*ra;
-            float h2 = m6*m6 - m7 + rb*rb;
-            if( max(h1,h2)<0.0 ) return float4(-1.0, -1.0, -1.0, -1.0);
-            
-            float4 r = float4(1e20, 1e20, 1e20, 1e20);
-            if( h1>0.0 )
-            {        
-                t = -m3 - sqrt( h1 );
-                r = float4( t, (oa+t*rd)/ra );
-            }
-            if( h2>0.0 )
-            {
-                t = -m6 - sqrt( h2 );
-                if( t<r.x )
-                r = float4( t, (ob+t*rd)/rb );
-            }
-            
-            return r;
-        }
-
         float2 iRoundedConeWithDepthBugs(
             in float3 ro, in float3 rd, 
             in float3 pa, in float3 pb, 
@@ -334,61 +278,18 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             return r; // looks like the rounded parts
         }
 
-        float2 iRoundedCone(
-            in float3 ro, in float3 rd, 
-            in float3 pa, in float3 pb, 
-            in float ra, in float rb
-        )
-        {
-            float2 result = float2(0, -1);
-
-            float3 ba = pb - pa;
-            float3 oa = ro - pa;
-            float3 ob = ro - pb;
-            float rr = ra - rb;
-            float m0 = dot(ba,ba);
-            float m1 = dot(ba,oa);
-            float m2 = dot(ba,rd);
-            float m3 = dot(rd,oa);
-            float m5 = dot(oa,oa);
-            float m6 = dot(ob,rd);
-            float m7 = dot(ob,ob);
-            
-            float d2 = m0-rr*rr;
-            
-            float k2 = d2    - m2*m2;
-            float k1 = d2*m3 - m1*m2 + m2*rr*ra;
-            float k0 = d2*m5 - m1*m1 + m1*rr*ra*2.0 - m0*ra*ra;
-            
-            float h = k1*k1 - k0*k2;
-            if (h < 0.0) return float2(1, 1);
-            float t1 = (-sqrt(h)-k1)/k2;
-            float t2 = (sqrt(h)-k1)/k2;
-            //if( t<0.0 ) return float2(-1.0);
-
-            bool yes = false;
-            float y = m1 - ra*rr + t1*m2;
-            if(y > 0.0 && y < d2) 
-            {
-                result = float2(t1, t2);
-                yes = true;
-            }
-            
-            return result;
-        }
-
         float dot2(float3 v) { return dot(v, v); }
 
         float2 iCappedCone(
             in float3 rayOrigin, in float3 rayDirection, 
-            in float3 pa, in float3 pb, 
-            in float ra, in float rb )
+            in float3 coneTop, in float3 coneBase, 
+            in float radiusBase )
         {
             float2 result = float2(0, -1);
 
-            float3  ba = pb - pa;
-            float3  oa = rayOrigin - pa;
-            float3  ob = rayOrigin - pb;
+            float3 ba = coneBase - coneTop;
+            float3 oa = rayOrigin - coneTop;
+            float3 ob = rayOrigin - coneBase;
             
             float m0 = dot(ba,ba);
             float m1 = dot(oa,ba);
@@ -396,18 +297,18 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float m3 = dot(rayDirection,ba);
             
             //caps
-            //     if( m1<0.0 ) { if( dot2(oa*m3-rayDirection*m1)<(ra*ra*m3*m3) ) return float2(-m1/m3, 100); }
-            //else if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(rb*rb*m3*m3) ) return float2(-m2/m3, 100); }
+            //     if( m1<0.0 ) { if( dot2(oa*m3-rayDirection*m1)<(0*0*m3*m3) ) return float2(-m1/m3, 100); }
+            //else if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) return float2(-m2/m3, 100); }
 
             // body
             float m4 = dot(rayDirection,oa);
             float m5 = dot(oa,oa);
-            float rr = ra - rb;
+            float rr = 0 - radiusBase;
             float hy = m0 + rr*rr;
             
             float k2 = m0*m0    - m3*m3*hy;
-            float k1 = m0*m0*m4 - m1*m3*hy + m0*ra*(rr*m3*1.0        );
-            float k0 = m0*m0*m5 - m1*m1*hy + m0*ra*(rr*m1*2.0 - m0*ra);
+            float k1 = m0*m0*m4 - m1*m3*hy + m0*0*(rr*m3*1.0        );
+            float k0 = m0*m0*m5 - m1*m1*hy + m0*0*(rr*m1*2.0 - m0*0);
             
             float h = k1*k1 - k2*k0;
             if( h<0.0 ) return float2(0, -1);
@@ -422,8 +323,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             }
             
             // caps again
-            if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(rb*rb*m3*m3) ) result = float2(-m2/m3, t2); }
-            else { if( dot2(ob*m3-rayDirection*m2)<(rb*rb*m3*m3) ) result = float2(t1, -m2/m3); }
+            if( m2>0.0 ) { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
+            else { if( dot2(ob*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(t1, -m2/m3); }
 
             return result;
         }
@@ -485,7 +386,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 // capped cone is an inaccurate representation of the volume shape and
                 // results in artifacts on the bottom edges
                 //float2 rc = iRoundedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
-                float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
+                float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
                 near = rc.x;
                 far = rc.y;
                 if (rc.x > 0)
@@ -503,18 +404,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                         color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))  *   0.1 * volumetricLightColor;
                         //color = distThroughVolume / 10;
                         //color = 1;
-                        //float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddle);
-
-                        //color += pow((1 - (length(volumeMiddle - volumetricLightPositionWS)) / volumetricLightRadius), 1)   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 2)   *   0.1;
-                        // color += (1 - (length(volumeMiddle - volumetricLightPositionWS) / volumetricLightHeight));
-                        //color = length(volumetricLightPositionWS - volumeMiddle) / 5;
-                        //color = pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2);
                     }
                 }
             #endif
-
-            // Cone volume intersection
-
 
             // Various debugs
             //color = cameraDirection;
