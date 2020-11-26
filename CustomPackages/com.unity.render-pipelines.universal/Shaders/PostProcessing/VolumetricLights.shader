@@ -138,85 +138,29 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float2(0, 0);
         }
 
-        // cone inscribed in a unit cube centered at 0
-        bool rayConeIntersection(float3 rayPos, float3 rayDirection, out float near, out float far)
+        float2 rayConeIntersectionOld(float3 rayPos, float3 rayDirection, float3 conePointPos, float3 coneBasePos, float coneRadius)
         {
-            // scale and offset into a unit cube
-            rayPos.x += 0;
-            //rayPos.x += 0.5;
-            float s = 0.5;
-            rayPos.x *= s;
-            rayDirection.x *= s;
-            
-            // quadratic x^2 = y^2 + z^2
-            float a = rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z - rayDirection.x * rayDirection.x;
-            float b = rayPos.y * rayDirection.y + rayPos.z * rayDirection.z - rayPos.x * rayDirection.x;
-            float c = rayPos.y * rayPos.y + rayPos.z * rayPos.z - rayPos.x * rayPos.x;
-            
-            float cap = (s - rayPos.x) / rayDirection.x;
-            
-            // linear
-            if( a == 0.0 )
-            {
-                near = -0.5 * c/b;
-                float x = rayPos.x + near * rayDirection.x;
-                if( x < 0.0 || x > s )
-                    return false; 
+            float3 axis = (coneBasePos - conePointPos);
+            float3 theta = (axis / length(axis));
+            float m = pow(coneRadius, 2) / pow(length(axis), 2);
+            float3 w = (rayPos - conePointPos);
 
-                far = cap;
-                float temp = min(far, near); 
-                far = max(far, near);
-                near = temp;
-                return far > 0.0;
-            }
+            float a = dot(rayDirection, rayDirection) - m * (pow(dot(rayDirection, theta), 2)) - pow(dot(rayDirection, theta), 2);
+            float b = 2 * (dot(rayDirection, w) - m * dot(rayDirection, theta) * dot(w, theta) - dot(rayDirection, theta) * dot(w, theta));
+            float c = dot(w, w) - m * pow(dot(w, theta), 2) - pow(dot(w, theta), 2);
 
-            float delta = b * b - a * c;
-            if( delta < 0.0 )
-                return false;
+            float discriminant = pow(b, 2) - (4 * a * c);
 
-            // 2 roots
-            float deltasqrt = sqrt(delta);
-            float arcp = 1.0 / a;
-            near = (-b - deltasqrt) * arcp;
-            far = (-b + deltasqrt) * arcp;
-            
-            // order roots
-            float temp = min(far, near);
-            far = max(far, near);
-            near = temp;
+            //if (discriminant > 0)
+            //{
+                float t1 = ((-b - sqrt(discriminant)) / (2 * a));
+                float t2 = ((-b + sqrt(discriminant)) / (2 * a));
 
-            float xnear = rayPos.x + near * rayDirection.x;
-            float xfar = rayPos.x + far * rayDirection.x;
-
-            if( xnear < 0.0 )
-            {
-                if( xfar < 0.0 || xfar > s )
-                    return false;
-                
-                near = far;
-                far = cap;
-            }
-            else if( xnear > s )
-            {
-                if( xfar < 0.0 || xfar > s )
-                    return false;
-                
-                near = cap;
-            }
-            else if( xfar < 0.0 )
-            {
-                // The apex is problematic,
-                // additional checks needed to
-                // get rid of the blinking tip here.
-                far = near;
-                near = cap;
-            }
-            else if( xfar > s )
-            {
-                far = cap;
-            }
-            
-            return far > 0.0;
+                float distToVolume = t1;
+                float distThroughVolume = t2 - t1;
+                return float2(distToVolume, distThroughVolume);
+            //}
+           // return float2(0, -1);
         }
 
         float2 iRoundedConeWithDepthBugs(
