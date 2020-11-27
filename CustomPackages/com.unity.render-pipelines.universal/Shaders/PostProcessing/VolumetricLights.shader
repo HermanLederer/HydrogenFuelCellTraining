@@ -372,13 +372,10 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             // Volumetric light parameters
             float3 volumetricLightPositionWS = float3(0, 5, 0);
-            float3 volumetricLightPositionWS2 = float3(0, 0, 1);
-            float3 volumetricLightRotation = float3(0, 0, 90);
-            //float3 volumetricLightDirection = float3(0, -1, 0);
+            float3 volumetricLightRotation = float3(0, 0, -90);
             float3 volumetricLightColor = float3(1, 1, 1);
             float volumetricLightRadius = 4;
             float volumetricLightHeight = 5;
-            float volumetricLightHeight2 = 1;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
@@ -414,33 +411,11 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 ro = GetCameraPositionWS();
                 rd = cameraDirection;
 
-                // //TODO: Fix the rounded cone function and use it instead of capped cone
-                // // capped cone is an inaccurate representation of the volume shape and
-                // // results in artifacts on the bottom edges
-                // //float2 rc = iRoundedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
-                // //float2 rc = rayConeIntersectionOld(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
-                // float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
-                // near = rc.x;
-                // far = rc.y;
-                // if (rc.y > 0)
-                // {
-                //     far = min(far, viewDistance);
-                //     near = min(near, viewDistance);
-                //     float distThroughVolume = far - max(0, near);
-                //     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (near + distThroughVolume / 2);
-                    
-                //     //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
-                //     //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
-                //     color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))   *   distThroughVolume  *   0.1 * volumetricLightColor;
-                //     //color = distThroughVolume / 6;
-                //     //color = 1;
-                // }
-
-                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, volumetricLightRotation, volumetricLightHeight);
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    near = min(near, viewDistance);
-                    far = min(far, viewDistance);
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -452,9 +427,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                         float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
                         float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
 
-                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(-float3(0, -1, 0), normalize(volumetricLightPositionWS - volumePosMiddle))), 8))  *   0.1 * volumetricLightColor;;
-                        //color = through;
-                    } 
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))  *   0.1 * volumetricLightColor;;
+                        //color += through;
+                    }
                 }
             #endif
 

@@ -4,6 +4,37 @@ using UnityEngine;
 
 public class LineIntersector : MonoBehaviour
 {
+	private Vector3 rotateVector(Vector3 rd, Vector3 rotation)
+	{
+		float radX = rotation.x * Mathf.Deg2Rad;
+		float radY = rotation.y * Mathf.Deg2Rad;
+		float radZ = rotation.z * Mathf.Deg2Rad;
+		float sinX = Mathf.Sin(radX);
+		float cosX = Mathf.Cos(radX);
+		float sinY = Mathf.Sin(radY);
+		float cosY = Mathf.Cos(radY);
+		float sinZ = Mathf.Sin(radZ);
+		float cosZ = Mathf.Cos(radZ);
+
+		Vector3 xAxis = new Vector3(
+			cosY * cosZ,
+			cosX * sinZ + sinX * sinY * cosZ,
+			sinX * sinZ - cosX * sinY * cosZ
+		);
+		Vector3 yAxis = new Vector3(
+			-cosY * sinZ,
+			cosX * cosZ - sinX * sinY * sinZ,
+			sinX * cosZ + cosX * sinY * sinZ
+		);
+		Vector3 zAxis = new Vector3(
+			sinY,
+			-sinX * cosY,
+			cosX * cosY
+		);
+
+		return xAxis * rd.x + yAxis * rd.y + zAxis * rd.z;
+	}
+
 	private void transformRay(Vector3 ro, Vector3 rd, out Vector3 outro, out Vector3 outrd, Vector3 offset, Vector3 rotation, float scale)
 	{
 		// offset
@@ -136,8 +167,8 @@ public class LineIntersector : MonoBehaviour
 		Vector3 cameraDirection = Camera.main.transform.forward;
 
 		// Variables
-		Vector3 volumetricLightPositionWS = new Vector3(0, 5, 0);
-		Vector3 volumetricLightRotation = new Vector3(0, 0, 90);
+		Vector3 volumetricLightPositionWS = transform.position;
+		Vector3 volumetricLightRotation = transform.rotation.eulerAngles;
 		float volumetricLightHeight = 5;
 
 		// Cone volume intersection
@@ -150,7 +181,7 @@ public class LineIntersector : MonoBehaviour
 
 		ro = GetCameraPositionWS();
 		rd = Camera.main.transform.forward;
-		transformRay(GetCameraPositionWS(), cameraDirection, out ro, out rd, -volumetricLightPositionWS, volumetricLightRotation, volumetricLightHeight);
+		transformRay(GetCameraPositionWS(), cameraDirection, out ro, out rd, -volumetricLightPositionWS, -volumetricLightRotation, volumetricLightHeight);
 
 		if (rayConeIntersection(ro, rd, out near, out far))
 		{
@@ -163,6 +194,7 @@ public class LineIntersector : MonoBehaviour
 			{
 				cameraDirection *= 5;
 
+				// Distances
 				Vector3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
 				Vector3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
 				Vector3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
@@ -176,7 +208,14 @@ public class LineIntersector : MonoBehaviour
 				Gizmos.color = Color.green;
 				Gizmos.DrawLine(GetCameraPositionWS(), volumePosNear);
 				Gizmos.DrawSphere(volumePosNear, 0.02f);
+
+				// Directions
+				Gizmos.color = Color.blue;
+				Gizmos.DrawRay(volumetricLightPositionWS, (volumePosMiddle - volumetricLightPositionWS).normalized);
 			}
 		}
+
+		Gizmos.color = Color.white;
+		Gizmos.DrawRay(volumetricLightPositionWS, rotateVector(new Vector3(1, 0, 0), volumetricLightRotation).normalized);
 	}
 }
