@@ -282,7 +282,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             // scale and offset into a unit cube
             rayPos.x += 0;
             //rayPos.x += 0.5;
-            float s = 0.5;
+            float s = 0.83;
             rayPos.x *= s;
             rayDirection.x *= s;
             
@@ -372,11 +372,13 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             // Volumetric light parameters
             float3 volumetricLightPositionWS = float3(0, 5, 0);
+            float3 volumetricLightPositionWS2 = float3(0, 0, 1);
             float3 volumetricLightRotation = float3(0, 0, 90);
-            float3 volumetricLightDirection = float3(0, -1, 0);
+            //float3 volumetricLightDirection = float3(0, -1, 0);
             float3 volumetricLightColor = float3(1, 1, 1);
             float volumetricLightRadius = 4;
             float volumetricLightHeight = 5;
+            float volumetricLightHeight2 = 1;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
@@ -404,7 +406,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             #else
                 // Cone volume intersection
                 float near;
+                float middle;
                 float far;
+                float through;
                 float3 ro;
                 float3 rd;
                 ro = GetCameraPositionWS();
@@ -435,26 +439,22 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, volumetricLightRotation, volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    far = min(far, viewDistance);
                     near = min(near, viewDistance);
-                    float distThroughVolume = far - max(0, near);
-                    float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * lerp(near, far, 0.5);
+                    far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
                     
-                    if (distThroughVolume > 0)
+                    if (through > 0)
                     {
-                        color += pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS)), 2);
-                        //color += pow(max(0, 1 - length(volumeMiddlePos)), 2)   *   pow(max(0, dot(volumeMiddlePos, float3(0, 1, 0))), 1);
-                        color = distThroughVolume;
-                        //color = 1;
-                    }
+                        cameraDirection *= 5;
 
-                    //float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddle);
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
 
-                    //color += pow((1 - (length(volumeMiddle - volumetricLightPositionWS)) / volumetricLightRadius), 1)   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 2)   *   0.1;
-                    // color += (1 - (length(volumeMiddle - volumetricLightPositionWS) / volumetricLightHeight));
-                    //color = length(volumetricLightPositionWS - volumeMiddle) / 5;
-                    //color = pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2);
-                    
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(-float3(0, -1, 0), normalize(volumetricLightPositionWS - volumePosMiddle))), 8))  *   0.1 * volumetricLightColor;;
+                        //color = through;
+                    } 
                 }
             #endif
 
