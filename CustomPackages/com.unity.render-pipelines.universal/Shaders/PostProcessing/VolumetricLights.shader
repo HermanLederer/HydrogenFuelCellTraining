@@ -375,7 +375,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float3 volumetricLightRotation = float3(0, 0, -90);
             float3 volumetricLightColor = float3(1, 1, 1);
             float volumetricLightRadius = 4;
-            float volumetricLightHeight = 5;
+            float volumetricLightHeight = 6;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
@@ -408,9 +408,12 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 float through;
                 float3 ro;
                 float3 rd;
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, 2.5);
+                volumetricLightColor = float3(1, 0, 0);
                 ro = GetCameraPositionWS();
                 rd = cameraDirection;
-
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
@@ -421,14 +424,138 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     
                     if (through > 0)
                     {
-                        cameraDirection *= 5;
+                        cameraDirection *= volumetricLightHeight;
 
                         float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
                         float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
                         float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
 
-                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))  *   0.1 * volumetricLightColor;;
-                        //color += through;
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
+                    }
+                }
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, 1.5);
+                volumetricLightColor = float3(1, 0.5, 0);
+                ro = GetCameraPositionWS();
+                rd = cameraDirection;
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
+                {
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
+                    
+                    if (through > 0)
+                    {
+                        cameraDirection *= volumetricLightHeight;
+
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
+
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
+                    }
+                }
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, 0.5);
+                volumetricLightColor = float3(1, 1, 0);
+                ro = GetCameraPositionWS();
+                rd = cameraDirection;
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
+                {
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
+                    
+                    if (through > 0)
+                    {
+                        cameraDirection *= volumetricLightHeight;
+
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
+
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
+                    }
+                }
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, -0.5);
+                volumetricLightColor = float3(0, 1, 0);
+                ro = GetCameraPositionWS();
+                rd = cameraDirection;
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
+                {
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
+                    
+                    if (through > 0)
+                    {
+                        cameraDirection *= volumetricLightHeight;
+
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
+
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
+                    }
+                }
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, -1.5);
+                volumetricLightColor = float3(0, 0.5, 1);
+                ro = GetCameraPositionWS();
+                rd = cameraDirection;
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
+                {
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
+                    
+                    if (through > 0)
+                    {
+                        cameraDirection *= volumetricLightHeight;
+
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
+
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
+                    }
+                }
+
+                // Light
+                volumetricLightPositionWS = float3(0, 5, -2.5);
+                volumetricLightColor = float3(1, 0, 1);
+                ro = GetCameraPositionWS();
+                rd = cameraDirection;
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
+                {
+                    //near = min(near, viewDistance);
+                    //far = min(far, viewDistance);
+                    through = far - max(0, near);
+                    middle = lerp(max(0, near), far, 0.5);
+                    
+                    if (through > 0)
+                    {
+                        cameraDirection *= volumetricLightHeight;
+
+                        float3 volumePosNear = GetCameraPositionWS() + cameraDirection * near;
+                        float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
+                        float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
+
+                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   0.1 * volumetricLightColor;
                     }
                 }
             #endif
