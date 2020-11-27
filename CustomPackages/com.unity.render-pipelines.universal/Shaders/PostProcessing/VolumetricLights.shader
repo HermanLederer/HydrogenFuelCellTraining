@@ -133,9 +133,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 float distThroughVolume = distancePosMiddleToSphereEdge + distancePosMiddleToSphereEdge;
                 return float2(distToVolume, distThroughVolume);
             }
-            else return float2(0, -1);
 
-            float2(0, 0);
+            return float2(0, -1);
         }
 
         float2 rayConeIntersectionOld(
@@ -234,17 +233,13 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float2 result = float2(0, -1);
 
             float3 rayBaseToTop     = coneBase  - coneTop;
-            float3 rayBaseToTopInv     = coneTop - coneBase;
             float3 rayOriginToTop   = rayOrigin - coneTop;
             float3 rayOriginToBase  = rayOrigin - coneBase;
-            float3 rayOriginToBaseInv  = coneBase - rayOrigin;
             
             float m0 = dot(rayBaseToTop,    rayBaseToTop);
             float m1 = dot(rayOriginToTop,  rayBaseToTop);
             float m2 = dot(rayOriginToBase, rayBaseToTop); 
-            float m22 = dot(rayBaseToTopInv, rayOriginToBaseInv);
             float m3 = dot(rayDirection,    rayBaseToTop);
-            float m33 = dot(  rayBaseToTopInv, rayDirection);
 
             // body
             float m4 = dot(rayDirection,    rayOriginToTop);
@@ -267,18 +262,99 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             if(y > 0 && y < m0)
             //if(y > -m0 && y < m0)
                 result = float2(t1, t2);
+
+            //if (result.y <= 0) result.y = 10;
             
             // caps
             // bottom cap (the visible one)
-            if(m2 > 0) { if( dot2(rayOriginToBase*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
+            if (m2 > 0) { if (dot2(rayOriginToBase*m3-rayDirection*m2)<(radiusBase*radiusBase*m3*m3) ) result = float2(-m2/m3, t2); }
             else { if(dot2(rayOriginToBase*m3-rayDirection*m2) < (radiusBase*radiusBase*m3*m3)) result = float2(t1, -m2/m3); }
 
-            // TODO: implement the top cap
-            // top cap, just to prevent cone cutout
-            //if(dot2(rayOriginToBase*m33-rayDirection*m22) < (radiusBase*radiusBase*m33*m33)) result = float2(1, 100);
+            // TODO: implement the top cap or apex, just get rid of that circle of void
 
             //return float2(min(result.x, result.y), max(result.x, result.y));
             return result;
+        }
+
+        // cone inscribed in a unit cube centered at 0
+        bool rayConeIntersection(float3 rayPos, float3 rayDirection, out float near, out float far)
+        {
+            // scale and offset into a unit cube
+            rayPos.x += 0;
+            //rayPos.x += 0.5;
+            float s = 0.5;
+            rayPos.x *= s;
+            rayDirection.x *= s;
+            
+            // quadratic x^2 = y^2 + z^2
+            float a = rayDirection.y * rayDirection.y + rayDirection.z * rayDirection.z - rayDirection.x * rayDirection.x;
+            float b = rayPos.y * rayDirection.y + rayPos.z * rayDirection.z - rayPos.x * rayDirection.x;
+            float c = rayPos.y * rayPos.y + rayPos.z * rayPos.z - rayPos.x * rayPos.x;
+            
+            float cap = (s - rayPos.x) / rayDirection.x;
+            
+            // linear
+            if( a == 0.0 )
+            {
+                near = -0.5 * c/b;
+                float x = rayPos.x + near * rayDirection.x;
+                if( x < 0.0 || x > s )
+                    return false; 
+
+                far = cap;
+                float temp = min(far, near); 
+                far = max(far, near);
+                near = temp;
+                return far > 0.0;
+            }
+
+            float delta = b * b - a * c;
+            if( delta < 0.0 )
+                return false;
+
+            // 2 roots
+            float deltasqrt = sqrt(delta);
+            float arcp = 1.0 / a;
+            near = (-b - deltasqrt) * arcp;
+            far = (-b + deltasqrt) * arcp;
+            
+            // order roots
+            float temp = min(far, near);
+            far = max(far, near);
+            near = temp;
+
+            float xnear = rayPos.x + near * rayDirection.x;
+            float xfar = rayPos.x + far * rayDirection.x;
+
+            if( xnear < 0.0 )
+            {
+                if( xfar < 0.0 || xfar > s )
+                    return false;
+                
+                near = far;
+                far = cap;
+            }
+            else if( xnear > s )
+            {
+                if( xfar < 0.0 || xfar > s )
+                    return false;
+                
+                near = cap;
+            }
+            else if( xfar < 0.0 )
+            {
+                // The apex is problematic,
+                // additional checks needed to
+                // get rid of the blinking tip here.
+                far = near;
+                near = cap;
+            }
+            else if( xfar > s )
+            {
+                far = cap;
+            }
+            
+            return far > 0.0;
         }
 
         half4 Frag(Interpolators input) : SV_Target
@@ -296,11 +372,11 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             // Volumetric light parameters
             float3 volumetricLightPositionWS = float3(0, 5, 0);
-            float3 volumetricLightRotation = float3(0, 0, 0);
+            float3 volumetricLightRotation = float3(0, 0, 90);
             float3 volumetricLightDirection = float3(0, -1, 0);
             float3 volumetricLightColor = float3(1, 1, 1);
             float volumetricLightRadius = 4;
-            float volumetricLightHeight = 6;
+            float volumetricLightHeight = 5;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
@@ -334,29 +410,51 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 ro = GetCameraPositionWS();
                 rd = cameraDirection;
 
-                //TODO: Fix the rounded cone function and use it instead of capped cone
-                // capped cone is an inaccurate representation of the volume shape and
-                // results in artifacts on the bottom edges
-                //float2 rc = iRoundedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
-                //float2 rc = rayConeIntersectionOld(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
-                float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
-                near = rc.x;
-                far = rc.y;
-                if (rc.y > 0)
+                // //TODO: Fix the rounded cone function and use it instead of capped cone
+                // // capped cone is an inaccurate representation of the volume shape and
+                // // results in artifacts on the bottom edges
+                // //float2 rc = iRoundedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, 0, volumetricLightRadius);
+                // //float2 rc = rayConeIntersectionOld(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
+                // float2 rc = iCappedCone(ro, rd, volumetricLightPositionWS, volumetricLightPositionWS + volumetricLightDirection * volumetricLightHeight, volumetricLightRadius);
+                // near = rc.x;
+                // far = rc.y;
+                // if (rc.y > 0)
+                // {
+                //     far = min(far, viewDistance);
+                //     near = min(near, viewDistance);
+                //     float distThroughVolume = far - max(0, near);
+                //     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (near + distThroughVolume / 2);
+                    
+                //     //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
+                //     //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
+                //     color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))   *   distThroughVolume  *   0.1 * volumetricLightColor;
+                //     //color = distThroughVolume / 6;
+                //     //color = 1;
+                // }
+
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, volumetricLightRotation, volumetricLightHeight);
+                if (rayConeIntersection(ro, rd, near, far))
                 {
                     far = min(far, viewDistance);
                     near = min(near, viewDistance);
                     float distThroughVolume = far - max(0, near);
-                    float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (near + distThroughVolume / 2);
+                    float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * lerp(near, far, 0.5);
                     
-                    //if (distThroughVolume > 0)
-                    //if (near > 0)
-                    //{
-                        //color = pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight), 2);
-                        //color = pow(max(0, dot(float3(0, 1, 0), normalize(volumetricLightPositionWS - volumeMiddlePos))), 16);
-                        color += max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0, 1, pow(max(0, dot(-volumetricLightDirection, normalize(volumetricLightPositionWS - volumeMiddlePos))), 16))  *   0.1 * volumetricLightColor;
-                        //color = distThroughVolume / 6;
-                    //}
+                    if (distThroughVolume > 0)
+                    {
+                        color += pow(max(0, 1 - length(volumeMiddlePos - volumetricLightPositionWS)), 2);
+                        //color += pow(max(0, 1 - length(volumeMiddlePos)), 2)   *   pow(max(0, dot(volumeMiddlePos, float3(0, 1, 0))), 1);
+                        color = distThroughVolume;
+                        //color = 1;
+                    }
+
+                    //float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddle);
+
+                    //color += pow((1 - (length(volumeMiddle - volumetricLightPositionWS)) / volumetricLightRadius), 1)   *   pow(dot(-normalize(volumetricLightDirection), volumeMiddleSourceDirection), 2)   *   0.1;
+                    // color += (1 - (length(volumeMiddle - volumetricLightPositionWS) / volumetricLightHeight));
+                    //color = length(volumetricLightPositionWS - volumeMiddle) / 5;
+                    //color = pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2);
+                    
                 }
             #endif
 
