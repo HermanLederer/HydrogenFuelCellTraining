@@ -417,8 +417,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -442,8 +442,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -467,8 +467,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -492,8 +492,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -517,8 +517,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
@@ -542,8 +542,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
-                    //near = min(near, viewDistance);
-                    //far = min(far, viewDistance);
+                    near = min(near, viewDistance);
+                    far = min(far, viewDistance);
                     through = far - max(0, near);
                     middle = lerp(max(0, near), far, 0.5);
                     
