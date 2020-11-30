@@ -30,11 +30,11 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             Interpolators output;
 
             UNITY_SETUP_INSTANCE_ID(input);
-            //UNITY_INITIALIZE_OUTPUT(Interpolators, output);
             UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
             output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
             output.uv = input.uv;
             output.ray = _FrustumCorners[input.uv.x + 2 * input.uv.y];
+
             return output;
         }
 
@@ -365,7 +365,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
             float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, uv).x;
-            float linearDepth = LinearEyeDepth(depth, _ZBufferParams);
+            float linearDepth = Linear01Depth(depth, _ZBufferParams);
 
             float viewDistance = depth * _ProjectionParams.z - _ProjectionParams.y;
             viewDistance = length(input.ray * Linear01Depth(depth, _ZBufferParams));
@@ -385,6 +385,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             #if SPHERICAL_VOLUME
                 // Sphere volume intersecion
+                volumetricLightPositionWS = float3(0, 3, 2.5);
+                volumetricLightColor = float3(1, 0, 0);
                 float2 volumeIntersection = raySphereIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightRadius);
                 float distToVolume = volumeIntersection.x;
                 float distThroughVolume = volumeIntersection.y;
@@ -397,8 +399,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (distToVolume + distThroughVolume / 2);
                     float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddlePos);
 
-                    color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
-                    //color += (distThroughVolume / volumetricLightRadius)   *    pow((1 - (length(volumeMiddle - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1;
+                    //color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
+                    color += distThroughVolume / 10;
                 }
             #else
                 // Cone volume intersection
@@ -408,6 +410,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 float through;
                 float3 ro;
                 float3 rd;
+
+                viewDistance /= volumetricLightHeight;
 
                 // Light
                 volumetricLightPositionWS = float3(0, 5, 2.5);
