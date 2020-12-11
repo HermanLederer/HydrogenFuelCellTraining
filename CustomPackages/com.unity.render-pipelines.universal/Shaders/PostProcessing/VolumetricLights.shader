@@ -375,7 +375,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float3 volumetricLightRotation = float3(0, 0, -90);
             float3 volumetricLightColor = float3(1, 1, 1);
             float volumetricLightRadius = 4;
-            float volumetricLightHeight = 6;
+            float volumetricLightHeight = 5;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
@@ -414,7 +414,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 viewDistance /= volumetricLightHeight;
 
                 // Light
-                volumetricLightPositionWS = float3(0, 5, 2.5);
+                volumetricLightPositionWS = float3(-2, 5, 0);
                 volumetricLightColor = float3(0.1, 0.1, 0.1);
                 ro = GetCameraPositionWS();
                 rd = cameraDirection;
@@ -434,7 +434,10 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                         float3 volumePosMiddle = GetCameraPositionWS() + cameraDirection * middle;
                         float3 volumePosFar = GetCameraPositionWS() + cameraDirection * far;
 
-                        color += max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight)   *   smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 8))   *   volumetricLightColor;
+                        float3 inscatterColor = volumetricLightColor;
+                        inscatterColor *= max(0, 1 - length(volumePosMiddle - volumetricLightPositionWS) / volumetricLightHeight);
+                        inscatterColor *= smoothstep(0.5, 1, pow(max(0, dot(normalize(rotateVector(float3(1, 0, 0), volumetricLightRotation)), normalize(volumePosMiddle - volumetricLightPositionWS))), 4));
+                        color += inscatterColor;
                     }
                 }
             #endif
