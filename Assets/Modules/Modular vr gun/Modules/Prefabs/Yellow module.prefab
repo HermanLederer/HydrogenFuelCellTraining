@@ -52,7 +52,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f4f075e007712714da3a74dacf6953fd, type: 2}
+  - {fileID: 2100000, guid: a0983bee2c5f3c34493f7ad6102c0bbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4938,7 +4938,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b1d4dafe43746244eb11141b9eeedc11, type: 2}
+  - {fileID: 2100000, guid: ec130d0761ff29a45a815690d54d73dc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4974,7 +4974,7 @@ GameObject:
   - component: {fileID: 2315567603151498424}
   - component: {fileID: 2315567603151498425}
   m_Layer: 0
-  m_Name: Module
+  m_Name: Yellow module
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5009,9 +5009,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachParticles: {fileID: 2315567602286338965}
-  firePrefab: {fileID: 1733212033353150807, guid: dbfbdeb9a5962ef49b6b17e0282959c7, type: 3}
+  firePrefab: {fileID: 1733212033353150807, guid: fdcc46dbc2a45b646a409c25c977cb19, type: 3}
   renderer: {fileID: 2315567603112783197}
-  power: 8
+  power: 12
 --- !u!114 &2315567603151498426
 MonoBehaviour:
   m_ObjectHideFlags: 0
