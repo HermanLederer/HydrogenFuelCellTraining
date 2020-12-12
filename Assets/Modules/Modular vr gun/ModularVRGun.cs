@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class ModularVRGun : MonoBehaviour
 {
-	public ParticleSystem particleSystem;
+	public ModuleSocket moduleSocket;
 
 	public void Shoot()
 	{
-		particleSystem.Play();
+		//particleSystem.Play();
+		if (moduleSocket.selectedModule) moduleSocket.selectedModule.Shoot();
+		moduleSocket.drop = true;
 	}
 }
