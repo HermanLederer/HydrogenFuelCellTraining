@@ -7,15 +7,13 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class ModuleSocket : XRBaseInteractor
 {
 	// Editor fields
-	//[SerializeField] private Transform attachTransform;
-	//[SerializeField] new private ModuleCollider collider;
-	[SerializeField] private ParticleSystem attachParticles;
+	public Transform firePoint;
 
 	XRBaseInteractable m_ValidTarget;
 
 	public Module selectedModule { get; private set; }
 
-	public bool drop = false;
+	private bool loaded = false;
 
 	/// <inheritdoc />
 	protected override void Awake()
@@ -25,20 +23,21 @@ public class ModuleSocket : XRBaseInteractor
 
 	protected void OnTriggerEnter(Collider col)
 	{
-		if (selectedModule != null) return;
+		if (loaded) return;
 
 		var interactable = interactionManager.TryGetInteractableForCollider(col);
 		if (interactable && selectTarget != interactable)
 		{
-			Module selectedModule;
-			if (col.gameObject.TryGetComponent<Module>(out selectedModule))
+			Module em;
+			if (col.gameObject.TryGetComponent<Module>(out em))
 			{
-				this.selectedModule = selectedModule;
-				if (selectedModule.power > 0f)
+				this.selectedModule = em;
+				if (em.power > 0f)
 				{
 					m_ValidTarget = interactable;
-					attachParticles.Play();
-					selectedModule.Lock();
+					em.AttachToGun(firePoint);
+					loaded = true;
+					Debug.Log(1);
 				}
 			}
 		}
@@ -61,12 +60,11 @@ public class ModuleSocket : XRBaseInteractor
 			else
 			{
 				if (selectTarget) interactionManager.SelectExit(this, selectTarget);
-				selectedModule.Unlock();
+				selectedModule.Detach();
+				loaded = false;
 				selectedModule = null;
 				m_ValidTarget = null;
 			}
 		}
-
-		Debug.Log(selectTarget);
 	}
 }

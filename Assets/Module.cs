@@ -6,8 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(XRGrabInteractable))]
 public class Module : MonoBehaviour
 {
-	[SerializeField] private ParticleSystem fireParticles;
+	private ParticleSystem fireParticles;
 	[SerializeField] private ParticleSystem attachParticles;
+	[SerializeField] private ParticleSystem firePrefab;
 	[SerializeField] new private MeshRenderer renderer;
 
 	new private Collider collider;
@@ -35,18 +36,16 @@ public class Module : MonoBehaviour
 		}
 	}
 
-	public void Lock()
+	public void AttachToGun(Transform firePoint)
 	{
 		collider.enabled = false;
-	}
-
-	public void Unlock()
-	{
-		collider.enabled = true;
+		fireParticles = Instantiate(firePrefab, firePoint);
+		attachParticles.Play();
 	}
 
 	public void Detach()
 	{
-		Debug.Log("detach");
+		collider.enabled = true;
+		Destroy(fireParticles);
 	}
 }
