@@ -371,21 +371,21 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             viewDistance = length(input.ray * Linear01Depth(depth, _ZBufferParams));
 
             // Volumetric light parameters
-            float3 volumetricLightPositionWS = float3(0, 5, 0);
+            float3 volumetricLightPositionWS;
             float3 volumetricLightRotation = float3(0, 0, -90);
             float3 volumetricLightColor = float3(1, 1, 1);
-            float volumetricLightRadius = 4;
+            float volumetricLightRadius = 0.5;
             float volumetricLightHeight = 5;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
             float3 volumetricLightViewDirectionNormalized = normalize(volumetricLightViewDirection);
 
-            #define SPHERICAL_VOLUME 0
+            #define SPHERICAL_VOLUME 1
 
             #if SPHERICAL_VOLUME
                 // Sphere volume intersecion
-                volumetricLightPositionWS = float3(0, 3, 2.5);
+                volumetricLightPositionWS = float3(0, 1, 1);
                 volumetricLightColor = float3(1, 0, 0);
                 float2 volumeIntersection = raySphereIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightRadius);
                 float distToVolume = volumeIntersection.x;
@@ -401,6 +401,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
                     //color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
                     //color += distThroughVolume / 10;
+                    //if (distThroughVolume > 0) color = distThroughVolume;
                 }
             #else
                 // Cone volume intersection
