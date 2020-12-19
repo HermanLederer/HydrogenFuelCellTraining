@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1434041330533672451
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Intensity
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6491543468005602347, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7508810388317066154, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Name
+      value: White
+      objectReference: {fileID: 0}
+    - target: {fileID: 7556921781217567060, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0f77673e37088384399e568b6634f51c, type: 2}
+    - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_InscatteringColor.r
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_InscatteringColor.g
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_InscatteringColor.b
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
