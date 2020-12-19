@@ -156,7 +156,7 @@ Transform:
   m_Children:
   - {fileID: 1081090642}
   m_Father: {fileID: 665423900}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &39350614
 MeshRenderer:
@@ -264,7 +264,7 @@ Transform:
   - {fileID: 202063127}
   - {fileID: 1145444334}
   m_Father: {fileID: 665423900}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &195200985
 GameObject:
@@ -533,7 +533,7 @@ Transform:
   m_LocalScale: {x: 16, y: 1, z: 16}
   m_Children: []
   m_Father: {fileID: 665423900}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &653260035
 GameObject:
@@ -610,8 +610,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1439002188}
-  - {fileID: 1691337419}
   - {fileID: 39350613}
   - {fileID: 581254947}
   - {fileID: 170171481}
@@ -651,6 +649,8 @@ Transform:
   - {fileID: 8440527224625778071}
   - {fileID: 1057364999}
   - {fileID: 897258411}
+  - {fileID: 1439002188}
+  - {fileID: 1691337419}
   m_Father: {fileID: 1726697384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -667,6 +667,7 @@ GameObject:
   - component: {fileID: 787794053}
   - component: {fileID: 787794052}
   - component: {fileID: 787794051}
+  - component: {fileID: 787794055}
   m_Layer: 0
   m_Name: RightHand Controller
   m_TagString: Untagged
@@ -939,10 +940,34 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 787794055}
+        m_TargetAssemblyTypeName: XRRayInteractorLineControl, Assembly-CSharp
+        m_MethodName: HideLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 787794055}
+        m_TargetAssemblyTypeName: XRRayInteractorLineControl, Assembly-CSharp
+        m_MethodName: ShowLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
   m_PlayAudioClipOnSelectEntered: 0
@@ -1022,6 +1047,19 @@ MonoBehaviour:
   m_MoveObjectIn: 14
   m_MoveObjectOut: 15
   m_PoseProvider: {fileID: 0}
+--- !u!114 &787794055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787794049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6d8c4feddf64b47b485e560ffc4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 0}
 --- !u!1 &861905621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1052,7 +1090,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 665423900}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &861905624
 MeshRenderer:
@@ -1555,6 +1593,7 @@ GameObject:
   - component: {fileID: 1069994391}
   - component: {fileID: 1069994390}
   - component: {fileID: 1069994389}
+  - component: {fileID: 1069994393}
   m_Layer: 0
   m_Name: LeftHand Controller
   m_TagString: Untagged
@@ -1827,10 +1866,34 @@ MonoBehaviour:
       m_Calls: []
   m_OnSelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1069994393}
+        m_TargetAssemblyTypeName: XRRayInteractorLineControl, Assembly-CSharp
+        m_MethodName: HideLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1069994393}
+        m_TargetAssemblyTypeName: XRRayInteractorLineControl, Assembly-CSharp
+        m_MethodName: ShowLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
   m_PlayAudioClipOnSelectEntered: 0
@@ -1910,6 +1973,19 @@ MonoBehaviour:
   m_MoveObjectIn: 14
   m_MoveObjectOut: 15
   m_PoseProvider: {fileID: 0}
+--- !u!114 &1069994393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069994387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6d8c4feddf64b47b485e560ffc4202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 0}
 --- !u!1 &1081090641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2314,7 +2390,7 @@ GameObject:
   - component: {fileID: 1439002189}
   - component: {fileID: 1439002191}
   m_Layer: 0
-  m_Name: Screw object
+  m_Name: Screw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2328,11 +2404,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439002187}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.799, y: 0.95, z: 1}
+  m_LocalPosition: {x: -1.984, y: 0.7, z: 1}
   m_LocalScale: {x: 0.05, y: 0.2, z: 0.05}
   m_Children: []
-  m_Father: {fileID: 665423900}
-  m_RootOrder: 0
+  m_Father: {fileID: 769764801}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1439002189
 MeshRenderer:
@@ -2411,6 +2487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screwhole: {fileID: 1691337419}
   screwedOutMax: 0.2
+  screwOffset: -0.2
 --- !u!1 &1458322688
 GameObject:
   m_ObjectHideFlags: 0
@@ -2440,7 +2517,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 665423900}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!220 &1458322690
 LightProbeGroup:
@@ -2629,12 +2706,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1691337418}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 0.5, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.984, y: 0.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 665423900}
-  m_RootOrder: 1
+  m_Father: {fileID: 769764801}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1726697383
 GameObject:
@@ -2842,7 +2919,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 945980879040130215, guid: 778f65ee9f29ca4458ac8dfdff9a8ead, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 945980879040130215, guid: 778f65ee9f29ca4458ac8dfdff9a8ead, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
