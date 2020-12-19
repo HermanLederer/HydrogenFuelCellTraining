@@ -5,13 +5,23 @@ using UnityEngine;
 [ExecuteAlways]
 public class InscatteringVolume : MonoBehaviour
 {
-	public Material material;
+	[ColorUsage(true, true)]
+	public Color m_InscatteringColor;
+
+	//public Material m_InscatteringMaterial;
+
+	private void OnEnable()
+	{
+		InscatteringVolumeManager.InscatteringVolumes.Add(this);
+	}
+
+	private void OnDisable()
+	{
+		InscatteringVolumeManager.InscatteringVolumes.Remove(this);
+	}
 
 	private void Update()
 	{
 		transform.localScale = new Vector3(transform.localScale.x, transform.localScale.x, transform.localScale.x);
-
-		material.SetVector("_VolumePos", transform.position);
-		material.SetFloat("_VolumeRadius", transform.localScale.x / 2f);
 	}
 }

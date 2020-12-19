@@ -1,5 +1,13 @@
 Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 {
+    Properties
+    {
+        //_MainTex("Source", 2D) = "white" {}
+        //_VolumePosition("Position", Vector) = (0, 0, 0, 0)
+        //_VolumeRadius("Radius", Float) = 0.5
+        //_InscatteringColor("Inscattering Color", Color) = (1, 1, 1, 1)
+    }
+
     HLSLINCLUDE
 
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
@@ -10,12 +18,14 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
         #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
 
-        TEXTURE2D_X(_BlitTex);
+        //TEXTURE2D(_MainTex);
+        float3 _VolumePosition;
+        float _VolumeRadius;
+        float4 _InscatteringColor;
+
         float3 _FrustumCorners[4];
-        float4x4 _MatrixScreenToWorldLeft;
-        float4x4 _MatrixScreenToWorldRight;
-        float4x4 _MV;
-        float4x4 _MP;
+        float4x4 _MatrixScreenToWorldLeftEye; // Only left eye is used in mono renderering
+        float4x4 _MatrixScreenToWorldRightEye;
 
         struct Interpolators
         {
@@ -45,7 +55,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             #else
                 half4 positionCS = half4(uv * 2 - 1, depth * 2 - 1, 1) * LinearEyeDepth(depth, _ZBufferParams);
             #endif
-            return mul(lerp(_MatrixScreenToWorldLeft, _MatrixScreenToWorldRight, unity_StereoEyeIndex), positionCS).xyz;
+            return mul(lerp(_MatrixScreenToWorldLeftEye, _MatrixScreenToWorldRightEye, unity_StereoEyeIndex), positionCS).xyz;
         }
 
         void transformRay(float3 ro, float3 rd, out float3 outro, out float3 outrd, float3 offset, float3 rotation, float scale)
@@ -363,7 +373,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
 
-            half3 color = SAMPLE_TEXTURE2D_X(_BlitTex, sampler_LinearClamp, uv).xyz;
+            //half3 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp, uv).xyz;
+            half3 color = float3(0, 0, 0);
             float depth = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_LinearClamp, uv).x;
             float linearDepth = Linear01Depth(depth, _ZBufferParams);
 
@@ -385,8 +396,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             #if SPHERICAL_VOLUME
                 // Sphere volume intersecion
-                volumetricLightPositionWS = float3(0, 1, 1);
-                volumetricLightColor = float3(1, 0, 0);
+                volumetricLightPositionWS = _VolumePosition;
+                volumetricLightRadius = _VolumeRadius;
+                volumetricLightColor = _InscatteringColor.xyz;
                 float2 volumeIntersection = raySphereIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightRadius);
                 float distToVolume = volumeIntersection.x;
                 float distThroughVolume = volumeIntersection.y;
@@ -399,7 +411,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                     float3 volumeMiddlePos = GetCameraPositionWS() + cameraDirection * (distToVolume + distThroughVolume / 2);
                     float3 volumeMiddleSourceDirection = normalize(volumetricLightPositionWS - volumeMiddlePos);
 
-                    //color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
+                    color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 2)   *   0.1 * volumetricLightColor;
                     //color += distThroughVolume / 10;
                     //if (distThroughVolume > 0) color = distThroughVolume;
                 }
@@ -446,7 +458,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             // Various debugs
             //color = cameraDirection;
             //color = lerp(float3(1, 0, 0), float3(0, 0, 1), unity_StereoEyeIndex);
-
+            //color = float3(0.9, 0.7, 0.1);
             return half4(color, 1.0);
         }
 
@@ -456,7 +468,10 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
     {
         Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline"}
         LOD 100
-        ZTest Always ZWrite Off Cull Off
+        ZTest Always
+        ZWrite Off
+        Cull Off
+        Blend One One
 
         Pass
         {

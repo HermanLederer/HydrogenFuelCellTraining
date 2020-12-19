@@ -323,11 +323,11 @@ namespace UnityEngine.Rendering.Universal.Internal
 			Swap();*/
 
 			// CUSTOM: Volumetric lights
-			using (new ProfilingScope(cmd, ProfilingSampler.Get(URPProfileId.VolumetricLights)))
-			{
-				DoVolumetricLights(cameraData.camera, cmd, GetSource(), GetDestination());
-				Swap();
-			}
+			//using (new ProfilingScope(cmd, ProfilingSampler.Get(URPProfileId.VolumetricLights)))
+			//{
+			//	DoVolumetricLights(cameraData.camera, cmd, GetSource(), GetDestination());
+			//	Swap();
+			//}
 
 			// Anti-aliasing
 			if (cameraData.antialiasing == AntialiasingMode.SubpixelMorphologicalAntiAliasing && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2)
