@@ -8,8 +8,6 @@ public class InscatteringVolume : MonoBehaviour
 	[ColorUsage(true, true)]
 	public Color m_InscatteringColor;
 
-	//public Material m_InscatteringMaterial;
-
 	private void OnEnable()
 	{
 		InscatteringVolumeManager.InscatteringVolumes.Add(this);
