@@ -27,15 +27,6 @@ public class Inscattering : ScriptableRendererFeature
 
 		public void SetSource(RenderTargetIdentifier source) => m_Source = source;
 
-		// This method is called before executing the render pass.
-		// It can be used to configure render targets and their clear state. Also to create temporary render target textures.
-		// When empty this render pass will render to the active camera render target.
-		// You should never call CommandBuffer.SetRenderTarget. Instead call <c>ConfigureTarget</c> and <c>ConfigureClear</c>.
-		// The render pipeline will ensure target setup and clearing happens in an performance manner.
-		public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
-		{
-		}
-
 		public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
 		{
 			//1> Get command buffer

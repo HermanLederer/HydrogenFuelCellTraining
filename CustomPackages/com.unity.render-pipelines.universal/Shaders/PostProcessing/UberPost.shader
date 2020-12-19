@@ -201,6 +201,7 @@ Shader "Hidden/Universal Render Pipeline/UberPost"
             #if _FILM_GRAIN
             {
                 color = ApplyGrain(color, uv, TEXTURE2D_ARGS(_Grain_Texture, sampler_LinearRepeat), GrainIntensity, GrainResponse, GrainScale, GrainOffset);
+                //color *= frac(sin(dot(GrainOffset, float2(1.0,113.0)))*43758.5453123);
             }
             #endif
 

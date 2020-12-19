@@ -37,7 +37,6 @@ public class ModuleSocket : XRBaseInteractor
 					m_ValidTarget = interactable;
 					em.AttachToGun(firePoint);
 					loaded = true;
-					Debug.Log(1);
 				}
 			}
 		}
