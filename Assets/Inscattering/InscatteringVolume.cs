@@ -13,7 +13,7 @@ public class InscatteringVolume : MonoBehaviour
 		InscatteringVolumeManager.InscatteringVolumes.Add(this);
 	}
 
-	private void OnDisable()
+	private void OnDestroy()
 	{
 		InscatteringVolumeManager.InscatteringVolumes.Remove(this);
 	}

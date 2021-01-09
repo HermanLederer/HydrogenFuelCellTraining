@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class Module : MonoBehaviour
+public class Module : HydrogenInteractable
 {
 	private ParticleSystem fireParticles;
 	[SerializeField] private ParticleSystem attachParticles;
