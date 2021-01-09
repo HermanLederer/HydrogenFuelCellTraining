@@ -13,11 +13,11 @@ public class Screw : MonoBehaviour
 	public float ScrewedOut
 	{
 		get { return screwedOut; }
-		set { screwedOut = Mathf.Clamp(value, 0.01f, 1f); }
+		set { screwedOut = Mathf.Clamp(value, 0.0001f, 1f); }
 	}
 
 	private void Update()
 	{
-		transform.position = screwhole.position + Vector3.up * (screwedOut * (screwedOutMax - screwOffset) + screwOffset);
+		transform.position = screwhole.position + transform.up * (ScrewedOut * (screwedOutMax - screwOffset) + screwOffset);
 	}
 }
