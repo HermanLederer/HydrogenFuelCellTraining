@@ -20,6 +20,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
         //TEXTURE2D(_MainTex);
         float3 _VolumePosition;
+        float3 _VolumeRotation;
         float _VolumeRadius;
         float4 _InscatteringColor;
 
@@ -383,9 +384,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
             // Volumetric light parameters
             float3 volumetricLightPositionWS;
-            float3 volumetricLightRotation = float3(0, 0, -90);
-            float3 volumetricLightColor = float3(1, 1, 1);
-            float volumetricLightRadius = 0.5;
+            float3 volumetricLightRotation;
+            float3 volumetricLightColor;
+            float volumetricLightRadius;
             float volumetricLightHeight = 5;
 
             float3 cameraDirection = normalize(GetCameraDirection(uv, depth) - GetCameraPositionWS());
@@ -399,6 +400,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 volumetricLightPositionWS = _VolumePosition;
                 volumetricLightRadius = _VolumeRadius;
                 volumetricLightColor = _InscatteringColor.xyz;
+
                 float2 volumeIntersection = raySphereIntersection(GetCameraPositionWS(), cameraDirection, volumetricLightPositionWS, volumetricLightRadius);
                 float distToVolume = volumeIntersection.x;
                 float distThroughVolume = volumeIntersection.y;
@@ -413,9 +415,16 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
 
                     color += pow((1 - (length(volumeMiddlePos - volumetricLightPositionWS)) / volumetricLightRadius), 4)   *   volumetricLightColor;
                     //color += distThroughVolume / 10;
-                    //if (distThroughVolume > 0) color = distThroughVolume;
+                    //if (distThroughVolume > 0) color += distThroughVolume/5;
                 }
             #else
+                // Sphere volume intersecion
+                volumetricLightPositionWS = _VolumePosition;
+                volumetricLightRotation = _VolumeRotation;
+                //volumetricLightRotation = float3(0, 270, 0);
+                //volumetricLightHeight = _VolumeRadius;
+                volumetricLightColor = _InscatteringColor.xyz;
+
                 // Cone volume intersection
                 float near;
                 float middle;
@@ -427,11 +436,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
                 viewDistance /= volumetricLightHeight;
 
                 // Light
-                volumetricLightPositionWS = float3(-2, 5, 0);
-                volumetricLightColor = float3(0.1, 0.1, 0.1);
                 ro = GetCameraPositionWS();
                 rd = cameraDirection;
-                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(0, -volumetricLightRotation.x, -volumetricLightRotation.z), volumetricLightHeight);
+                transformRay(GetCameraPositionWS(), cameraDirection, ro, rd, -volumetricLightPositionWS, float3(-volumetricLightRotation.x, -volumetricLightRotation.y, -volumetricLightRotation.z), volumetricLightHeight);
                 if (rayConeIntersection(ro, rd, near, far))
                 {
                     near = min(near, viewDistance);

@@ -84,6 +84,7 @@ public class Inscattering : ScriptableRendererFeature
 			foreach (InscatteringVolume volume in InscatteringVolumeManager.InscatteringVolumes)
 			{
 				cmd.SetGlobalVector("_VolumePosition", volume.transform.position);
+				cmd.SetGlobalVector("_VolumeRotation", new Vector3(volume.transform.rotation.eulerAngles.x, volume.transform.rotation.eulerAngles.y-90, volume.transform.rotation.eulerAngles.z));
 				cmd.SetGlobalFloat("_VolumeRadius", volume.transform.localScale.x / 2f);
 				cmd.SetGlobalColor("_InscatteringColor", volume.m_InscatteringColor);
 				Blit(cmd, m_TempTexture.Identifier(), m_Source, m_InscatteringMaterial, 0);
