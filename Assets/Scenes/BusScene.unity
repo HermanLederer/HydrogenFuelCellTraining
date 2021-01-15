@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &160420822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4823613938160828542, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
+  m_PrefabInstance: {fileID: 4823613936193100104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &195200985
 GameObject:
   m_ObjectHideFlags: 0
@@ -3380,14 +3385,14 @@ PrefabInstance:
     - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 269936524}
+      objectReference: {fileID: 160420822}
     - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Bus, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Confirm
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -3522,6 +3527,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4823613938160828543, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
+      propertyPath: winSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 23c52ed42f310034aa066361aaebdb70, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
 --- !u!1001 &8440527224625778070
