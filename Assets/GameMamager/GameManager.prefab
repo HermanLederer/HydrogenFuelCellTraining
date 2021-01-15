@@ -43,8 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61be03805b62d2f479bc9fe930a36508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bus: {fileID: 0}
   largeFilterPrefab: {fileID: 0}
   smallFilterPrefab: {fileID: 0}
   gunModulePrefab: {fileID: 2315567603151498428, guid: 48f2bc09fac74dd4abf1cac7f79d8e12, type: 3}
   screwdriverPrefab: {fileID: 0}
+  winSound: {fileID: 8300000, guid: 23c52ed42f310034aa066361aaebdb70, type: 3}
   spawnTransform: {fileID: 4823613938160828528}
