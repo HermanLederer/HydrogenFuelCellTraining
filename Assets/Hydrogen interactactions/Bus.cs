@@ -8,12 +8,14 @@ public class Bus : MonoBehaviour
 	public bool isPowered = false;
 	public bool criticalMode = false;
 
+	public GameObject powerIndicators = null;
+
 	[Header("Game components")]
 	public MonoBehaviour battery;
 
 	private void Awake()
 	{
-		
+		if (!powerIndicators) Debug.LogWarning("power indicators object has not been assigend");
 	}
 
 	private void Start()
@@ -28,6 +30,24 @@ public class Bus : MonoBehaviour
 
 	public void EmergencyShutDown()
 	{
-		//if (isPowered)
+		PowerOff();
+	}
+
+	public void TogglePower()
+	{
+		if (isPowered) PowerOff();
+		else PowerOn();
+	}
+
+	private void PowerOff()
+	{
+		powerIndicators.SetActive(false);
+		isPowered = false;
+	}
+
+	private void PowerOn()
+	{
+		powerIndicators.SetActive(true);
+		isPowered = true;
 	}
 }

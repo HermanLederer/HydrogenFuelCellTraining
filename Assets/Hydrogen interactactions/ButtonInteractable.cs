@@ -8,18 +8,26 @@ namespace HL.MoreXRIntractions
 {
 	public class ButtonInteractable : XRBaseInteractable
 	{
+		//
+		// Editor fields
 		[ColorUsage(true, true)]
 		public Color pressedColor;
 		new public MeshRenderer renderer = null;
-		public AudioSource auidoSource = null;
-		public AudioClip click;
-
+		[Header("Sounds")]
+		public float volume;
+		public float minRadius;
+		public float maxRadius;
+		public AudioClip press;
+		public AudioClip release;
+		[Header("Events")]
 		public UnityEvent OnPress = null;
-
+		[Header("Buttton movement")]
 		private float yMin = 0f;
 		private float yMax = 0f;
-		private bool previousPress = false;
+		private bool previousPressState = false;
 
+		//
+		// Private variables
 		private float previousHandY;
 		private XRBaseInteractor hoverInteractor = null;
 
@@ -42,7 +50,6 @@ namespace HL.MoreXRIntractions
 		private void OnTriggerEnter(Collider other)
 		{
 			XRBaseInteractor interactor;
-			auidoSource.PlayOneShot(click);
 			if (other.gameObject.TryGetComponent<XRBaseInteractor>(out interactor))
 			{
 				hoverInteractor = interactor;
@@ -53,9 +60,11 @@ namespace HL.MoreXRIntractions
 		private void OnTriggerExit()
 		{
 			hoverInteractor = null;
-			previousPress = false;
+			previousPressState = false;
 			SetYPosition(yMax);
-			renderer.material.SetColor("_EmissionColor", Color.black);
+			Debug.Log(transform.localPosition.y);
+			Debug.Log(Mathf.Lerp(yMin, yMax, 0.5f));
+			CheckPress();
 		}
 
 		private void Start()
@@ -68,7 +77,7 @@ namespace HL.MoreXRIntractions
 		{
 			Collider collider = GetComponent<Collider>();
 
-			yMin = transform.localPosition.y - (collider.bounds.size.y - 0.01f);
+			yMin = transform.localPosition.y - (collider.bounds.size.y);
 			yMax = transform.localPosition.y;
 		}
 
@@ -104,25 +113,32 @@ namespace HL.MoreXRIntractions
 		{
 			bool isInPosition = IsInPosition();
 
-			if (isInPosition)
+			if (isInPosition != previousPressState)
 			{
-				if (isInPosition != previousPress)
-					OnPress.Invoke();
-
-				renderer.material.SetColor("_EmissionColor", pressedColor);
+				if (isInPosition) Press();
+				else Release();
 			}
-			else
-			{
-				renderer.material.SetColor("_EmissionColor", Color.black);
-			}
-
-			previousPress = isInPosition;
 		}
 
 		private bool IsInPosition()
 		{
-			float inRange = Mathf.Clamp(transform.localPosition.y, yMin, yMin + 0.01f);
-			return (transform.localPosition.y) == inRange;
+			return transform.localPosition.y < Mathf.Lerp(yMin, yMax, 0.5f);
+		}
+
+		public void Press()
+		{
+			OnPress.Invoke();
+
+			renderer.material.SetColor("_EmissionColor", pressedColor);
+			HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
+			previousPressState = true;
+		}
+
+		public void Release()
+		{
+			renderer.material.SetColor("_EmissionColor", Color.black);
+			HL.AudioManagement.AudioManager.Instance.PlayIn3D(release, volume, transform.position, minRadius, maxRadius);
+			previousPressState = false;
 		}
 	}
 }
