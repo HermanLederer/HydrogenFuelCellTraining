@@ -59,12 +59,10 @@ namespace HL.MoreXRIntractions
 
 		private void OnTriggerExit()
 		{
+			SetYPosition(yMax);
+			CheckPress();
 			hoverInteractor = null;
 			previousPressState = false;
-			SetYPosition(yMax);
-			Debug.Log(transform.localPosition.y);
-			Debug.Log(Mathf.Lerp(yMin, yMax, 0.5f));
-			CheckPress();
 		}
 
 		private void Start()
@@ -115,6 +113,8 @@ namespace HL.MoreXRIntractions
 
 			if (isInPosition != previousPressState)
 			{
+				Debug.Log("change");
+
 				if (isInPosition) Press();
 				else Release();
 			}
@@ -128,17 +128,22 @@ namespace HL.MoreXRIntractions
 		public void Press()
 		{
 			OnPress.Invoke();
-
+			
 			renderer.material.SetColor("_EmissionColor", pressedColor);
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
 			previousPressState = true;
+
+			Debug.Log("press");
 		}
 
 		public void Release()
 		{
+			
 			renderer.material.SetColor("_EmissionColor", Color.black);
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(release, volume, transform.position, minRadius, maxRadius);
 			previousPressState = false;
+
+			Debug.Log("release");
 		}
 	}
 }

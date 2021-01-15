@@ -2779,17 +2779,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1726697384}
     m_Modifications:
+    - target: {fileID: 39228255248867626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4087cf49fc55dd04682c95380de14e68, type: 2}
     - target: {fileID: 39228255338118624, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.08
+      value: -2.217
       objectReference: {fileID: 0}
     - target: {fileID: 39228255338118624, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: 0.81
       objectReference: {fileID: 0}
     - target: {fileID: 39228255338118624, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.888
       objectReference: {fileID: 0}
     - target: {fileID: 39228255338118624, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2850,6 +2854,22 @@ PrefabInstance:
     - target: {fileID: 39228255338118626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 39228255338118626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: pressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 39228255338118626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: pressedColor.g
+      value: 2.3378627
+      objectReference: {fileID: 0}
+    - target: {fileID: 39228255338118626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: pressedColor.b
+      value: 3.9999998
+      objectReference: {fileID: 0}
+    - target: {fileID: 39228255338118626, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: pressedColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 39228255338118639, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
       propertyPath: m_Name
@@ -3410,6 +3430,34 @@ PrefabInstance:
       value: EmergencyShutDown
       objectReference: {fileID: 0}
     - target: {fileID: 1692974242500663854, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 269936524}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Bus, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EmergencyShutDown
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329286829056747498, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}

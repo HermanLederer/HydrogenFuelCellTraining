@@ -6,10 +6,15 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	// Editor fields
+	[Header("Game elements")]
+	public Bus bus;
+	[Header("Prefabs")]
 	public GameObject largeFilterPrefab;
 	public GameObject smallFilterPrefab;
 	public GameObject gunModulePrefab;
 	public GameObject screwdriverPrefab;
+	[Header("Sounds")]
+	public AudioClip winSound;
 
 	public Transform spawnTransform;
 
@@ -23,6 +28,12 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 
+	}
+
+	public void Confirm()
+	{
+		if (bus.Confirm()) Win();
+		HL.AudioManagement.AudioManager.Instance.PlayIn2D(winSound, 1f);
 	}
 
 	public void Win()

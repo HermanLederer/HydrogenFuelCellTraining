@@ -23,9 +23,9 @@ public class Bus : MonoBehaviour
 		// generate filetrs with random conditions
 	}
 
-	public void Confirm()
+	public bool Confirm()
 	{
-		//if (isPowered)
+		return true;
 	}
 
 	public void EmergencyShutDown()
