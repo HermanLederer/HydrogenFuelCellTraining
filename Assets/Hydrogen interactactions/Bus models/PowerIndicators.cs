@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class PowerIndicators : MonoBehaviour
 {
-	private void Start()
+
+    public TailllightSet tailLightSetLeft;
+    public TailllightSet tailLightSetRight;
+    public AudioClip batteryOnSound;
+    public Transform batterySoundTransform;
+
+    private void Start()
 	{
 
 	}
@@ -16,17 +22,18 @@ public class PowerIndicators : MonoBehaviour
 
     public void PowerOn()
     {
-        Debug.Log("Power On");
+        tailLightSetLeft.TurnOn();
+        tailLightSetRight.TurnOn();
 
-        //Flash orange light twice and slowly fade in the red lights
-  
+        HL.AudioManagement.AudioManager.Instance.PlayIn3D(batteryOnSound, 1f, batterySoundTransform.position, 0.5f, 3f);
+
+        // To do flashing animation
 	}
 
 	public void PowerOff()
 	{
-        Debug.Log("Power Off");
-
-        //The ligts turn off
+        tailLightSetLeft.TurnOff();
+        tailLightSetRight.TurnOff();
     }
 
     public void StartEmergency()

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3407153835682066993}
+  - component: {fileID: 7866290037176153815}
   m_Layer: 0
   m_Name: Tailligh set
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7866290037176153815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167616835990382260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e34f1d2add43b498812b96c181119a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redLight: {fileID: 7497237064483053016}
 --- !u!1001 &4291022984854588968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,6 +118,11 @@ PrefabInstance:
 --- !u!4 &4160906508120975369 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 158264558524442145, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+  m_PrefabInstance: {fileID: 4291022984854588968}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &7497237064483053016 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
   m_PrefabInstance: {fileID: 4291022984854588968}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4781965722746891138
