@@ -59,6 +59,42 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 258796388124050039, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 258796388124050039, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 258796388124050039, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 258796388124050039, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 258796388124050039, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_SpotAngle
+      value: 179
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7508810388317066154, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Name
       value: Red
