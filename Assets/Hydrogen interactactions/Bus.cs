@@ -25,6 +25,7 @@ public class Bus : MonoBehaviour
 
 	public bool Confirm()
 	{
+		powerIndicators.EngineOn();
 		return true;
 	}
 
