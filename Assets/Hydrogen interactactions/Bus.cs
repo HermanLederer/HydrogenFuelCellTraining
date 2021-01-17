@@ -8,7 +8,7 @@ public class Bus : MonoBehaviour
 	public bool isPowered = false;
 	public bool criticalMode = false;
 
-	public GameObject powerIndicators = null;
+	public PowerIndicators powerIndicators = null;
 
 	[Header("Game components")]
 	public MonoBehaviour battery;
@@ -41,13 +41,13 @@ public class Bus : MonoBehaviour
 
 	private void PowerOff()
 	{
-		powerIndicators.SetActive(false);
+		powerIndicators.PowerOff();
 		isPowered = false;
 	}
 
 	private void PowerOn()
 	{
-		powerIndicators.SetActive(true);
+		powerIndicators.PowerOn();
 		isPowered = true;
 	}
 }
