@@ -1130,6 +1130,7 @@ Transform:
   m_Children:
   - {fileID: 811620868}
   - {fileID: 2030454948}
+  - {fileID: 1326062108}
   m_Father: {fileID: 269936525}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1145,10 +1146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6f83b9baee9cf47a770cefb8c9f0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tailLightSetLeft: {fileID: 0}
-  tailLightSetRight: {fileID: 0}
-  batteryOnSound: {fileID: 0}
-  batterySoundTransform: {fileID: 0}
+  tailLightSetLeft: {fileID: 1544004258}
+  tailLightSetRight: {fileID: 2018658558}
+  batteryOnSound: {fileID: 8300000, guid: cb4180d08492ffe44801893aec17a896, type: 3}
+  batterySoundTransform: {fileID: 1326062108}
 --- !u!1 &897258410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2431,6 +2432,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1656329204509447035, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
   m_PrefabInstance: {fileID: 1656329203325869925}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1326062107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1326062108}
+  m_Layer: 0
+  m_Name: Battery spund transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1326062108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326062107}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.059, z: -4.018}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 895170611}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1329823804
 GameObject:
   m_ObjectHideFlags: 0
@@ -2762,6 +2793,17 @@ LightProbeGroup:
   - {x: -0.8738291, y: 0.51661086, z: 2.5225298}
   - {x: -1.3810283, y: 0.51661086, z: 2.9244456}
   m_Dering: 0
+--- !u!114 &1544004258 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7866290037176153815, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+  m_PrefabInstance: {fileID: 2030454947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e34f1d2add43b498812b96c181119a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1552908956
 GameObject:
   m_ObjectHideFlags: 0
@@ -3437,6 +3479,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5095831927795106422, guid: 10c4be61bfbe95348bf8e476cd5b77b8, type: 3}
   m_PrefabInstance: {fileID: 1000550723}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2018658558 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7866290037176153815, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+  m_PrefabInstance: {fileID: 811620867}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86e34f1d2add43b498812b96c181119a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2030454947
 PrefabInstance:
   m_ObjectHideFlags: 0
