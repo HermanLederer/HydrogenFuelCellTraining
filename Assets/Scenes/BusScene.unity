@@ -1025,6 +1025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 895170611}
+  - component: {fileID: 895170612}
   m_Layer: 0
   m_Name: Power indicators
   m_TagString: Untagged
@@ -1048,6 +1049,18 @@ Transform:
   m_Father: {fileID: 269936525}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895170612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895170610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6f83b9baee9cf47a770cefb8c9f0f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &897258410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1399,7 +1412,7 @@ Transform:
   - {fileID: 1233550614}
   - {fileID: 351265298}
   m_Father: {fileID: 1726697384}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1057365000
 MonoBehaviour:
@@ -2907,10 +2920,10 @@ Transform:
   m_Children:
   - {fileID: 665423900}
   - {fileID: 269936525}
+  - {fileID: 1057364999}
   - {fileID: 1682802437}
   - {fileID: 1253837854}
   - {fileID: 8440527224625778071}
-  - {fileID: 1057364999}
   - {fileID: 897258411}
   - {fileID: 198181945}
   - {fileID: 1552908957}
