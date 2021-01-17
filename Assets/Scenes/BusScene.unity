@@ -148,14 +148,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131491391}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2259, y: 1.0347, z: -4.2836}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.2259, y: 1.02, z: -4.2836}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1131979976}
   m_Father: {fileID: 269936525}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &131491393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_AttachTransform: {fileID: 0}
-  m_StartingSelectedInteractable: {fileID: 0}
+  m_StartingSelectedInteractable: {fileID: 1140537402}
   m_OnHoverEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -188,7 +188,7 @@ MonoBehaviour:
       m_Calls: []
   m_ShowInteractableHoverMeshes: 1
   m_InteractableHoverMeshMaterial: {fileID: 2100000, guid: b1d4dafe43746244eb11141b9eeedc11, type: 2}
-  m_InteractableCantHoverMeshMaterial: {fileID: 2100000, guid: adacb0be5f705e44599162771af51803, type: 2}
+  m_InteractableCantHoverMeshMaterial: {fileID: 2100000, guid: 093b41af95c44cc4cab6a0028bccb2d7, type: 2}
   m_SocketActive: 1
   m_InteractableHoverScale: 1
   m_RecycleDelayTime: 1
@@ -1145,6 +1145,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c6f83b9baee9cf47a770cefb8c9f0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tailLightSetLeft: {fileID: 0}
+  tailLightSetRight: {fileID: 0}
+  batteryOnSound: {fileID: 0}
+  batterySoundTransform: {fileID: 0}
 --- !u!1 &897258410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,7 +2152,7 @@ Camera:
   m_GameObject: {fileID: 1089529736}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -2282,6 +2286,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2589732780098530506, guid: 6adf9c184986b4b41b803d4944747cf2, type: 3}
   m_PrefabInstance: {fileID: 2589732781207459059}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1140537402 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2589732780098530505, guid: 6adf9c184986b4b41b803d4944747cf2, type: 3}
+  m_PrefabInstance: {fileID: 2589732781207459059}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140537401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1140537404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2589732780098530511, guid: 6adf9c184986b4b41b803d4944747cf2, type: 3}
