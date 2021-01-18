@@ -1,20 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class InscatteringVolumeManager
+namespace HL.Inscattering
 {
-	private static List<InscatteringVolume> m_InscatteringVolumes;
-	public static List<InscatteringVolume> InscatteringVolumes
+	public class InscatteringVolumeManager
 	{
-		get
+		private static List<InscatteringVolume> m_InscatteringVolumes;
+		public static List<InscatteringVolume> InscatteringVolumes
 		{
-			if (m_InscatteringVolumes == null)
+			get
 			{
-				m_InscatteringVolumes = new List<InscatteringVolume>();
-			}
-			
+				if (m_InscatteringVolumes == null)
+				{
+					m_InscatteringVolumes = new List<InscatteringVolume>();
+				}
 
-			return m_InscatteringVolumes;
+
+				return m_InscatteringVolumes;
+			}
 		}
 	}
 }

@@ -69,11 +69,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Color.g
-      value: 1
+      value: 0.55868834
       objectReference: {fileID: 0}
     - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6018867148056482800, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Intensity
@@ -89,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7508810388317066154, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Name
-      value: White Variant
+      value: Orange
       objectReference: {fileID: 0}
     - target: {fileID: 7556921781217567060, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -97,18 +97,22 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 0f77673e37088384399e568b6634f51c, type: 2}
     - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_InscatteringColor.r
-      value: 0.1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_InscatteringColor.g
-      value: 0.1
+      value: 0.1392157
       objectReference: {fileID: 0}
     - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_InscatteringColor.b
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8214071336116797483, guid: 408009625f46c4b4aa18c7911c51f689, type: 3}
+      propertyPath: m_InscatteringColor.a
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
