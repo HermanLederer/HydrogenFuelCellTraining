@@ -1500,6 +1500,7 @@ Transform:
   - {fileID: 811620868}
   - {fileID: 2030454948}
   - {fileID: 1326062108}
+  - {fileID: 1326458832}
   m_Father: {fileID: 269936525}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1517,8 +1518,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tailLightSetLeft: {fileID: 1544004258}
   tailLightSetRight: {fileID: 2018658558}
-  batteryOnSound: {fileID: 8300000, guid: cb4180d08492ffe44801893aec17a896, type: 3}
+  powerSound: {fileID: 8300000, guid: 332fbf08d2a1ef94e90616e1d8d6b07f, type: 3}
   batterySoundTransform: {fileID: 1326062108}
+  pressureReleaseSound: {fileID: 8300000, guid: 43f2f9d3f6942ee4c9d6fdb2de023475, type: 3}
+  pressureSoundTransform: {fileID: 1326458832}
 --- !u!1 &897258410
 GameObject:
   m_ObjectHideFlags: 0
@@ -2761,7 +2764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1326062108}
   m_Layer: 0
-  m_Name: Battery spund transform
+  m_Name: Horn transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2775,11 +2778,41 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326062107}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.059, z: -4.018}
+  m_LocalPosition: {x: 0, y: 1.059, z: 3.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 895170611}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1326458831
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1326458832}
+  m_Layer: 0
+  m_Name: Pressure sound transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1326458832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326458831}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.586, z: -4.018}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 895170611}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1439002187
 GameObject:
