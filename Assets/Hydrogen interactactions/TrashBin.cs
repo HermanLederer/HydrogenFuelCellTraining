@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrashBin : MonoBehaviour
+namespace HydrogenInteractables
 {
-	private void OnTriggerEnter(Collider other)
+	public class TrashBin : MonoBehaviour
 	{
-		HydrogenInteractable interactable;
-		if (other.TryGetComponent<HydrogenInteractable>(out interactable))
+		private void OnTriggerEnter(Collider other)
 		{
-			Destroy(interactable.gameObject);
+			HydrogenInteractable interactable;
+			if (other.TryGetComponent<HydrogenInteractable>(out interactable))
+			{
+				Destroy(interactable.gameObject);
+			}
 		}
 	}
 }

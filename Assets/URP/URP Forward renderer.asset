@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d83e95dd91dd9429b2f7c0eac78484, type: 3}
   m_Name: Inscattering
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,7 +28,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -6117336194737377653}
   - {fileID: 2419492782150400387}
-  m_RendererFeatureMap: 8bee095524db1aab8339b2c8ddc39321
+  - {fileID: 2300647588363639385}
+  m_RendererFeatureMap: 8bee095524db1aab8339b2c8ddc39321591ac6d1ca8aed1f
   postProcessData: {fileID: 11400000, guid: 3a5edf23adb9ed64a946a24c69caee9b, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -50,6 +51,45 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 0
+--- !u!114 &2300647588363639385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: NewRenderObjects
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    passTag: NewRenderObjects
+    Event: 500
+    filterSettings:
+      RenderQueueType: 1
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 1024
+      PassNames: []
+    overrideMaterial: {fileID: 2100000, guid: 0dfe3b43ef96ab8499984e874c16533f, type: 2}
+    overrideMaterialPassIndex: 0
+    overrideDepthState: 1
+    depthCompareFunction: 8
+    enableWrite: 1
+    stencilSettings:
+      overrideStencilState: 0
+      stencilReference: 0
+      stencilCompareFunction: 8
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 124.5
 --- !u!114 &2419492782150400387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d32ce0fce1fff4fbf038468747edb1, type: 3}
   m_Name: Dither
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   re: 500
   intensity: 0.01

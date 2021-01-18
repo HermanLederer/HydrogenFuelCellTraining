@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModularVRGun : MonoBehaviour
+namespace HydrogenInteractables
 {
-	public ModuleSocket moduleSocket;
-	new private Collider collider;
-
-	private void Awake()
+	public class ModularVRGun : MonoBehaviour
 	{
-		collider = GetComponent<Collider>();
-	}
+		public ModuleSocket moduleSocket;
+		new private Collider collider;
 
-	public void Lock()
-	{
-		collider.enabled = false;
-	}
-
-	public void Unlock()
-	{
-		collider.enabled = true;
-	}
-
-	public void Shoot()
-	{
-		if (moduleSocket.selectedModule)
+		private void Awake()
 		{
-			moduleSocket.selectedModule.Shoot();
+			collider = GetComponent<Collider>();
+		}
+
+		public void Lock()
+		{
+			collider.enabled = false;
+		}
+
+		public void Unlock()
+		{
+			collider.enabled = true;
+		}
+
+		public void Shoot()
+		{
+			if (moduleSocket.selectedModule)
+			{
+				moduleSocket.selectedModule.Shoot();
+			}
 		}
 	}
 }

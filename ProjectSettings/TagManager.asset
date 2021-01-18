@@ -15,7 +15,7 @@ TagManager:
   - 
   - VR Interaction
   - Inscattering
-  - 
+  - XR highlights
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 4292708805
     locked: 0

@@ -3,49 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[RequireComponent(typeof(XRGrabInteractable))]
-public class Module : HydrogenInteractable
+namespace HydrogenInteractables
 {
-	private ParticleSystem fireParticles;
-	[SerializeField] private ParticleSystem attachParticles;
-	[SerializeField] private ParticleSystem firePrefab;
-	[SerializeField] new private MeshRenderer renderer;
-
-	new private Collider collider;
-	private XRGrabInteractable xrGrabInteractable;
-
-	public float power = 8f;
-
-	private void Awake()
+	[RequireComponent(typeof(XRGrabInteractable))]
+	public class Module : HydrogenInteractable
 	{
-		collider = GetComponent<Collider>();
-		xrGrabInteractable = GetComponent<XRGrabInteractable>();
-	}
+		private ParticleSystem fireParticles;
+		[SerializeField] private ParticleSystem attachParticles;
+		[SerializeField] private ParticleSystem firePrefab;
+		[SerializeField] new private MeshRenderer renderer;
 
-	public void Shoot()
-	{
-		if (power > 0)
+		new private Collider collider;
+		private XRGrabInteractable xrGrabInteractable;
+
+		public float power = 8f;
+
+		private void Awake()
 		{
-			fireParticles.Play();
-			power -= 1f;
+			collider = GetComponent<Collider>();
+			xrGrabInteractable = GetComponent<XRGrabInteractable>();
 		}
 
-		if (power <= 0)
+		public void Shoot()
 		{
-			renderer.material.SetColor("_EmissionColor", Color.black);
+			if (power > 0)
+			{
+				fireParticles.Play();
+				power -= 1f;
+			}
+
+			if (power <= 0)
+			{
+				renderer.material.SetColor("_EmissionColor", Color.black);
+			}
 		}
-	}
 
-	public void AttachToGun(Transform firePoint)
-	{
-		collider.enabled = false;
-		fireParticles = Instantiate(firePrefab, firePoint);
-		attachParticles.Play();
-	}
+		public void AttachToGun(Transform firePoint)
+		{
+			collider.enabled = false;
+			fireParticles = Instantiate(firePrefab, firePoint);
+			attachParticles.Play();
+		}
 
-	public void Detach()
-	{
-		collider.enabled = true;
-		Destroy(fireParticles);
+		public void Detach()
+		{
+			collider.enabled = true;
+			Destroy(fireParticles);
+		}
 	}
 }
