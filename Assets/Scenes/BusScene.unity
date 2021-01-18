@@ -1425,6 +1425,18 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6032679352979529090, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -1439,6 +1451,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8231234505472869274, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115124832773929890, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: intensity
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3699,6 +3715,18 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5921430259648286710, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6032679352979529090, guid: 52b44d1f6ef0b284c8d18e635257a2e7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -3986,6 +4014,34 @@ PrefabInstance:
     - target: {fileID: 6223848237361780588, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 269936524}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Bus, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePower
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
