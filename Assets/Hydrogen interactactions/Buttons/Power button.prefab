@@ -189,8 +189,8 @@ MonoBehaviour:
   volume: 1
   minRadius: 0.1
   maxRadius: 1
-  press: {fileID: 8300000, guid: 2be83a0a3e6cb1446b3b966961a74fb1, type: 3}
-  release: {fileID: 8300000, guid: 7527ff31443971e4fa8c1fa8ec236850, type: 3}
+  press: {fileID: 8300000, guid: fc23c46c21d84af4f8e6d6a88be0a9d4, type: 3}
+  release: {fileID: 8300000, guid: 965da92548c788f4598d33dcdba27c6f, type: 3}
   OnPress:
     m_PersistentCalls:
       m_Calls: []

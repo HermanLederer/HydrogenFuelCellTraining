@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PowerIndicators : MonoBehaviour
 {
-
     public TailllightSet tailLightSetLeft;
     public TailllightSet tailLightSetRight;
-    public AudioClip batteryOnSound;
+
+    public AudioClip powerSound;
     public Transform batterySoundTransform;
+
+    public AudioClip pressureReleaseSound;
+    public Transform pressureSoundTransform;
 
     private void Start()
 	{
@@ -25,15 +28,19 @@ public class PowerIndicators : MonoBehaviour
         tailLightSetLeft.TurnOn();
         tailLightSetRight.TurnOn();
 
-        HL.AudioManagement.AudioManager.Instance.PlayIn3D(batteryOnSound, 1f, batterySoundTransform.position, 0.5f, 3f);
-
-        // To do flashing animation
+        HL.AudioManagement.AudioManager.Instance.PlayIn3D(powerSound, 1f, batterySoundTransform.position, 2f, 40f);
 	}
 
-	public void PowerOff()
-	{
+    public void PowerOff() => StartCoroutine(PowerOffCorutine());
+
+    IEnumerator PowerOffCorutine()
+    {
         tailLightSetLeft.TurnOff();
         tailLightSetRight.TurnOff();
+
+        HL.AudioManagement.AudioManager.Instance.PlayIn3D(powerSound, 1f, batterySoundTransform.position, 2f, 40f);
+        yield return new WaitForSeconds(0.5f);
+        HL.AudioManagement.AudioManager.Instance.PlayIn3D(pressureReleaseSound, 0.2f, pressureSoundTransform.position, 0.5f, 10f);
     }
 
     public void StartEmergency()
@@ -58,6 +65,4 @@ public class PowerIndicators : MonoBehaviour
 
         //Engine sound and victory music starts
     }   //
-
-    
 }
