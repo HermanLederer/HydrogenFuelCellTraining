@@ -3138,6 +3138,7 @@ MonoBehaviour:
   m_InteractableHoverScale: 1
   m_RecycleDelayTime: 1
   hydrogenInteractorHighlighPrefab: {fileID: 547235282999999833, guid: cc3fdebdb8d324b43b06a6dd826f7473, type: 3}
+  trashAudio: {fileID: 8300000, guid: 23c52ed42f310034aa066361aaebdb70, type: 3}
 --- !u!64 &1552908959
 MeshCollider:
   m_ObjectHideFlags: 0
