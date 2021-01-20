@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 1360d85b91bc49748902a63249d032f5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - m_InteractionManager: {instanceID: 0}
+  - m_AttachTransform: {instanceID: 0}
+  - m_StartingSelectedInteractable: {instanceID: 0}
+  - m_InteractableHoverMeshMaterial: {instanceID: 0}
+  - m_InteractableCantHoverMeshMaterial: {instanceID: 0}
+  - hydrogenInteractorHighlighPrefab: {fileID: 547235282999999833, guid: dc0656c6232075844b1332b0cdbd6ec7, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

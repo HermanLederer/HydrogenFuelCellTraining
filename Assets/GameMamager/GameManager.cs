@@ -19,16 +19,10 @@ public class GameManager : MonoBehaviour
 
 	public Transform spawnTransform;
 
-	//public static GameManager Instance;
-
-	private void Awake()
-	{
-		//Instance = this;
-	}
-
 	private void Start()
 	{
-
+		foreach (HydrogenInteractable interactable in GetComponents<HydrogenInteractable>())
+			interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 	}
 
 	public void Confirm()

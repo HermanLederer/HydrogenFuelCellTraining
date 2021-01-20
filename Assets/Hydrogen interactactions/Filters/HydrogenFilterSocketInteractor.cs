@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace HydrogenInteractables
 {
-	public class XRFilterSocketInteractor : XRSocketInteractor
+	public class HydrogenFilterSocketInteractor : HydrogenSocketIntractor
 	{
 		public HydrogenInteractableType type;
 
