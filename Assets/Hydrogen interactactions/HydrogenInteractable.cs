@@ -15,9 +15,8 @@ namespace HydrogenInteractables
 
 	public class HydrogenInteractable : MonoBehaviour
 	{
-		//public delegate void InteractableDestroyedEventHandler(object source, EventArgs args);
-		//public event InteractableDestroyedEventHandler InteractableDestroyed;
 		public event Action<HydrogenInteractable> OnHydrogenInteractableDestroyed;
+		public HydrogenInteractableType type;
 
 		protected virtual void OnDestroy()
 		{

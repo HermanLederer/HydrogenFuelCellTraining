@@ -42,31 +42,26 @@ public class GameManager : MonoBehaviour
 		// Add success indication
 	}
 
-	public void SpawnNewHydrogenInteractable()
-	{
-		/*switch (type)
-		{
-			case HydrogenInteractableType.LargeFilter:
-				interactable = Instantiate(largeFilterPrefab, spawnTransform.position, spawnTransform.rotation).GetComponent<HydrogenInteractable>();
-				break;
-			case HydrogenInteractableType.SmallFilter:
-				interactable = Instantiate(smallFilterPrefab, spawnTransform.position, spawnTransform.rotation).GetComponent<HydrogenInteractable>();
-				break;
-			case HydrogenInteractableType.GunModule:
-				interactable = Instantiate(gunModulePrefab, spawnTransform.position, spawnTransform.rotation).GetComponent<HydrogenInteractable>();
-				break;
-			default: // HydrogenInteractableType.Screwdriver
-				interactable = Instantiate(screwdriverPrefab, spawnTransform.position, spawnTransform.rotation).GetComponent<HydrogenInteractable>();
-				break;
-		}*/
+	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(WaitForFrameAndInstanciateHydrogenInteractable(type));
 
-		StartCoroutine(WaitForFrameAndInstanciateHydrogenInteractable());
-	}
-
-	IEnumerator WaitForFrameAndInstanciateHydrogenInteractable()
+	IEnumerator WaitForFrameAndInstanciateHydrogenInteractable(HydrogenInteractableType type)
 	{
 		yield return new WaitForEndOfFrame();
-		Instantiate(gunModulePrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+		switch (type)
+		{
+			case HydrogenInteractableType.LargeFilter:
+				Instantiate(largeFilterPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+			case HydrogenInteractableType.SmallFilter:
+				Instantiate(smallFilterPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+			case HydrogenInteractableType.GunModule:
+				Instantiate(gunModulePrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+			case HydrogenInteractableType.Screwdriver:
+				Instantiate(screwdriverPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+		}
 	}
 
 	public void OnInteractableDestroyed(HydrogenInteractable interactable)
