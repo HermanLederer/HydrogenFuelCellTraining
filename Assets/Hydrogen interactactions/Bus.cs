@@ -2,53 +2,98 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bus : MonoBehaviour
+namespace HydrogenInteractables
 {
-	// Editor fields
-	public bool isPowered = false;
-	public bool criticalMode = false;
-
-	public PowerIndicators powerIndicators = null;
-
-	[Header("Game components")]
-	public MonoBehaviour battery;
-
-	private void Awake()
+	public class Bus : MonoBehaviour
 	{
-		if (!powerIndicators) Debug.LogWarning("power indicators object has not been assigend");
-	}
+		// Editor fields
+		public bool isPowered = true;
 
-	private void Start()
-	{
-		// generate filetrs with random conditions
-	}
+		public PowerIndicators powerIndicators = null;
 
-	public bool Confirm()
-	{
-		powerIndicators.EngineOn();
-		return true;
-	}
+		[Header("Bus components")]
+		public ButtonInteractable confirmButton;
+		public HydrogenFilterSocketInteractor largeFilterSocket;
+		public HydrogenFilterSocketInteractor smallFilterSocket;
 
-	public void EmergencyShutDown()
-	{
-		PowerOff();
-	}
+		private void Awake()
+		{
+			if (!powerIndicators) Debug.LogError("power indicators object has not been assigend");
+		}
 
-	public void TogglePower()
-	{
-		if (isPowered) PowerOff();
-		else PowerOn();
-	}
+		private void Start()
+		{
+			// Power
+			if (isPowered) powerIndicators.PowerOn(true);
+			else powerIndicators.PowerOff(true);
 
-	private void PowerOff()
-	{
-		powerIndicators.PowerOff();
-		isPowered = false;
-	}
+			// Random filter conditions
+			HydrogenFilter filter;
+			filter = smallFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+			filter.RandomizeCondition();
+			if (filter.isInGoodCondition)
+			{
+				filter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+				filter.isInGoodCondition = false;
+			}
+			else
+			{
+				filter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+				filter.RandomizeCondition();
+			}
+		}
 
-	private void PowerOn()
-	{
-		powerIndicators.PowerOn();
-		isPowered = true;
+		public bool Confirm()
+		{
+			if (largeFilterSocket.selectTarget && smallFilterSocket.selectTarget)
+			{
+				HydrogenFilter largeFilter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+				HydrogenFilter smallFilter = smallFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+
+				if (largeFilter.isInGoodCondition && smallFilter.isInGoodCondition)
+				{
+					powerIndicators.EngineOn();
+					return true;
+				}
+				else
+				{
+					// One ore more filters are bad
+					powerIndicators.StartEmergency();
+				}
+			}
+			else
+			{
+				// One or more filters are missing
+				powerIndicators.StartEmergency();
+			}
+
+			return false;
+		}
+
+		public void EmergencyShutDown()
+		{
+			powerIndicators.StopEmergency();
+		}
+
+		public void TogglePower()
+		{
+			if (isPowered) PowerOff();
+			else PowerOn();
+		}
+
+		private void PowerOff()
+		{
+			powerIndicators.StopEmergency();
+			powerIndicators.PowerOff();
+			confirmButton.isPowered = false;
+			isPowered = false;
+		}
+
+		private void PowerOn()
+		{
+			powerIndicators.PowerOn();
+			confirmButton.isPowered = true;
+			isPowered = true;
+		}
 	}
 }

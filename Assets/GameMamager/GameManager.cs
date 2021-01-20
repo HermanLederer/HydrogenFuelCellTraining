@@ -16,24 +16,29 @@ public class GameManager : MonoBehaviour
 	public GameObject screwdriverPrefab;
 	[Header("Sounds")]
 	public AudioClip winSound;
+	public AudioClip loseSound;
 
 	public Transform spawnTransform;
 
 	private void Start()
 	{
-		foreach (HydrogenInteractable interactable in GetComponents<HydrogenInteractable>())
+		// Registering destroy events
+		foreach (HydrogenInteractable interactable in FindObjectsOfType<HydrogenInteractable>())
+		{
 			interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+		}
 	}
 
 	public void Confirm()
 	{
-		if (bus.Confirm()) Win();
-		HL.AudioManagement.AudioManager.Instance.PlayIn2D(winSound, 1f);
-	}
-
-	public void Win()
-	{
-		// Add success indication
+		if (bus.Confirm())
+		{
+			HL.AudioManagement.AudioManager.Instance.PlayIn2D(winSound, 0.5f);
+		}
+		else
+		{
+			//HL.AudioManagement.AudioManager.Instance.PlayIn2D(loseSound, 0.5f);
+		}
 	}
 
 	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(WaitForFrameAndInstanciateHydrogenInteractable(type));
@@ -41,25 +46,44 @@ public class GameManager : MonoBehaviour
 	IEnumerator WaitForFrameAndInstanciateHydrogenInteractable(HydrogenInteractableType type)
 	{
 		yield return new WaitForEndOfFrame();
+
+		Vector3 spawnPos = transform.position;
+
+		HydrogenInteractable interactable;
 		switch (type)
 		{
 			case HydrogenInteractableType.LargeFilter:
-				Instantiate(largeFilterPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				interactable = Instantiate(largeFilterPrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
+				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 			case HydrogenInteractableType.SmallFilter:
-				Instantiate(smallFilterPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				interactable = Instantiate(smallFilterPrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
+				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 			case HydrogenInteractableType.GunModule:
-				Instantiate(gunModulePrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				Instantiate(gunModulePrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 			case HydrogenInteractableType.Screwdriver:
-				Instantiate(screwdriverPrefab, Vector3.zero, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				Instantiate(screwdriverPrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 		}
 	}
 
 	public void OnInteractableDestroyed(HydrogenInteractable interactable)
 	{
-		Debug.Log("interactable " + interactable.name + " destroyed");
+		HydrogenFilter filter;
+		switch (interactable.type)
+		{
+			case HydrogenInteractableType.LargeFilter:
+				filter = (HydrogenFilter) interactable;
+				if (filter.isInGoodCondition) Debug.Log("Baaad! You baaad");
+				SpawnNewHydrogenInteractable(interactable.type);
+				break;
+			case HydrogenInteractableType.SmallFilter:
+				filter = (HydrogenFilter)interactable;
+				if (filter.isInGoodCondition) Debug.Log("Baaad! You baaad");
+				SpawnNewHydrogenInteractable(interactable.type);
+				break;
+		}
 	}
 }

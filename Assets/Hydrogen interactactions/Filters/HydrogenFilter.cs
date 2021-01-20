@@ -8,16 +8,11 @@ namespace HydrogenInteractables
 	{
 		public MeshRenderer m_Renderer;
 
-		[HideInInspector] public float condition;
-
-		private void Start()
-		{
-			RandomizeCondition();
-		}
+		public bool isInGoodCondition = true;
 
 		private void Update()
 		{
-			if (condition < 0.5f)
+			if (!isInGoodCondition)
 			{
 				m_Renderer.material.color = Color.black;
 			}
@@ -25,7 +20,7 @@ namespace HydrogenInteractables
 
 		public void RandomizeCondition()
 		{
-			condition = Random.Range(0f, 1f);
+			isInGoodCondition = Random.Range(0f, 1f) > 0.5f;
 		}
 	}
 }

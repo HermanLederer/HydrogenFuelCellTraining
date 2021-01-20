@@ -4,12 +4,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace HL.MoreXRIntractions
+namespace HydrogenInteractables
 {
 	public class ButtonInteractable : XRBaseInteractable
 	{
 		//
 		// Editor fields
+		[Header("Button")]
+		public bool isPowered = true;
+		[Header("Color")]
 		[ColorUsage(true, true)]
 		public Color pressedColor;
 		new public MeshRenderer renderer = null;
@@ -30,22 +33,6 @@ namespace HL.MoreXRIntractions
 		// Private variables
 		private float previousHandY;
 		private XRBaseInteractor hoverInteractor = null;
-
-		protected override void Awake()
-		{
-			base.Awake();
-
-			//onHoverEntered.AddListener(StartPress);
-			//onHoverExited.AddListener(EndPress);
-		}
-
-		protected override void OnDestroy()
-		{
-			//onHoverEntered.RemoveListener(StartPress);
-			//onHoverExited.RemoveListener(EndPress);
-
-			base.OnDestroy();
-		}
 
 		private void OnTriggerEnter(Collider other)
 		{
@@ -113,8 +100,6 @@ namespace HL.MoreXRIntractions
 
 			if (isInPosition != previousPressState)
 			{
-				Debug.Log("change");
-
 				if (isInPosition) Press();
 				else Release();
 			}
@@ -127,23 +112,21 @@ namespace HL.MoreXRIntractions
 
 		public void Press()
 		{
-			OnPress.Invoke();
+			if (isPowered)
+			{
+				OnPress.Invoke();
+				renderer.material.SetColor("_EmissionColor", pressedColor);
+			}
 			
-			renderer.material.SetColor("_EmissionColor", pressedColor);
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
 			previousPressState = true;
-
-			Debug.Log("press");
 		}
 
 		public void Release()
-		{
-			
+		{	
 			renderer.material.SetColor("_EmissionColor", Color.black);
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(release, volume, transform.position, minRadius, maxRadius);
 			previousPressState = false;
-
-			Debug.Log("release");
 		}
 	}
 }

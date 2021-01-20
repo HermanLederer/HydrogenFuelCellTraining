@@ -11,7 +11,7 @@ public class Taillight : MonoBehaviour
 	private Color originalEmmision;
 
 	[Range(0f, 1f)]
-	public float intensity;
+	public float intensity = 1f;
 
 	private void Awake()
 	{
@@ -20,11 +20,6 @@ public class Taillight : MonoBehaviour
 	}
 
 	public void Update()
-	{
-		SetIntensity(intensity);
-	}
-
-	public void SetIntensity(float intensity)
 	{
 		light.intensity = originalLightIntensity * intensity;
 		renderer.material.SetColor("_EmissionColor", originalEmmision * intensity);

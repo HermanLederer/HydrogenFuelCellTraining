@@ -233,3 +233,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   light: {fileID: 6018867148056482800}
   renderer: {fileID: 7556921781217567060}
+  intensity: 1

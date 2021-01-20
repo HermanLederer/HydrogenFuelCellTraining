@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bus: {fileID: 0}
-  largeFilterPrefab: {fileID: 0}
-  smallFilterPrefab: {fileID: 0}
+  largeFilterPrefab: {fileID: 2011498104756017947, guid: 1eb49c602b5617e4e8054148a4f3876e, type: 3}
+  smallFilterPrefab: {fileID: 2011498104756017947, guid: 33b7ef7fd6bcffb49b60e4cd3d2aa9b0, type: 3}
   gunModulePrefab: {fileID: 2315567603151498428, guid: 48f2bc09fac74dd4abf1cac7f79d8e12, type: 3}
   screwdriverPrefab: {fileID: 0}
-  winSound: {fileID: 8300000, guid: 23c52ed42f310034aa066361aaebdb70, type: 3}
+  winSound: {fileID: 8300000, guid: 3c1b6236e9adbd14f93ea628c04190ad, type: 3}
+  loseSound: {fileID: 8300000, guid: 2268ac0f0d03dc34d93439d4a78a3c6c, type: 3}
   spawnTransform: {fileID: 4823613938160828528}
