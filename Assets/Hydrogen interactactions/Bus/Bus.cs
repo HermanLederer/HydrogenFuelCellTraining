@@ -13,6 +13,8 @@ namespace HydrogenInteractables
 
 		[Header("Bus components")]
 		public ButtonInteractable confirmButton;
+		public ButtonInteractable powerButton;
+		public ButtonInteractable emergencyButton;
 		public HydrogenFilterSocketInteractor largeFilterSocket;
 		public HydrogenFilterSocketInteractor smallFilterSocket;
 
@@ -45,34 +47,43 @@ namespace HydrogenInteractables
 
 		public bool Confirm()
 		{
-			if (largeFilterSocket.selectTarget && smallFilterSocket.selectTarget)
-			{
-				HydrogenFilter largeFilter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
-				HydrogenFilter smallFilter = smallFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
+			var largeFilterProblem = largeFilterSocket.PowerOn();
+			var smallFilterProblem = smallFilterSocket.PowerOn();
 
-				if (largeFilter.isInGoodCondition && smallFilter.isInGoodCondition)
-				{
-					powerIndicators.EngineOn();
-					return true;
-				}
-				else
-				{
-					// One or more filters are bad
-					powerIndicators.StartEmergency();
-				}
-			}
-			else
+			if (largeFilterProblem == HydrogenFilterSocketProblems.FilterMissing || smallFilterProblem == HydrogenFilterSocketProblems.FilterMissing)
 			{
 				// One or more filters are missing
-				powerIndicators.StartEmergency();
+				StartEmergency();
+				return false;
+			}
+			else if (largeFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition || smallFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition)
+			{
+				// One or more filters are bad
+				StartEmergency();
+				return false;
 			}
 
-			return false;
+			// Good
+			powerIndicators.EngineOn();
+			return true;
+		}
+
+		public void StartEmergency()
+		{
+			powerIndicators.StartEmergency();
+			confirmButton.Deactivate(0, 0.5f);
+			powerButton.Deactivate(0, 0.5f);
 		}
 
 		public void EmergencyShutDown()
 		{
-			powerIndicators.StopEmergency();
+			largeFilterSocket.PowerOff();
+			smallFilterSocket.PowerOff();
+			powerIndicators.EmergencyPowerOff();
+			confirmButton.Deactivate(0f, 0.5f);
+			emergencyButton.Deactivate(0f, 0.5f);
+			powerButton.Activate(1f, 1f);
+			isPowered = false;
 		}
 
 		public void TogglePower()
@@ -83,9 +94,9 @@ namespace HydrogenInteractables
 
 		private void PowerOff()
 		{
-			powerIndicators.StopEmergency();
 			powerIndicators.PowerOff();
 			confirmButton.Deactivate(0.5f, 0.5f);
+			emergencyButton.Deactivate(0.5f, 0.5f);
 			isPowered = false;
 		}
 
@@ -93,6 +104,7 @@ namespace HydrogenInteractables
 		{
 			powerIndicators.PowerOn();
 			confirmButton.Activate(0.5f, 0.5f);
+			emergencyButton.Activate(0.5f, 0.5f);
 			isPowered = true;
 		}
 	}

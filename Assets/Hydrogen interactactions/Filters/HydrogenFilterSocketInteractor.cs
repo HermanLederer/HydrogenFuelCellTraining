@@ -5,15 +5,25 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace HydrogenInteractables
 {
+	public enum HydrogenFilterSocketProblems
+	{
+		NoProblem,
+		FilterMissing,
+		FilterInBadCondition
+	}
+
 	public class HydrogenFilterSocketInteractor : HydrogenSocketIntractor
 	{
-		public HydrogenInteractableType type;
+		[Header("Filter socket")]
+		public HydrogenInteractableType filterType;
+		public ParticleSystem troubleParticles;
+		public AudioSource troubleAudio;
 
 		new protected void OnTriggerEnter(Collider col)
 		{
 			HydrogenFilter filter = col.gameObject.GetComponentInParent<HydrogenFilter>();
 			if (filter)
-				if (filter.type == type)
+				if (filter.type == filterType)
 					base.OnTriggerEnter(col);
 		}
 
@@ -21,8 +31,49 @@ namespace HydrogenInteractables
 		{
 			HydrogenFilter filter = col.gameObject.GetComponentInParent<HydrogenFilter>();
 			if (filter)
-				if (filter.type == type)
+				if (filter.type == filterType)
 					base.OnTriggerExit(col);
+		}
+
+		public HydrogenFilterSocketProblems PowerOn()
+		{
+			var problem = HydrogenFilterSocketProblems.FilterMissing;
+
+			if (selectTarget)
+			{
+				HydrogenFilter filter = selectTarget.GetComponent<HydrogenFilter>();
+				if (filter.isInGoodCondition)
+					problem = HydrogenFilterSocketProblems.NoProblem;
+				else
+					problem = HydrogenFilterSocketProblems.FilterInBadCondition;
+			}
+
+			// Problem feedback
+			if (problem != HydrogenFilterSocketProblems.NoProblem)
+			{
+				troubleParticles.Play(true);
+				troubleAudio.Play();
+			}
+
+			return problem;
+		}
+
+		public void PowerOff()
+		{
+			troubleParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+			StartCoroutine(StopTroubleAudioCorutine(0.5f));
+		}
+
+		IEnumerator StopTroubleAudioCorutine(float duration)
+		{
+			for (float t = 0f; t < duration; t += Time.deltaTime)
+			{
+				troubleAudio.volume = Mathf.Lerp(1f, 0f, t / duration);
+				yield return new WaitForEndOfFrame();
+			}
+
+			troubleAudio.volume = 0f;
+			troubleAudio.Stop();
 		}
 	}
 }

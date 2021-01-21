@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HydrogenInteractables;
 
 public class PowerIndicators : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class PowerIndicators : MonoBehaviour
 	// Editor fields
 	public TailllightSet tailLightSetLeft;
 	public TailllightSet tailLightSetRight;
+
+	public ButtonInteractable emergencyButton;
 
 	public AudioClip powerSound;
 	public AudioClip alertSound;
@@ -22,6 +25,12 @@ public class PowerIndicators : MonoBehaviour
 	// Variables
 	private float nextAlertTime = 0f;
 	private bool isAlarmOn = false;
+	private float originalEmergencyButtonLightResting = 0f;
+
+	private void Start()
+	{
+		originalEmergencyButtonLightResting = emergencyButton.LightResting;
+	}
 
 	private void Update()
 	{
@@ -43,9 +52,11 @@ public class PowerIndicators : MonoBehaviour
 		{
 			StartCoroutine(FadeLight(tailLightSetLeft.redTaillight, true, 0.165f));
 			StartCoroutine(FadeLight(tailLightSetRight.redTaillight, true, 0.165f));
+			emergencyButton.LightResting = emergencyButton.lightPressed;
 			yield return new WaitForSeconds(0.165f);
 			StartCoroutine(FadeLight(tailLightSetLeft.redTaillight, false, 0.165f));
 			StartCoroutine(FadeLight(tailLightSetRight.redTaillight, false, 0.165f));
+			emergencyButton.LightResting = originalEmergencyButtonLightResting;
 			yield return new WaitForSeconds(0.165f);
 		}
 	}
@@ -97,6 +108,9 @@ public class PowerIndicators : MonoBehaviour
 
 	IEnumerator PowerOffCorutine()
 	{
+		StopEmergency();
+
+		StartCoroutine(StopEngineCorutine(0.5f, 0.5f));
 		HL.AudioManagement.AudioManager.Instance.PlayIn3D(powerSound, 1f, hornTransform.position, 2f, 40f);
 
 		StartCoroutine(FadeLight(tailLightSetLeft.orangeTaillight, true, 0.1f));
@@ -124,13 +138,23 @@ public class PowerIndicators : MonoBehaviour
 		isAlarmOn = true;
 	}
 
-	public void StopEmergency()
+	private void StopEmergency()
 	{
 		isAlarmOn = false;
+		emergencyButton.LightResting = originalEmergencyButtonLightResting;
+	}
+
+	public void EmergencyPowerOff()
+	{
+		StopEmergency();
+		tailLightSetLeft.redTaillight.intensity = 0f;
+		tailLightSetRight.redTaillight.intensity = 0f;
+		HL.AudioManagement.AudioManager.Instance.PlayIn3D(pressureReleaseSound, 0.2f, pressureSoundTransform.position, 0.5f, 4f);
 	}
 
 	public void EngineOn()
 	{
+		engineAudioSource.volume = 1f;
 		engineAudioSource.Play();
 	}
 
@@ -156,5 +180,19 @@ public class PowerIndicators : MonoBehaviour
 
 			light.intensity = 0f;
 		}
+	}
+
+	IEnumerator StopEngineCorutine(float delay, float duration)
+	{
+		yield return new WaitForSeconds(delay);
+
+		for (float t = 0f; t < duration; t += Time.deltaTime)
+		{
+			engineAudioSource.volume = Mathf.Lerp(1f, 0f, t / duration);
+			yield return new WaitForEndOfFrame();
+		}
+
+		engineAudioSource.volume = 0f;
+		engineAudioSource.Stop();
 	}
 }

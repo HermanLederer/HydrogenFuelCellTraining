@@ -14,7 +14,16 @@ namespace HydrogenInteractables
 		[SerializeField] private bool startActive = true;
 		public float pressDelay = 0.1f;
 		[Header("Light")]
-		public float lightResting = 1f;
+		[SerializeField] private float lightResting = 1f;
+		public float LightResting
+		{
+			get { return lightResting; }
+			set
+			{
+				lightResting = value;
+				renderer.material.SetFloat("_Light", GetRestingLight());
+			}
+		}
 		public float lightPressed = 5f;
 		[Header("Child components")]
 		new public MeshRenderer renderer = null;
@@ -161,8 +170,6 @@ namespace HydrogenInteractables
 					renderer.material.SetFloat("_Light", lightResting * lightActiveness);
 					yield return new WaitForEndOfFrame();
 				}
-
-				activeness = 1f;
 			}
 			else // fade out
 			{
@@ -176,8 +183,6 @@ namespace HydrogenInteractables
 					renderer.material.SetFloat("_Light", lightResting * lightActiveness);
 					yield return new WaitForEndOfFrame();
 				}
-
-				activeness = 0f;
 			}
 
 			renderer.material.SetFloat("_Light", GetRestingLight());
