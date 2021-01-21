@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &154115464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4240345960022073228, guid: c3d542e7037a14f4581f7664abb98fa3, type: 3}
+  m_PrefabInstance: {fileID: 592623811}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b7724a004b9bd449b49b1d1a05df08a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &160420823 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4823613938160828543, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
@@ -327,7 +338,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPowered: 1
   powerIndicators: {fileID: 895170612}
-  confirmButton: {fileID: 0}
+  confirmButton: {fileID: 154115464}
+  powerButton: {fileID: 2046347502}
+  emergencyButton: {fileID: 2066341273}
   largeFilterSocket: {fileID: 216832546}
   smallFilterSocket: {fileID: 963429390}
 --- !u!4 &269936525
@@ -1394,6 +1407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tailLightSetLeft: {fileID: 1544004258}
   tailLightSetRight: {fileID: 2018658558}
+  emergencyButton: {fileID: 2066341273}
   powerSound: {fileID: 8300000, guid: 332fbf08d2a1ef94e90616e1d8d6b07f, type: 3}
   alertSound: {fileID: 8300000, guid: cb4180d08492ffe44801893aec17a896, type: 3}
   hornTransform: {fileID: 1326062108}
@@ -3816,6 +3830,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4699490996147680257, guid: 4df5414bb672ceb4ea9d6f8d299547e4, type: 3}
   m_PrefabInstance: {fileID: 2144370074}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2046347502 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1550888706039318681, guid: dba644d428f10fa41b01a0345ff33695, type: 3}
+  m_PrefabInstance: {fileID: 375671175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b7724a004b9bd449b49b1d1a05df08a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2066341273 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2966205862199098380, guid: 0e2fb1c61a1b1014898f7547c726f58e, type: 3}
+  m_PrefabInstance: {fileID: 1173327620026948479}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b7724a004b9bd449b49b1d1a05df08a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2090872996
 PrefabInstance:
   m_ObjectHideFlags: 0
