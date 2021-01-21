@@ -11,10 +11,12 @@ namespace HydrogenInteractables
 		//
 		// Editor fields
 		[Header("Button")]
-		public bool isPowered = true;
-		[Header("Color")]
-		[ColorUsage(true, true)]
-		public Color pressedColor;
+		[SerializeField] private bool startActive = true;
+		public float pressDelay = 0.1f;
+		[Header("Light")]
+		public float lightResting = 1f;
+		public float lightPressed = 5f;
+		[Header("Child components")]
 		new public MeshRenderer renderer = null;
 		[Header("Sounds")]
 		public float volume;
@@ -24,10 +26,12 @@ namespace HydrogenInteractables
 		public AudioClip release;
 		[Header("Events")]
 		public UnityEvent OnPress = null;
-		[Header("Buttton movement")]
+
+		private float activeness = 1f;
 		private float yMin = 0f;
 		private float yMax = 0f;
 		private bool previousPressState = false;
+		private float previousPressTime = 0f;
 
 		//
 		// Private variables
@@ -55,7 +59,9 @@ namespace HydrogenInteractables
 		private void Start()
 		{
 			SetMinMax();
-			renderer.material.SetColor("_EmissionColor", Color.black);
+			if (startActive) Activate(0f, 0f);
+
+			renderer.material.SetFloat("_Light", GetRestingLight());
 		}
 
 		private void SetMinMax()
@@ -112,10 +118,11 @@ namespace HydrogenInteractables
 
 		public void Press()
 		{
-			if (isPowered)
+			if (IsActive() && Time.time > previousPressTime + pressDelay)
 			{
 				OnPress.Invoke();
-				renderer.material.SetColor("_EmissionColor", pressedColor);
+				renderer.material.SetFloat("_Light", lightPressed);
+				previousPressTime = Time.time;
 			}
 			
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
@@ -123,10 +130,57 @@ namespace HydrogenInteractables
 		}
 
 		public void Release()
-		{	
-			renderer.material.SetColor("_EmissionColor", Color.black);
+		{
 			HL.AudioManagement.AudioManager.Instance.PlayIn3D(release, volume, transform.position, minRadius, maxRadius);
+			renderer.material.SetFloat("_Light", GetRestingLight());
 			previousPressState = false;
+		}
+
+		private float GetRestingLight()
+		{
+			return lightResting * activeness;
+		}
+
+		public bool IsActive() { return activeness > 0f; }
+
+		public void Activate(float delay, float duration) => StartCoroutine(ActivationCorutine(true, delay, duration));
+
+		public void Deactivate(float delay, float duration) => StartCoroutine(ActivationCorutine(false, delay, duration));
+
+		IEnumerator ActivationCorutine(bool activate, float lightDelay, float duration)
+		{
+			if (activate)
+			{
+				activeness = 1f;
+
+				yield return new WaitForSeconds(lightDelay);
+				float lightActiveness;
+				for (float t = 0f; t < duration; t += Time.deltaTime)
+				{
+					lightActiveness = Mathf.Lerp(0f, 1f, t / duration);
+					renderer.material.SetFloat("_Light", lightResting * lightActiveness);
+					yield return new WaitForEndOfFrame();
+				}
+
+				activeness = 1f;
+			}
+			else // fade out
+			{
+				activeness = 0f;
+
+				yield return new WaitForSeconds(lightDelay);
+				float lightActiveness;
+				for (float t = 0f; t < duration; t += Time.deltaTime)
+				{
+					lightActiveness = Mathf.Lerp(1f, 0f, t / duration);
+					renderer.material.SetFloat("_Light", lightResting * lightActiveness);
+					yield return new WaitForEndOfFrame();
+				}
+
+				activeness = 0f;
+			}
+
+			renderer.material.SetFloat("_Light", GetRestingLight());
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace HydrogenInteractables
 				}
 				else
 				{
-					// One ore more filters are bad
+					// One or more filters are bad
 					powerIndicators.StartEmergency();
 				}
 			}
@@ -85,14 +85,14 @@ namespace HydrogenInteractables
 		{
 			powerIndicators.StopEmergency();
 			powerIndicators.PowerOff();
-			confirmButton.isPowered = false;
+			confirmButton.Deactivate(0.5f, 0.5f);
 			isPowered = false;
 		}
 
 		private void PowerOn()
 		{
 			powerIndicators.PowerOn();
-			confirmButton.isPowered = true;
+			confirmButton.Activate(0.5f, 0.5f);
 			isPowered = true;
 		}
 	}

@@ -184,7 +184,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_CustomReticle: {fileID: 0}
-  pressedColor: {r: 4, g: 4, b: 4, a: 0}
+  isPowered: 1
+  pressDelay: 0.1
+  lightResting: 1
+  lightPressed: 5
   renderer: {fileID: 39228255248867626}
   volume: 1
   minRadius: 0.1

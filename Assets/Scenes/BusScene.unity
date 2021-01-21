@@ -4012,6 +4012,18 @@ PrefabInstance:
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: lightPressed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: lightResting
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1656329204575279311, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: pressDelay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1656329204634714976, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
@@ -4111,6 +4123,18 @@ PrefabInstance:
     - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: lightPressed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: lightResting
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8014048826074211225, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}
+      propertyPath: pressDelay
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0484bb643db983444bf3d648e1f332a9, type: 3}

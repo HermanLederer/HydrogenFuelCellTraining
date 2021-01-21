@@ -115,7 +115,7 @@ public class PowerIndicators : MonoBehaviour
 		StartCoroutine(FadeLight(tailLightSetLeft.redTaillight, false, 0.5f));
 		StartCoroutine(FadeLight(tailLightSetRight.redTaillight, false, 0.5f));
 
-		yield return new WaitForSeconds(0.5f);
+		//yield return new WaitForSeconds(0.5f);
 		HL.AudioManagement.AudioManager.Instance.PlayIn3D(pressureReleaseSound, 0.2f, pressureSoundTransform.position, 0.5f, 4f);
 	}
 
