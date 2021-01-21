@@ -86,4 +86,13 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 	}
+
+	private void OnDestroy()
+	{
+		// Unsubscribing GameManager from destroy events
+		foreach (HydrogenInteractable interactable in FindObjectsOfType<HydrogenInteractable>())
+		{
+			interactable.OnHydrogenInteractableDestroyed -= OnInteractableDestroyed;
+		}
+	}
 }
