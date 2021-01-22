@@ -52,6 +52,7 @@ namespace HydrogenInteractables
 			if (problem != HydrogenFilterSocketProblems.NoProblem)
 			{
 				troubleParticles.Play(true);
+				troubleAudio.volume = 1f;
 				troubleAudio.Play();
 			}
 

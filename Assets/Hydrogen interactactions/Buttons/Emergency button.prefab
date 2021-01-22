@@ -67,5 +67,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Emergency button
       objectReference: {fileID: 0}
+    - target: {fileID: 880258377617069339, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: adacb0be5f705e44599162771af51803, type: 2}
+    - target: {fileID: 1640853311903247878, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: lightResting
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1640853311903247878, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}
+      propertyPath: lightPressed
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5f7d2162e1967c4eae89253e6e149fe, type: 3}

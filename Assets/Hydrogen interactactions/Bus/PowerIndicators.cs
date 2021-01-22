@@ -69,6 +69,9 @@ public class PowerIndicators : MonoBehaviour
 		{
 			tailLightSetLeft.redTaillight.intensity = 1f;
 			tailLightSetRight.redTaillight.intensity = 1f;
+
+			tailLightSetLeft.orangeTaillight.intensity = 0f;
+			tailLightSetRight.orangeTaillight.intensity = 0f;
 		}
 		else PowerOn();
 	}
@@ -102,6 +105,9 @@ public class PowerIndicators : MonoBehaviour
 		{
 			tailLightSetLeft.redTaillight.intensity = 0f;
 			tailLightSetRight.redTaillight.intensity = 0f;
+
+			tailLightSetLeft.orangeTaillight.intensity = 0f;
+			tailLightSetRight.orangeTaillight.intensity = 0f;
 		}
 		else PowerOff();
 	}
@@ -149,6 +155,7 @@ public class PowerIndicators : MonoBehaviour
 		StopEmergency();
 		tailLightSetLeft.redTaillight.intensity = 0f;
 		tailLightSetRight.redTaillight.intensity = 0f;
+		StartCoroutine(StopEngineCorutine(0f, 0.5f));
 		HL.AudioManagement.AudioManager.Instance.PlayIn3D(pressureReleaseSound, 0.2f, pressureSoundTransform.position, 0.5f, 4f);
 	}
 

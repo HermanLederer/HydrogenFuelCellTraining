@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 	[Header("Sounds")]
 	public AudioClip winSound;
 	public AudioClip loseSound;
+	public AudioClip spawnSound;
 
 	public Transform spawnTransform;
 
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour
 				Instantiate(screwdriverPrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 		}
+
+		HL.AudioManagement.AudioManager.Instance.PlayIn3D(spawnSound, 1f, spawnPos, 0.1f, 3f);
 	}
 
 	public void OnInteractableDestroyed(HydrogenInteractable interactable)

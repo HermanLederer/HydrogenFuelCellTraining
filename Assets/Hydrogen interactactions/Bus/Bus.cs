@@ -80,7 +80,7 @@ namespace HydrogenInteractables
 			largeFilterSocket.PowerOff();
 			smallFilterSocket.PowerOff();
 			powerIndicators.EmergencyPowerOff();
-			confirmButton.Deactivate(0f, 0.5f);
+			confirmButton.Deactivate(0f, 0f);
 			emergencyButton.Deactivate(0f, 0.5f);
 			powerButton.Activate(1f, 1f);
 			isPowered = false;

@@ -11,8 +11,11 @@ namespace HydrogenInteractables
 		//
 		// Editor fields
 		[Header("Button")]
+		public float offset = 0f;
+		public float tMax = 0f;
+		[Range(0, 1)] public float tActive = 0.5f;
 		[SerializeField] private bool startActive = true;
-		public float pressDelay = 0.1f;
+		public float activationDelay = 0.5f;
 		[Header("Light")]
 		[SerializeField] private float lightResting = 1f;
 		public float LightResting
@@ -36,16 +39,18 @@ namespace HydrogenInteractables
 		[Header("Events")]
 		public UnityEvent OnPress = null;
 
-		private float activeness = 1f;
-		private float yMin = 0f;
-		private float yMax = 0f;
+		//
+		// Private variables
+		private XRBaseInteractor hoverInteractor = null;
+
+		private Vector3 rootPosition;
+		private float previousZ;
+		private float pressZ = 0f;
+
 		private bool previousPressState = false;
 		private float previousPressTime = 0f;
 
-		//
-		// Private variables
-		private float previousHandY;
-		private XRBaseInteractor hoverInteractor = null;
+		private float activeness = 1f;
 
 		private void OnTriggerEnter(Collider other)
 		{
@@ -53,60 +58,45 @@ namespace HydrogenInteractables
 			if (other.gameObject.TryGetComponent<XRBaseInteractor>(out interactor))
 			{
 				hoverInteractor = interactor;
-				previousHandY = GetLocalYPosition(interactor.transform.position);
+				pressZ = 0f;
+				previousZ = GetLocalPosition(hoverInteractor.transform.position).z;
 			}
 		}
 
 		private void OnTriggerExit()
 		{
-			SetYPosition(yMax);
+			pressZ = 0f;
 			CheckPress();
+
 			hoverInteractor = null;
 			previousPressState = false;
 		}
 
 		private void Start()
 		{
-			SetMinMax();
+			rootPosition = transform.position + transform.forward * offset;
 			if (startActive) Activate(0f, 0f);
 
 			renderer.material.SetFloat("_Light", GetRestingLight());
-		}
-
-		private void SetMinMax()
-		{
-			Collider collider = GetComponent<Collider>();
-
-			yMin = transform.localPosition.y - (collider.bounds.size.y);
-			yMax = transform.localPosition.y;
 		}
 
 		public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
 		{
 			if (hoverInteractor)
 			{
-				float newHandY = GetLocalYPosition(hoverInteractor.transform.position);
-				float handDelta = previousHandY - newHandY;
-				previousHandY = newHandY;
-
-				float newPosition = transform.localPosition.y - handDelta;
-				SetYPosition(newPosition);
-
+				var localZ = GetLocalPosition(hoverInteractor.transform.position).z;
+				var deltaZ = localZ - previousZ;
+				pressZ = Mathf.Clamp(pressZ + deltaZ, -tMax, 0f);
+				previousZ = localZ;
 				CheckPress();
 			}
+
+			transform.position = rootPosition - transform.forward * offset + transform.forward * pressZ;
 		}
 
-		private float GetLocalYPosition(Vector3 pos)
+		private Vector3 GetLocalPosition(Vector3 position)
 		{
-			Vector3 localPos = transform.root.InverseTransformPoint(pos);
-			return localPos.y;
-		}
-
-		private void SetYPosition(float y)
-		{
-			Vector3 newPos = transform.localPosition;
-			newPos.y = Mathf.Clamp(y, yMin, yMax);
-			transform.localPosition = newPos;
+			return transform.parent.InverseTransformPoint(position);
 		}
 
 		private void CheckPress()
@@ -122,20 +112,23 @@ namespace HydrogenInteractables
 
 		private bool IsInPosition()
 		{
-			return transform.localPosition.y < Mathf.Lerp(yMin, yMax, 0.5f);
+			return pressZ < -tMax * tActive;
 		}
 
 		public void Press()
 		{
-			if (IsActive() && Time.time > previousPressTime + pressDelay)
+			if (Time.time > previousPressTime + 0.1f)
 			{
-				OnPress.Invoke();
-				renderer.material.SetFloat("_Light", lightPressed);
-				previousPressTime = Time.time;
+				if (IsActive() && Time.time > previousPressTime + activationDelay)
+				{
+					OnPress.Invoke();
+					renderer.material.SetFloat("_Light", lightPressed);
+					previousPressTime = Time.time;
+				}
+
+				HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
+				previousPressState = true;
 			}
-			
-			HL.AudioManagement.AudioManager.Instance.PlayIn3D(press, volume, transform.position, minRadius, maxRadius);
-			previousPressState = true;
 		}
 
 		public void Release()

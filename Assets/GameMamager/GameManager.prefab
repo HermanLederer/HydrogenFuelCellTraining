@@ -50,4 +50,5 @@ MonoBehaviour:
   screwdriverPrefab: {fileID: 0}
   winSound: {fileID: 8300000, guid: 3c1b6236e9adbd14f93ea628c04190ad, type: 3}
   loseSound: {fileID: 8300000, guid: 2268ac0f0d03dc34d93439d4a78a3c6c, type: 3}
+  spawnSound: {fileID: 8300000, guid: b0b43eb46e04429499f65d9639ee29b3, type: 3}
   spawnTransform: {fileID: 4823613938160828528}
