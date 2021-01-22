@@ -42,11 +42,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(WaitForFrameAndInstanciateHydrogenInteractable(type));
+	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(SpawnNewHydrogenInteractableCorutine(type, 1f));
 
-	IEnumerator WaitForFrameAndInstanciateHydrogenInteractable(HydrogenInteractableType type)
+	IEnumerator SpawnNewHydrogenInteractableCorutine(HydrogenInteractableType type, float delay)
 	{
-		yield return new WaitForEndOfFrame();
+		yield return new WaitForSeconds(1f);
 
 		Vector3 spawnPos = transform.position;
 
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 				break;
 		}
 
-		HL.AudioManagement.AudioManager.Instance.PlayIn3D(spawnSound, 1f, spawnPos, 0.1f, 3f);
+		HL.AudioManagement.AudioManager.Instance.PlayIn3D(spawnSound, 1f, spawnPos, 1f, 10f);
 	}
 
 	public void OnInteractableDestroyed(HydrogenInteractable interactable)
