@@ -167,6 +167,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small filter model
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 777133821b7e68b44807649d75559b5b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 777133821b7e68b44807649d75559b5b, type: 3}
 --- !u!1 &7443807004526654368 stripped

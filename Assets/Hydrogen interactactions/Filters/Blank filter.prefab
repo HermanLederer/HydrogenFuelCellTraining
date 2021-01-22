@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8123079531701812052}
   - component: {fileID: 309073273400304676}
   - component: {fileID: 309073273400304677}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blank filter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  m_Renderer: {fileID: 0}
+  isInGoodCondition: 1
 --- !u!54 &309073273400304676
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -149,7 +151,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 309073273845641683}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Attach
   m_TagString: Untagged
   m_Icon: {fileID: 0}

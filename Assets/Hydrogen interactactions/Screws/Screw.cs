@@ -9,7 +9,7 @@ public class Screw : MonoBehaviour
 	public float screwedOutMax = 1f;
 	public float screwOffset = 0f;
 
-	private float screwedOut = 1f;
+	[Range(0f, 1f)] public float screwedOut = 1f;
 	public float ScrewedOut
 	{
 		get { return screwedOut; }
@@ -18,6 +18,6 @@ public class Screw : MonoBehaviour
 
 	private void Update()
 	{
-		transform.position = screwhole.position + transform.up * (ScrewedOut * (screwedOutMax - screwOffset) + screwOffset);
+		transform.position = screwhole.position + transform.forward * (ScrewedOut * (screwedOutMax - screwOffset) + screwOffset);
 	}
 }
