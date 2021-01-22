@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void OnDestroy()
+	private void OnDisable()
 	{
 		// Unsubscribing GameManager from destroy events
 		foreach (HydrogenInteractable interactable in FindObjectsOfType<HydrogenInteractable>())
