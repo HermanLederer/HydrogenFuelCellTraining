@@ -114,7 +114,7 @@ MonoBehaviour:
   tMax: 0.01
   tActive: 0.75
   startActive: 1
-  pressDelay: 0.5
+  activationDelay: 0.5
   lightResting: 2
   lightPressed: 10
   renderer: {fileID: 880258377617069339}
@@ -139,7 +139,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4493585093827132993, guid: 0175c9a04420f1d4fba9afd87024bc56, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 5fdf2972cce95dd4da5f84e4ff2f0cdd, type: 2}
 --- !u!54 &6805719603229434941
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 7646781571401905847}
   - component: {fileID: 880258377617069339}
   m_Layer: 0
-  m_Name: Model
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,7 +195,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3961317992236753700}
-  m_Mesh: {fileID: 4493585093827132993, guid: 0175c9a04420f1d4fba9afd87024bc56, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 5fdf2972cce95dd4da5f84e4ff2f0cdd, type: 2}
 --- !u!23 &880258377617069339
 MeshRenderer:
   m_ObjectHideFlags: 0
