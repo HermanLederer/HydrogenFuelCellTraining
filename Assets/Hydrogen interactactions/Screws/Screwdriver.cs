@@ -86,7 +86,7 @@ namespace HydrogenInteractables
 		public void Reverse()
 		{
 			screwingDirection = !screwingDirection;
-			HL.AudioManagement.AudioManager.Instance.PlayIn3D(reverseButton, 0.3f, transform.position, 0.1f, 2f);
+			HL.AudioManagement.AudioManager.Instance.PlayIn3D(reverseButton, 1f, transform.position, 0.1f, 2f);
 		}
 	}
 }

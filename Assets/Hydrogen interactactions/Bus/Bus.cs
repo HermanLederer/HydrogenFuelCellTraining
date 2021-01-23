@@ -10,21 +10,33 @@ namespace HydrogenInteractables
 		// Editor fields
 		public bool isPowered = true;
 
-		public PowerIndicators powerIndicators = null;
-
 		[Header("Bus components")]
+		public PowerIndicators powerIndicators = null;
 		public ButtonInteractable confirmButton;
 		public ButtonInteractable powerButton;
 		public ButtonInteractable emergencyButton;
 		public HydrogenFilterSocketInteractor largeFilterSocket;
 		public HydrogenFilterSocketInteractor smallFilterSocket;
 
+		[Header("Audio")]
+		public AudioClip emergencySound;
+
 		private void Awake()
 		{
 			if (!powerIndicators) Debug.LogError("power indicators object has not been assigend");
+		}
 
+		private void OnEnable()
+		{
+			// Filter listeners
 			largeFilterSocket.onSelectExited.AddListener(processFilterRemoval);
 			smallFilterSocket.onSelectExited.AddListener(processFilterRemoval);
+		}
+
+		private void OnDisable()
+		{
+			largeFilterSocket.onSelectExited.RemoveListener(processFilterRemoval);
+			smallFilterSocket.onSelectExited.RemoveListener(processFilterRemoval);
 		}
 
 		private void Start()
@@ -51,23 +63,20 @@ namespace HydrogenInteractables
 
 		public bool Confirm()
 		{
-			if (isPowered)
-			{
-				var largeFilterProblem = largeFilterSocket.PowerOn();
-				var smallFilterProblem = smallFilterSocket.PowerOn();
+			var largeFilterProblem = largeFilterSocket.PowerOn();
+			var smallFilterProblem = smallFilterSocket.PowerOn();
 
-				if (largeFilterProblem == HydrogenFilterSocketProblems.FilterMissing || smallFilterProblem == HydrogenFilterSocketProblems.FilterMissing)
-				{
-					// One or more filters are missing
-					StartEmergency();
-					return false;
-				}
-				else if (largeFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition || smallFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition)
-				{
-					// One or more filters are bad
-					StartEmergency();
-					return false;
-				}
+			if (largeFilterProblem == HydrogenFilterSocketProblems.FilterMissing || smallFilterProblem == HydrogenFilterSocketProblems.FilterMissing)
+			{
+				// One or more filters are missing
+				StartEmergency();
+				return false;
+			}
+			else if (largeFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition || smallFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition)
+			{
+				// One or more filters are bad
+				StartEmergency();
+				return false;
 			}
 
 			// Good
@@ -82,6 +91,7 @@ namespace HydrogenInteractables
 
 		public void StartEmergency()
 		{
+			HL.AudioManagement.AudioManager.Instance.PlayIn3D(emergencySound, 0.4f, confirmButton.transform.position, 0.5f, 2f);
 			powerIndicators.StartEmergency();
 			confirmButton.Deactivate(0, 0.5f);
 			powerButton.Deactivate(0, 0.5f);

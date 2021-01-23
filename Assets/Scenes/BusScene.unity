@@ -10472,10 +10472,10 @@ MonoBehaviour:
         m_CallState: 2
   m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
-  m_PlayAudioClipOnSelectEntered: 1
+  m_PlayAudioClipOnSelectEntered: 0
   m_AudioClipForOnSelectEntered: {fileID: 8300000, guid: 6b08ddf0146a71c44b2d7faaed1308fd, type: 3}
-  m_PlayAudioClipOnSelectExited: 1
-  m_AudioClipForOnSelectExited: {fileID: 8300000, guid: 6888d227e7781c64d9468bdad175f375, type: 3}
+  m_PlayAudioClipOnSelectExited: 0
+  m_AudioClipForOnSelectExited: {fileID: 8300000, guid: 12ce67627269c15448ef0a6ac37c3683, type: 3}
   m_PlayAudioClipOnHoverEntered: 0
   m_AudioClipForOnHoverEntered: {fileID: 0}
   m_PlayAudioClipOnHoverExited: 0
@@ -15851,10 +15851,10 @@ MonoBehaviour:
       m_Calls: []
   m_SelectActionTrigger: 0
   m_HideControllerOnSelect: 0
-  m_PlayAudioClipOnSelectEntered: 1
+  m_PlayAudioClipOnSelectEntered: 0
   m_AudioClipForOnSelectEntered: {fileID: 8300000, guid: 6b08ddf0146a71c44b2d7faaed1308fd, type: 3}
-  m_PlayAudioClipOnSelectExited: 1
-  m_AudioClipForOnSelectExited: {fileID: 8300000, guid: 6888d227e7781c64d9468bdad175f375, type: 3}
+  m_PlayAudioClipOnSelectExited: 0
+  m_AudioClipForOnSelectExited: {fileID: 8300000, guid: 12ce67627269c15448ef0a6ac37c3683, type: 3}
   m_PlayAudioClipOnHoverEntered: 0
   m_AudioClipForOnHoverEntered: {fileID: 0}
   m_PlayAudioClipOnHoverExited: 0
@@ -21958,9 +21958,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5276808087336959220, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
-      propertyPath: m_InteractionManager
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5276808087336959222, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5495794520393984279, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1620835119}
+      objectReference: {fileID: 2100002, guid: 6296e48663fd7ad46b1a2af507f871cf, type: 3}
+    - target: {fileID: 7316564841156928409, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7326343218354906376, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

@@ -33,6 +33,8 @@ namespace HydrogenInteractables
 
 		private void SlotIn(XRBaseInteractable i)
 		{
+			if (!i) return;
+
 			if (filterSocket.selectTarget) filterSocket.selectTarget.colliders[0].enabled = false;
 			else filterSocket.socketActive = false;
 			i.GetComponent<PanelWithScrews>().unlocked = false;
@@ -40,9 +42,19 @@ namespace HydrogenInteractables
 
 		private void SlotOut(XRBaseInteractable i)
 		{
+			if (!i) return;
+
 			if (filterSocket.selectTarget) filterSocket.selectTarget.colliders[0].enabled = true;
 			else filterSocket.socketActive = true;
 			i.GetComponent<PanelWithScrews>().unlocked = true;
+		}
+
+		protected override void OnDestroy()
+		{
+			onSelectEntered.RemoveListener(SlotIn);
+			onSelectExited.RemoveListener(SlotOut);
+
+			base.OnDestroy();
 		}
 	}
 }

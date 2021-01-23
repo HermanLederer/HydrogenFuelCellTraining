@@ -56,6 +56,7 @@ MonoBehaviour:
   emergencyButton: {fileID: 7356262465652532532}
   largeFilterSocket: {fileID: 5276808085983071105}
   smallFilterSocket: {fileID: 5643457802995846954}
+  emergencySound: {fileID: 8300000, guid: 2268ac0f0d03dc34d93439d4a78a3c6c, type: 3}
 --- !u!1 &5276808085981338214
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ namespace HydrogenInteractables
 		public ParticleSystem troubleParticles;
 		public ParticleSystem leakageParticles;
 		public AudioSource troubleAudio;
-		public bool isOn = true;
+		public bool isOn = false;
 
 		protected override void Awake()
 		{
@@ -27,6 +27,14 @@ namespace HydrogenInteractables
 
 			onSelectEntered.AddListener(InsertFilter);
 			onSelectExited.AddListener(RemoveFilter);
+		}
+
+		protected override void OnDestroy()
+		{
+			onSelectEntered.RemoveListener(InsertFilter);
+			onSelectExited.RemoveListener(RemoveFilter);
+
+			base.OnDestroy();
 		}
 
 		new protected void OnTriggerEnter(Collider col)
@@ -47,26 +55,29 @@ namespace HydrogenInteractables
 
 		public HydrogenFilterSocketProblems PowerOn(bool silent = false)
 		{
-			var problem = HydrogenFilterSocketProblems.FilterMissing;
-
-			if (!silent)
+			if (silent)
 			{
-				if (selectTarget)
-				{
-					HydrogenFilter filter = selectTarget.GetComponent<HydrogenFilter>();
-					if (filter.isInGoodCondition)
-						problem = HydrogenFilterSocketProblems.NoProblem;
-					else
-						problem = HydrogenFilterSocketProblems.FilterInBadCondition;
-				}
+				isOn = true;
+				return HydrogenFilterSocketProblems.NoProblem;
+			}
 
-				// Problem feedback
-				if (problem != HydrogenFilterSocketProblems.NoProblem)
-				{
-					troubleParticles.Play(true);
-					troubleAudio.volume = 1f;
-					troubleAudio.Play();
-				}
+			// Checking for problems
+			var problem = HydrogenFilterSocketProblems.FilterMissing;
+			if (selectTarget)
+			{
+				HydrogenFilter filter = selectTarget.GetComponent<HydrogenFilter>();
+				if (filter.isInGoodCondition)
+					problem = HydrogenFilterSocketProblems.NoProblem;
+				else
+					problem = HydrogenFilterSocketProblems.FilterInBadCondition;
+			}
+
+			// Problem feedback
+			if (problem != HydrogenFilterSocketProblems.NoProblem)
+			{
+				troubleParticles.Play(true);
+				troubleAudio.volume = 1f;
+				troubleAudio.Play();
 			}
 
 			isOn = true;
@@ -88,7 +99,7 @@ namespace HydrogenInteractables
 
 		public void RemoveFilter(XRBaseInteractable interactable)
 		{
-			if (isOn)
+			if (isOn && socketActive)
 			{
 				leakageParticles.Play(true);
 				troubleAudio.volume = 1f;
