@@ -5,7 +5,7 @@ using UnityEngine;
 public class Taillight : MonoBehaviour
 {
 	new public Light light;
-	new public MeshRenderer renderer;
+	public Material material;
 
 	private float originalLightIntensity;
 	private Color originalEmmision;
@@ -16,12 +16,12 @@ public class Taillight : MonoBehaviour
 	private void Awake()
 	{
 		originalLightIntensity = light.intensity;
-		originalEmmision = renderer.material.GetColor("_EmissionColor");
+		originalEmmision = material.GetColor("_EmissionColor");
 	}
 
 	public void Update()
 	{
 		light.intensity = originalLightIntensity * intensity;
-		renderer.material.SetColor("_EmissionColor", originalEmmision * intensity);
+		material.SetColor("_EmissionColor", originalEmmision * intensity);
 	}
 }

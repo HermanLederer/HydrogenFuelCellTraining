@@ -12,13 +12,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Metal
-    second: {fileID: 2100000, guid: a3eed85dfee63b34a8cb2bbe93974f97, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Metal Glossy
-    second: {fileID: 2100000, guid: 46b17533c5cfe8940b11f3cfd51893c9, type: 2}
+    second: {fileID: 2100000, guid: dbcae517fff172b4f9c44de7e3cd2435, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -39,6 +34,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: light
     second: {fileID: 2100000, guid: 9fda68f98d816b54cbf3da3ee13f3b1c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: light white
+    second: {fileID: 2100000, guid: f5bbfd30f8a063e4d8aa1270cacac839, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

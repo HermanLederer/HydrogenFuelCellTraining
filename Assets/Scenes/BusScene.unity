@@ -21905,6 +21905,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1726697384}
     m_Modifications:
+    - target: {fileID: 5042788235107921301, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5276808085633267240, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
       propertyPath: m_Name
       value: Bus
@@ -21961,6 +21965,14 @@ PrefabInstance:
       propertyPath: OnPress.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 160420823}
+    - target: {fileID: 8519332112689268235, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dbcae517fff172b4f9c44de7e3cd2435, type: 2}
+    - target: {fileID: 8519332112689268235, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9af0f220323594c4f83a9fbdfa180589, type: 2}
     - target: {fileID: 9025669383112971543, guid: 54c5d2baeb0f285498dd76ea8601c63e, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
