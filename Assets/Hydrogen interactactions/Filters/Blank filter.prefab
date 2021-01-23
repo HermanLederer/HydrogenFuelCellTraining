@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  good: {fileID: 2100000, guid: 42351d5cfddaaa8439f42d24a67c08e9, type: 2}
+  broken: {fileID: 2100000, guid: 43dd8c7e5f2e1324ab944b763b5824ff, type: 2}
   m_Renderer: {fileID: 0}
   isInGoodCondition: 1
 --- !u!54 &309073273400304676

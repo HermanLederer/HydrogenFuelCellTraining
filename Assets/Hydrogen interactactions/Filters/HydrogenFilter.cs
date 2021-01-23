@@ -6,21 +6,31 @@ namespace HydrogenInteractables
 {
 	public class HydrogenFilter : HydrogenInteractable
 	{
+		public Material good;
+		public Material broken;
+
 		public MeshRenderer m_Renderer;
 
-		public bool isInGoodCondition = true;
+		public bool isInGoodCondition { get; private set; }
 
-		private void Update()
+		public void Awake()
 		{
-			if (!isInGoodCondition)
-			{
-				m_Renderer.material.color = Color.black;
-			}
+			SetCondition(true);
 		}
 
 		public void RandomizeCondition()
 		{
-			isInGoodCondition = Random.Range(0f, 1f) > 0.5f;
+			SetCondition(Random.Range(0f, 1f) > 0.5f);
+		}
+
+		public void SetCondition(bool condition)
+		{
+			isInGoodCondition = condition;
+
+			if (isInGoodCondition)
+				m_Renderer.material = good;
+			else
+				m_Renderer.material = broken;
 		}
 	}
 }

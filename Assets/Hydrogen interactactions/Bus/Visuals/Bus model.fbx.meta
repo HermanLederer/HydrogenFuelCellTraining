@@ -37,6 +37,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: light orange
+    second: {fileID: 2100000, guid: 0f77673e37088384399e568b6634f51c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: light white
     second: {fileID: 2100000, guid: f5bbfd30f8a063e4d8aa1270cacac839, type: 2}
   materials:

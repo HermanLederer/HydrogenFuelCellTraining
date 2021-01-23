@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (bus.Confirm())
 		{
-			if(winMusic.isPlaying) winMusic.Play();
+			if (!winMusic.isPlaying) winMusic.Play();
 		}
 		else
 		{

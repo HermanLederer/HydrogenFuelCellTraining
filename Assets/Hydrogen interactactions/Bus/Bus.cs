@@ -52,7 +52,7 @@ namespace HydrogenInteractables
 			if (filter.isInGoodCondition)
 			{
 				filter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
-				filter.isInGoodCondition = false;
+				filter.SetCondition(false);
 			}
 			else
 			{
