@@ -102,6 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d32ce0fce1fff4fbf038468747edb1, type: 3}
   m_Name: Dither
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   re: 500
   intensity: 0.001
