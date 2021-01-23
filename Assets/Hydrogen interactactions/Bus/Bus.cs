@@ -47,20 +47,23 @@ namespace HydrogenInteractables
 
 		public bool Confirm()
 		{
-			var largeFilterProblem = largeFilterSocket.PowerOn();
-			var smallFilterProblem = smallFilterSocket.PowerOn();
+			if (isPowered)
+			{
+				var largeFilterProblem = largeFilterSocket.PowerOn();
+				var smallFilterProblem = smallFilterSocket.PowerOn();
 
-			if (largeFilterProblem == HydrogenFilterSocketProblems.FilterMissing || smallFilterProblem == HydrogenFilterSocketProblems.FilterMissing)
-			{
-				// One or more filters are missing
-				StartEmergency();
-				return false;
-			}
-			else if (largeFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition || smallFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition)
-			{
-				// One or more filters are bad
-				StartEmergency();
-				return false;
+				if (largeFilterProblem == HydrogenFilterSocketProblems.FilterMissing || smallFilterProblem == HydrogenFilterSocketProblems.FilterMissing)
+				{
+					// One or more filters are missing
+					StartEmergency();
+					return false;
+				}
+				else if (largeFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition || smallFilterProblem == HydrogenFilterSocketProblems.FilterInBadCondition)
+				{
+					// One or more filters are bad
+					StartEmergency();
+					return false;
+				}
 			}
 
 			// Good
