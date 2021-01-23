@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.samdriver.driven-decals": "https://github.com/Anatta336/driven-decals.git",
     "com.unity.ide.visualstudio": "2.0.2",
     "com.unity.render-pipelines.universal": "file:../CustomPackages/com.unity.render-pipelines.universal",
     "com.unity.xr.interaction.toolkit": "0.10.0-preview.7",
