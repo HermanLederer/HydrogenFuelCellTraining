@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace HydrogenInteractables
 {
@@ -21,13 +22,16 @@ namespace HydrogenInteractables
 		private void Awake()
 		{
 			if (!powerIndicators) Debug.LogError("power indicators object has not been assigend");
+
+			largeFilterSocket.onSelectExited.AddListener(processFilterRemoval);
+			smallFilterSocket.onSelectExited.AddListener(processFilterRemoval);
 		}
 
 		private void Start()
 		{
 			// Power
-			if (isPowered) powerIndicators.PowerOn(true);
-			else powerIndicators.PowerOff(true);
+			if (isPowered) PowerOn(true);
+			else PowerOff(true);
 
 			// Random filter conditions
 			HydrogenFilter filter;
@@ -71,6 +75,11 @@ namespace HydrogenInteractables
 			return true;
 		}
 
+		private void processFilterRemoval(XRBaseInteractable interactable)
+		{
+			if (isPowered) StartEmergency();
+		}
+
 		public void StartEmergency()
 		{
 			powerIndicators.StartEmergency();
@@ -82,10 +91,13 @@ namespace HydrogenInteractables
 		{
 			largeFilterSocket.PowerOff();
 			smallFilterSocket.PowerOff();
+
 			powerIndicators.EmergencyPowerOff();
+
 			confirmButton.Deactivate(0f, 0f);
 			emergencyButton.Deactivate(0f, 0.5f);
 			powerButton.Activate(1f, 1f);
+
 			isPowered = false;
 		}
 
@@ -95,19 +107,45 @@ namespace HydrogenInteractables
 			else PowerOn();
 		}
 
-		private void PowerOff()
+		private void PowerOff(bool silent = false)
 		{
-			powerIndicators.PowerOff();
-			confirmButton.Deactivate(0.5f, 0.5f);
-			emergencyButton.Deactivate(0.5f, 0.5f);
+			largeFilterSocket.PowerOff();
+			smallFilterSocket.PowerOff();
+
+			powerIndicators.PowerOff(silent);
+
+			if (silent)
+			{
+				confirmButton.Deactivate(0f, 0f);
+				emergencyButton.Deactivate(0f, 0f);
+			}
+			else
+			{
+				confirmButton.Deactivate(0.5f, 0.5f);
+				emergencyButton.Deactivate(0.5f, 0.5f);
+			}
+
 			isPowered = false;
 		}
 
-		private void PowerOn()
+		private void PowerOn(bool silent = false)
 		{
-			powerIndicators.PowerOn();
-			confirmButton.Activate(0.5f, 0.5f);
-			emergencyButton.Activate(0.5f, 0.5f);
+			largeFilterSocket.PowerOn(true);
+			smallFilterSocket.PowerOn(true);
+
+			powerIndicators.PowerOn(silent);
+
+			if (silent)
+			{
+				confirmButton.Activate(0f, 0f);
+				emergencyButton.Activate(0f, 0f);
+			}
+			else
+			{
+				confirmButton.Activate(0.5f, 0.5f);
+				emergencyButton.Activate(0.5f, 0.5f);
+			}
+			
 			isPowered = true;
 		}
 	}

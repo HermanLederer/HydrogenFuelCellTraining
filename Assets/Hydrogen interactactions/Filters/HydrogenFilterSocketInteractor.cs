@@ -17,7 +17,17 @@ namespace HydrogenInteractables
 		[Header("Filter socket")]
 		public HydrogenInteractableType filterType;
 		public ParticleSystem troubleParticles;
+		public ParticleSystem leakageParticles;
 		public AudioSource troubleAudio;
+		public bool isOn = true;
+
+		protected override void Awake()
+		{
+			base.Awake();
+
+			onSelectEntered.AddListener(InsertFilter);
+			onSelectExited.AddListener(RemoveFilter);
+		}
 
 		new protected void OnTriggerEnter(Collider col)
 		{
@@ -35,34 +45,55 @@ namespace HydrogenInteractables
 					base.OnTriggerExit(col);
 		}
 
-		public HydrogenFilterSocketProblems PowerOn()
+		public HydrogenFilterSocketProblems PowerOn(bool silent = false)
 		{
 			var problem = HydrogenFilterSocketProblems.FilterMissing;
 
-			if (selectTarget)
+			if (!silent)
 			{
-				HydrogenFilter filter = selectTarget.GetComponent<HydrogenFilter>();
-				if (filter.isInGoodCondition)
-					problem = HydrogenFilterSocketProblems.NoProblem;
-				else
-					problem = HydrogenFilterSocketProblems.FilterInBadCondition;
+				if (selectTarget)
+				{
+					HydrogenFilter filter = selectTarget.GetComponent<HydrogenFilter>();
+					if (filter.isInGoodCondition)
+						problem = HydrogenFilterSocketProblems.NoProblem;
+					else
+						problem = HydrogenFilterSocketProblems.FilterInBadCondition;
+				}
+
+				// Problem feedback
+				if (problem != HydrogenFilterSocketProblems.NoProblem)
+				{
+					troubleParticles.Play(true);
+					troubleAudio.volume = 1f;
+					troubleAudio.Play();
+				}
 			}
 
-			// Problem feedback
-			if (problem != HydrogenFilterSocketProblems.NoProblem)
-			{
-				troubleParticles.Play(true);
-				troubleAudio.volume = 1f;
-				troubleAudio.Play();
-			}
-
+			isOn = true;
 			return problem;
 		}
 
 		public void PowerOff()
 		{
+			isOn = false;
 			troubleParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+			leakageParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
 			StartCoroutine(StopTroubleAudioCorutine(0.5f));
+		}
+
+		public void InsertFilter(XRBaseInteractable interactable)
+		{
+			leakageParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+		}
+
+		public void RemoveFilter(XRBaseInteractable interactable)
+		{
+			if (isOn)
+			{
+				leakageParticles.Play(true);
+				troubleAudio.volume = 1f;
+				troubleAudio.Play();
+			}
 		}
 
 		IEnumerator StopTroubleAudioCorutine(float duration)

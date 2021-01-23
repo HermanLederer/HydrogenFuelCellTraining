@@ -16072,9 +16072,25 @@ PrefabInstance:
     m_TransformParent: {fileID: 215026630}
     m_Modifications:
     - target: {fileID: 534637561639279236, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 534637561639279236, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
       objectReference: {fileID: 687581255}
+    - target: {fileID: 534637561639279236, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 534637561639279236, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 534637561639279236, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 269936523}
     - target: {fileID: 534637561639279238, guid: 00b4afa7a33465c4eb0ae9562a2a797e, type: 3}
       propertyPath: m_Name
       value: Small filter socket
@@ -23538,9 +23554,25 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4197227379508792592, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197227379508792592, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
       propertyPath: m_StartingSelectedInteractable
       value: 
       objectReference: {fileID: 2044238478}
+    - target: {fileID: 4197227379508792592, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197227379508792592, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197227379508792592, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
+      propertyPath: m_OnSelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 269936523}
     - target: {fileID: 4197227379508792594, guid: 35ef2443505354143a95a1146a7f9733, type: 3}
       propertyPath: m_Name
       value: Large filter socket
