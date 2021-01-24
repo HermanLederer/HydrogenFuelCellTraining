@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
 	public GameObject largeFilterPrefab;
 	public GameObject smallFilterPrefab;
 	public GameObject gunModulePrefab;
-	public GameObject screwdriverPrefab;
 	[Header("Sounds")]
 	public AudioClip loseSound;
 	public AudioClip spawnSound;
@@ -62,10 +61,8 @@ public class GameManager : MonoBehaviour
 				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 			case HydrogenInteractableType.GunModule:
-				Instantiate(gunModulePrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
-				break;
-			case HydrogenInteractableType.Screwdriver:
-				Instantiate(screwdriverPrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>().OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				interactable = Instantiate(gunModulePrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
+				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 				break;
 		}
 
@@ -74,20 +71,14 @@ public class GameManager : MonoBehaviour
 
 	public void OnInteractableDestroyed(HydrogenInteractable interactable)
 	{
-		HydrogenFilter filter;
-		switch (interactable.type)
-		{
-			case HydrogenInteractableType.LargeFilter:
-				filter = (HydrogenFilter) interactable;
-				if (filter.isInGoodCondition) Debug.Log("Baaad! You baaad");
-				SpawnNewHydrogenInteractable(interactable.type);
-				break;
-			case HydrogenInteractableType.SmallFilter:
-				filter = (HydrogenFilter)interactable;
-				if (filter.isInGoodCondition) Debug.Log("Baaad! You baaad");
-				SpawnNewHydrogenInteractable(interactable.type);
-				break;
-		}
+		//if (interactable.type == HydrogenInteractableType.LargeFilter || interactable.type == HydrogenInteractableType.SmallFilter)
+		//{
+		//	HydrogenFilter filter;
+		//	filter = (HydrogenFilter)interactable;
+		//	if (filter.isInGoodCondition) Debug.Log("Baaad! You baaad");
+		//}
+
+		SpawnNewHydrogenInteractable(interactable.type);
 	}
 
 	private void OnDisable()

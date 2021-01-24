@@ -9,8 +9,7 @@ namespace HydrogenInteractables
 	{
 		LargeFilter,
 		SmallFilter,
-		GunModule,
-		Screwdriver
+		GunModule
 	}
 
 	public class HydrogenInteractable : MonoBehaviour
