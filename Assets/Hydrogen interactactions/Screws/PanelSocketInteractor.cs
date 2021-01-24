@@ -15,6 +15,8 @@ namespace HydrogenInteractables
 
 			onSelectEntered.AddListener(SlotIn);
 			onSelectExited.AddListener(SlotOut);
+
+			SlotIn(startingSelectedInteractable);
 		}
 
 		new protected void OnTriggerEnter(Collider col)
