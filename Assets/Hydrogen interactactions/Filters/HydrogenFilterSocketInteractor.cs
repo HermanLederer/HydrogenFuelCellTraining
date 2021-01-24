@@ -75,7 +75,15 @@ namespace HydrogenInteractables
 			// Problem feedback
 			if (problem != HydrogenFilterSocketProblems.NoProblem)
 			{
-				troubleParticles.Play(true);
+				switch (problem)
+				{
+					case HydrogenFilterSocketProblems.FilterInBadCondition:
+						troubleParticles.Play(true);
+						break;
+					case HydrogenFilterSocketProblems.FilterMissing:
+						leakageParticles.Play(true);
+						break;
+				}
 				troubleAudio.volume = 1f;
 				troubleAudio.Play();
 			}
