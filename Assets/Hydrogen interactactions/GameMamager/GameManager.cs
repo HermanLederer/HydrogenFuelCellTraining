@@ -60,8 +60,7 @@ public class GameManager : MonoBehaviour
 		FadeView(1f, 1f, true);
 		yield return new WaitForSeconds(2f);
 
-		//SpawnNewHydrogenInteractable(HydrogenInteractableType.InstructionsClipboard);
-		SpawnNewHydrogenInteractable(HydrogenInteractableType.PlayAgainClipboard);
+		SpawnNewHydrogenInteractable(HydrogenInteractableType.InstructionsClipboard);
 	}
 
 	public void Confirm()
@@ -72,7 +71,7 @@ public class GameManager : MonoBehaviour
 			{
 				// win
 				winMusic.Play();
-				SpawnNewHydrogenInteractable(HydrogenInteractableType.PlayAgainClipboard);
+				SpawnNewHydrogenInteractable(HydrogenInteractableType.PlayAgainClipboard, 2f);
 			}
 			else
 			{
@@ -82,7 +81,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(SpawnNewHydrogenInteractableCorutine(type, 1f));
+	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type, float delay = 1f) => StartCoroutine(SpawnNewHydrogenInteractableCorutine(type, delay));
 
 	IEnumerator SpawnNewHydrogenInteractableCorutine(HydrogenInteractableType type, float delay)
 	{
@@ -150,7 +149,7 @@ public class GameManager : MonoBehaviour
 	IEnumerator RestartCorutine()
 	{
 		FadeView(0f, 1f, false);
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(1.5f);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 

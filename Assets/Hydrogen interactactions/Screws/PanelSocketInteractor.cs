@@ -9,9 +9,9 @@ namespace HydrogenInteractables
 	{
 		public XRSocketInteractor filterSocket;
 
-		protected override void Awake()
+		protected override void Start()
 		{
-			base.Awake();
+			base.Start();
 
 			onSelectEntered.AddListener(SlotIn);
 			onSelectExited.AddListener(SlotOut);
