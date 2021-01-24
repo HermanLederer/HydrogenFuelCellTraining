@@ -44,6 +44,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 		ColorAdjustments m_ColorAdjustments;
 		Tonemapping m_Tonemapping;
 		FilmGrain m_FilmGrain;
+		FadeAndFocus m_FadeAndFocus;
 
 		// Misc
 		const int k_MaxPyramidSize = 16;
@@ -183,6 +184,7 @@ namespace UnityEngine.Rendering.Universal.Internal
 			m_ColorAdjustments = stack.GetComponent<ColorAdjustments>();
 			m_Tonemapping = stack.GetComponent<Tonemapping>();
 			m_FilmGrain = stack.GetComponent<FilmGrain>();
+			m_FadeAndFocus = stack.GetComponent<FadeAndFocus>();
 
 			if (m_IsFinalPass)
 			{
@@ -393,6 +395,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 				SetupChromaticAberration(m_Materials.uber);
 				SetupVignette(m_Materials.uber);
 				SetupColorGrading(cmd, ref renderingData, m_Materials.uber);
+
+				// CUSTOM: FadeAndFocus
+				SetupFadeAndFocus(m_Materials.uber);
 
 				// Only apply dithering & grain if there isn't a final pass.
 				SetupGrain(cameraData, m_Materials.uber);
@@ -1118,6 +1123,20 @@ namespace UnityEngine.Rendering.Universal.Internal
 					case TonemappingMode.ACES: material.EnableKeyword(ShaderKeywordStrings.TonemapACES); break;
 					default: break; // None
 				}
+			}
+		}
+
+		#endregion
+
+		#region Fade And Focus
+
+		void SetupFadeAndFocus(Material material)
+		{
+			if (m_FadeAndFocus.IsActive())
+			{
+				material.EnableKeyword(ShaderKeywordStrings.FadeAndFocus);
+				material.SetFloat(Shader.PropertyToID("_Fade"), 1f - m_FadeAndFocus.fade.value);
+				material.SetVector(Shader.PropertyToID("_Focus_Params"), new Vector4(m_FadeAndFocus.focusDirection.value.x, m_FadeAndFocus.focusDirection.value.y, m_FadeAndFocus.focusDirection.value.z, m_FadeAndFocus.focus.value));
 			}
 		}
 

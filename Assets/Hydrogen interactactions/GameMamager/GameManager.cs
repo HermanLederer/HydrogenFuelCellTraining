@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using HydrogenInteractables;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
 	public GameObject largeFilterPrefab;
 	public GameObject smallFilterPrefab;
 	public GameObject gunModulePrefab;
+	public GameObject instructionsClipboard;
+	public GameObject playAgainClipboard;
 	[Header("Sounds")]
 	public AudioClip loseSound;
 	public AudioClip spawnSound;
@@ -27,25 +30,38 @@ public class GameManager : MonoBehaviour
 		{
 			interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
 		}
+
+		SpawnNewHydrogenInteractable(HydrogenInteractableType.InstructionsClipboard);
 	}
 
 	public void Confirm()
 	{
-		if (bus.Confirm())
+		if (!winMusic.isPlaying)
 		{
-			if (!winMusic.isPlaying) winMusic.Play();
+			if (bus.Confirm())
+			{
+				// win
+				winMusic.Play();
+				SpawnNewHydrogenInteractable(HydrogenInteractableType.PlayAgainClipboard);
+			}
+			else
+			{
+				// lose
+				//HL.AudioManagement.AudioManager.Instance.PlayIn2D(loseSound, 0.5f);
+			}
 		}
-		else
-		{
-			//HL.AudioManagement.AudioManager.Instance.PlayIn2D(loseSound, 0.5f);
-		}
+	}
+
+	public void Restart()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void SpawnNewHydrogenInteractable(HydrogenInteractableType type) => StartCoroutine(SpawnNewHydrogenInteractableCorutine(type, 1f));
 
 	IEnumerator SpawnNewHydrogenInteractableCorutine(HydrogenInteractableType type, float delay)
 	{
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(delay);
 
 		Vector3 spawnPos = transform.position;
 
@@ -63,6 +79,15 @@ public class GameManager : MonoBehaviour
 			case HydrogenInteractableType.GunModule:
 				interactable = Instantiate(gunModulePrefab, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
 				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+			case HydrogenInteractableType.InstructionsClipboard:
+				interactable = Instantiate(instructionsClipboard, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
+				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				break;
+			case HydrogenInteractableType.PlayAgainClipboard:
+				interactable = Instantiate(playAgainClipboard, spawnPos, Quaternion.identity).GetComponent<HydrogenInteractable>();
+				interactable.OnHydrogenInteractableDestroyed += OnInteractableDestroyed;
+				interactable.GetComponentInChildren<ClipboardButton>().onClicked.AddListener(Restart);
 				break;
 		}
 

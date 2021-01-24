@@ -9,7 +9,9 @@ namespace HydrogenInteractables
 	{
 		LargeFilter,
 		SmallFilter,
-		GunModule
+		GunModule,
+		InstructionsClipboard,
+		PlayAgainClipboard
 	}
 
 	public class HydrogenInteractable : MonoBehaviour

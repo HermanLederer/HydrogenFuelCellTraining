@@ -7,6 +7,7 @@ Shader "Hidden/Universal Render Pipeline/UberPost"
         #pragma multi_compile_local _ _BLOOM_LQ _BLOOM_HQ _BLOOM_LQ_DIRT _BLOOM_HQ_DIRT
         #pragma multi_compile_local _ _HDR_GRADING _TONEMAP_ACES _TONEMAP_NEUTRAL
         #pragma multi_compile_local _ _FILM_GRAIN
+        #pragma multi_compile_local _ _FADE_AND_FOCUS
         #pragma multi_compile_local _ _DITHERING
 		#pragma multi_compile_local _ _LINEAR_TO_SRGB_CONVERSION
 
@@ -46,6 +47,8 @@ Shader "Hidden/Universal Render Pipeline/UberPost"
         float4 _Grain_TilingParams;
         float4 _Bloom_Texture_TexelSize;
         float4 _Dithering_Params;
+        float _Fade;
+        float4 _Focus_Params;
 
         #define DistCenter              _Distortion_Params1.xy
         #define DistAxis                _Distortion_Params1.zw
@@ -209,6 +212,12 @@ Shader "Hidden/Universal Render Pipeline/UberPost"
             #if UNITY_COLORSPACE_GAMMA || _LINEAR_TO_SRGB_CONVERSION
             {
                 color = LinearToSRGB(color);
+            }
+            #endif
+
+            #if _FADE_AND_FOCUS
+            {
+                color *= _Fade;
             }
             #endif
 

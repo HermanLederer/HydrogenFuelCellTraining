@@ -238,6 +238,8 @@ namespace UnityEngine.Rendering.Universal
         public static readonly string TonemapACES = "_TONEMAP_ACES";
         public static readonly string TonemapNeutral = "_TONEMAP_NEUTRAL";
         public static readonly string FilmGrain = "_FILM_GRAIN";
+        // CUSTOM: FadeAndFocus
+        public static readonly string FadeAndFocus = "_FADE_AND_FOCUS";
         public static readonly string Fxaa = "_FXAA";
         public static readonly string Dithering = "_DITHERING";
 

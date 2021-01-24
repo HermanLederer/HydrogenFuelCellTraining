@@ -49,7 +49,8 @@ MonoBehaviour:
   largeFilterPrefab: {fileID: 2011498104756017947, guid: 1eb49c602b5617e4e8054148a4f3876e, type: 3}
   smallFilterPrefab: {fileID: 2011498104756017947, guid: 33b7ef7fd6bcffb49b60e4cd3d2aa9b0, type: 3}
   gunModulePrefab: {fileID: 2315567603151498428, guid: 48f2bc09fac74dd4abf1cac7f79d8e12, type: 3}
-  screwdriverPrefab: {fileID: 0}
+  instructionsClipboard: {fileID: 1346492944375200325, guid: 38bdda8aaa70cbe4f9541e22d62eb304, type: 3}
+  playAgainClipboard: {fileID: 2814828104331844884, guid: 81e7c9c81842162468ea986ebba85976, type: 3}
   loseSound: {fileID: 8300000, guid: 2268ac0f0d03dc34d93439d4a78a3c6c, type: 3}
   spawnSound: {fileID: 8300000, guid: b0b43eb46e04429499f65d9639ee29b3, type: 3}
   spawnTransform: {fileID: 4823613938160828528}

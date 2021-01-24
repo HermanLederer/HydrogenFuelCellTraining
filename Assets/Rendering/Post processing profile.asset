@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8508547558604624530
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db327154b9a8a024d9e413103511bb7e, type: 3}
+  m_Name: FadeAndFocus
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  fade:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 1
+  focus:
+    m_OverrideState: 0
+    m_Value: 0
+    min: 0
+    max: 1
+  focusDirection:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0, z: 1}
 --- !u!114 &-6917221883205139386
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -80,3 +107,4 @@ MonoBehaviour:
   components:
   - {fileID: -6917221883205139386}
   - {fileID: -6145100263435599720}
+  - {fileID: -8508547558604624530}
