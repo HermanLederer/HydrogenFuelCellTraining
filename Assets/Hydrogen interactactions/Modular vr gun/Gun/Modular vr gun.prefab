@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 47502423962810377}
   - component: {fileID: 4806613418860445384}
   - component: {fileID: 8354682863051616537}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Modular vr gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
