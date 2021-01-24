@@ -1168,8 +1168,8 @@ namespace UnityEngine.Rendering.Universal.Internal
 		class MaterialLibrary
 		{
 			// CUSTOM
-			public readonly Material blank;
-			public readonly Material volumetricLights;
+			//public readonly Material blank;
+			//public readonly Material volumetricLights;
 
 			// STOCK
 			public readonly Material stopNaN;
@@ -1184,8 +1184,8 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 			public MaterialLibrary(PostProcessData data)
 			{
-				blank = Load(data.shaders.blank);
-				volumetricLights = Load(data.shaders.volumetricLights);
+				//blank = Load(data.shaders.blank);
+				//volumetricLights = Load(data.shaders.volumetricLights);
 
 				stopNaN = Load(data.shaders.stopNanPS);
 				subpixelMorphologicalAntialiasing = Load(data.shaders.subpixelMorphologicalAntialiasingPS);
@@ -1215,8 +1215,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 
 			internal void Cleanup()
 			{
-				CoreUtils.Destroy(blank);
-				CoreUtils.Destroy(volumetricLights);
+				// CUSTOM
+				//CoreUtils.Destroy(blank);
+				//CoreUtils.Destroy(volumetricLights);
 
 				CoreUtils.Destroy(stopNaN);
 				CoreUtils.Destroy(subpixelMorphologicalAntialiasing);

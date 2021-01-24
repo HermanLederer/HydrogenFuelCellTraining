@@ -9,9 +9,9 @@ namespace HydrogenInteractables
 	public class Module : HydrogenInteractable
 	{
 		private ParticleSystem fireParticles;
-		[SerializeField] private ParticleSystem attachParticles;
-		[SerializeField] private ParticleSystem firePrefab;
-		[SerializeField] new private MeshRenderer renderer;
+		[SerializeField] private ParticleSystem attachParticles = null;
+		[SerializeField] private ParticleSystem firePrefab = null;
+		[SerializeField] new private MeshRenderer renderer = null;
 
 		new private Collider collider;
 		private XRGrabInteractable xrGrabInteractable;

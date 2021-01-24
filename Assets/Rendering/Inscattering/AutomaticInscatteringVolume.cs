@@ -23,7 +23,7 @@ namespace HL.Inscattering
 			return m_Light.color * m_Light.intensity;
 		}
 
-		new private void Update()
+		private void Update()
 		{
 			if (!m_Light)
 				Awake();

@@ -33,11 +33,11 @@ namespace UnityEngine.Rendering.Universal
         public sealed class ShaderResources
         {
             // CUSTOM: Added this shader
-            [Reload("Shaders/PostProcessing/Blank.shader")]
-            public Shader blank;
+            //[Reload("Shaders/PostProcessing/Blank.shader")]
+            //public Shader blank;
 
-            [Reload("Shaders/PostProcessing/VolumetricLights.shader")]
-            public Shader volumetricLights;
+            //[Reload("Shaders/PostProcessing/VolumetricLights.shader")]
+            //public Shader volumetricLights;
 
             // STOCK
             [Reload("Shaders/PostProcessing/StopNaN.shader")]
