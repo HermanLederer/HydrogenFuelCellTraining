@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 653260038}
   - component: {fileID: 653260036}
   m_Layer: 0
-  m_Name: Post-process Volume
+  m_Name: Post-process volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -636,7 +636,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &767450043
 Mesh:
@@ -1979,7 +1979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5172530617390871012, guid: cb22674656357204ea4e219ec28b1d82, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5172530617390871012, guid: cb22674656357204ea4e219ec28b1d82, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3381,7 +3381,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1681834526
 Mesh:
@@ -4364,7 +4364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823613938160828528, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4823613938160828528, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4386,6 +4386,10 @@ PrefabInstance:
       propertyPath: bus
       value: 
       objectReference: {fileID: 269936524}
+    - target: {fileID: 4823613938160828543, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
+      propertyPath: postProcessingVolume
+      value: 
+      objectReference: {fileID: 653260036}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f3d99b1f1686d54fa103482d7e25178, type: 3}
 --- !u!1001 &5276808085900530083

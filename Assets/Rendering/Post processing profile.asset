@@ -15,17 +15,17 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   fade:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
     max: 1
   focus:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
     max: 1
   focusDirection:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {x: 0, y: 0, z: 1}
 --- !u!114 &-6917221883205139386
 MonoBehaviour:

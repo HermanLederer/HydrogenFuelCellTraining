@@ -26,19 +26,6 @@ namespace HydrogenInteractables
 			if (!powerIndicators) Debug.LogError("power indicators object has not been assigend");
 		}
 
-		private void OnEnable()
-		{
-			// Filter listeners
-			largeFilterSocket.onSelectExited.AddListener(processFilterRemoval);
-			smallFilterSocket.onSelectExited.AddListener(processFilterRemoval);
-		}
-
-		private void OnDisable()
-		{
-			largeFilterSocket.onSelectExited.RemoveListener(processFilterRemoval);
-			smallFilterSocket.onSelectExited.RemoveListener(processFilterRemoval);
-		}
-
 		private void Start()
 		{
 			// Power
@@ -59,6 +46,10 @@ namespace HydrogenInteractables
 				filter = largeFilterSocket.selectTarget.GetComponent<HydrogenFilter>();
 				filter.RandomizeCondition();
 			}
+
+			// Filter listeners
+			largeFilterSocket.onSelectExited.AddListener(processFilterRemoval);
+			smallFilterSocket.onSelectExited.AddListener(processFilterRemoval);
 		}
 
 		public bool Confirm()

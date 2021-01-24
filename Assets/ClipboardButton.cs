@@ -1,27 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.Events;
 
 namespace HydrogenInteractables
 {
-	public enum ClipboardActions
-	{
-		Restart
-	}
-
 	public class ClipboardButton : MonoBehaviour
 	{
-		public ClipboardActions action;
-		public GameManager gameManager;
-
+		public AudioClip click;
 		public UnityEvent onClicked;
 
 		private void OnTriggerEnter(Collider other)
 		{
-			switch (action)
+			if (other.GetComponentInParent<XRRayInteractor>())
 			{
-				case ClipboardActions.Restart:
-					onClicked.Invoke();
-					break;
+				HL.AudioManagement.AudioManager.Instance.PlayIn3D(click, 1, transform.position, 0.1f, 1f);
+				onClicked.Invoke();
+				onClicked.RemoveAllListeners();
 			}
 		}
 	}

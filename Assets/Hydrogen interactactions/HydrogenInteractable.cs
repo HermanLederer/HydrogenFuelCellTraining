@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace HydrogenInteractables
 {
@@ -14,14 +15,24 @@ namespace HydrogenInteractables
 		PlayAgainClipboard
 	}
 
+	public class HydrogenInteractableEvent : UnityEvent<HydrogenInteractable>
+	{
+	}
+
 	public class HydrogenInteractable : MonoBehaviour
 	{
-		public event Action<HydrogenInteractable> OnHydrogenInteractableDestroyed;
+		public HydrogenInteractableEvent onHydrogenInteractableDestroyed;
 		public HydrogenInteractableType type;
+
+		protected virtual void Awake()
+		{
+			if(onHydrogenInteractableDestroyed == null)
+				onHydrogenInteractableDestroyed = new HydrogenInteractableEvent();
+		}
 
 		protected virtual void OnDestroy()
 		{
-			OnHydrogenInteractableDestroyed?.Invoke(this);
+			if (onHydrogenInteractableDestroyed != null) onHydrogenInteractableDestroyed.Invoke(this);
 		}
 	}
 }

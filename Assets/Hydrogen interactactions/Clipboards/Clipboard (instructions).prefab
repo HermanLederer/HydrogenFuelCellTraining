@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4364161163614279473}
   - component: {fileID: 1329683309350163685}
   m_Layer: 8
-  m_Name: Clipboard
+  m_Name: Clipboard (instructions)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 8914683089424935774}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -81,7 +82,7 @@ MonoBehaviour:
   m_CustomReticle: {fileID: 0}
   m_AttachTransform: {fileID: 1208533344876444835}
   m_AttachEaseInTime: 0.15
-  m_MovementType: 1
+  m_MovementType: 2
   m_TrackPosition: 1
   m_SmoothPosition: 0
   m_SmoothPositionAmount: 5
@@ -124,7 +125,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &2701521228530379728
@@ -139,7 +140,7 @@ GameObject:
   - component: {fileID: 8509969606055689532}
   - component: {fileID: 6066729448109113039}
   - component: {fileID: 8914683089424935774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +221,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4623557, y: 0.021640528, z: 2.1794057}
+  m_Size: {x: 1.4623557, y: 0.063291684, z: 2.1794057}
   m_Center: {x: 0, y: -0.020700032, z: 0.021816492}
 --- !u!1 &6810472864363067262
 GameObject:

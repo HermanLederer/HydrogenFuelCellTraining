@@ -18,8 +18,10 @@ namespace HydrogenInteractables
 
 		public float power = 8f;
 
-		private void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
+
 			collider = GetComponent<Collider>();
 			xrGrabInteractable = GetComponent<XRGrabInteractable>();
 		}

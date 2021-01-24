@@ -13,8 +13,9 @@ namespace HydrogenInteractables
 
 		public bool isInGoodCondition { get; private set; }
 
-		public void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
 			SetCondition(true);
 		}
 

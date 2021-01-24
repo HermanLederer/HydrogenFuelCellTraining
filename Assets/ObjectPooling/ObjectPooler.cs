@@ -40,6 +40,8 @@ public class ObjectPooler : MonoBehaviour
 			instance = this;
 
 		poolDictionary = new Dictionary<string, Queue<GameObject>>();
+
+		DontDestroyOnLoad(gameObject);
 	}
 
 	/// <summary>
