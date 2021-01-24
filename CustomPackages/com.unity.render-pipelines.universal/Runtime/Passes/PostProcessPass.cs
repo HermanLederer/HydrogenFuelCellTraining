@@ -481,63 +481,6 @@ namespace UnityEngine.Rendering.Universal.Internal
 			return BuiltinRenderTextureType.CurrentActive;
 		}
 
-		#region Volumetric Lights
-
-		private Vector3[] frustumCorners;
-		private Vector4[] vectorArray;
-		private Material volumeMaterial;
-		void DoVolumetricLights(Camera camera, CommandBuffer cmd, int source, int destination)
-		{
-			volumeMaterial = m_Materials.volumetricLights; // this line costs 300+ fps???? // perhaps not
-			//volumeMaterial = m_Materials.blank;
-			frustumCorners = new Vector3[4];
-			vectorArray = new Vector4[4];
-
-			cmd.SetGlobalTexture("_BlitTex", source);
-
-			camera.CalculateFrustumCorners(
-				new Rect(0f, 0f, 1f, 1f),
-				camera.farClipPlane,
-				camera.stereoActiveEye,
-				frustumCorners
-			);
-			vectorArray[0] = frustumCorners[0];
-			vectorArray[1] = frustumCorners[3];
-			vectorArray[2] = frustumCorners[1];
-			vectorArray[3] = frustumCorners[2];
-			volumeMaterial.SetVectorArray("_FrustumCorners", vectorArray);
-
-			Matrix4x4 matrixCameraToWorld;
-			Matrix4x4 matrixProjectionInverse;
-			Matrix4x4 matrixHClipToWorld;
-			if (camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Mono)
-			{
-				matrixCameraToWorld = camera.cameraToWorldMatrix;
-				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.projectionMatrix, false).inverse;
-				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
-				volumeMaterial.SetMatrix("_MatrixScreenToWorldLeft", matrixHClipToWorld); // Left is the eye unity uses in shaders when in mono rendering so there is no need to make a separate matrix or set the right eye matrix at all
-
-				volumeMaterial.SetMatrix("_MV", camera.worldToCameraMatrix);
-				volumeMaterial.SetMatrix("_MP", GL.GetGPUProjectionMatrix(camera.projectionMatrix, false));
-			}
-			else
-			{
-				matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Left).inverse;
-				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left), false).inverse;
-				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
-				volumeMaterial.SetMatrix("_MatrixScreenToWorldLeft", matrixHClipToWorld);
-
-				matrixCameraToWorld = camera.GetStereoViewMatrix(Camera.StereoscopicEye.Right).inverse;
-				matrixProjectionInverse = GL.GetGPUProjectionMatrix(camera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Right), false).inverse;
-				matrixHClipToWorld = matrixCameraToWorld * matrixProjectionInverse;
-				volumeMaterial.SetMatrix("_MatrixScreenToWorldRight", matrixHClipToWorld);
-			}
-
-			cmd.Blit(source, BlitDstDiscardContent(cmd, destination), volumeMaterial);
-		}
-
-		#endregion
-
 		#region Sub-pixel Morphological Anti-aliasing
 
 		void DoSubpixelMorphologicalAntialiasing(ref CameraData cameraData, CommandBuffer cmd, int source, int destination)
@@ -1134,9 +1077,9 @@ namespace UnityEngine.Rendering.Universal.Internal
 		{
 			if (m_FadeAndFocus.IsActive())
 			{
-				material.EnableKeyword(ShaderKeywordStrings.FadeAndFocus);
+				//material.EnableKeyword(ShaderKeywordStrings.FadeAndFocus);
 				material.SetFloat(Shader.PropertyToID("_Fade"), 1f - m_FadeAndFocus.fade.value);
-				material.SetVector(Shader.PropertyToID("_Focus_Params"), new Vector4(m_FadeAndFocus.focusDirection.value.x, m_FadeAndFocus.focusDirection.value.y, m_FadeAndFocus.focusDirection.value.z, m_FadeAndFocus.focus.value));
+				//material.SetVector(Shader.PropertyToID("_Focus_Params"), new Vector4(m_FadeAndFocus.focusDirection.value.x, m_FadeAndFocus.focusDirection.value.y, m_FadeAndFocus.focusDirection.value.z, m_FadeAndFocus.focus.value));
 			}
 		}
 

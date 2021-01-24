@@ -83,6 +83,10 @@ namespace HL.Inscattering
 				}
 
 				//4> Blit for each InscatteringVolume
+				m_InscatteringMaterial.EnableKeyword("_SPHERICAL_VOLUME");
+#if !UNITY_EDITOR
+				m_InscatteringMaterial.EnableKeyword("_FLIP_UV");
+#endif
 				foreach (InscatteringVolume volume in InscatteringVolumeManager.InscatteringVolumes)
 				{
 					cmd.SetGlobalVector("_VolumePosition", volume.transform.position);
@@ -107,7 +111,7 @@ namespace HL.Inscattering
 
 		public override void Create()
 		{
-			var material = new Material(Shader.Find("Hidden/Universal Render Pipeline/VolumetricLights"));
+			var material = new Material(Shader.Find("Hidden/Inscattering"));
 			m_InscatteringPass = new InscatteringPass(material);
 			m_InscatteringPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
 		}

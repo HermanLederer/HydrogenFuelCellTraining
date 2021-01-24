@@ -1,4 +1,4 @@
-Shader "Hidden/Universal Render Pipeline/VolumetricLights"
+Shader "Hidden/Inscattering"
 {
     Properties
     {
@@ -9,6 +9,8 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
     }
 
     HLSLINCLUDE
+    	#pragma multi_compile_local _ _FLIP_UV
+    	#pragma multi_compile_local _ _SPHERICAL_VOLUME
 
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Filtering.hlsl"
@@ -52,7 +54,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
         inline half3 GetCameraDirection(half2 uv, float depth)
         {
             #ifndef SHADER_API_GLCORE
-                half4 positionCS = half4(uv * 2 - 1, depth, 1) * LinearEyeDepth(depth, _ZBufferParams);
+                half4 positionCS = half4(uv * 2 - 1, depth        , 1) * LinearEyeDepth(depth, _ZBufferParams);
             #else
                 half4 positionCS = half4(uv * 2 - 1, depth * 2 - 1, 1) * LinearEyeDepth(depth, _ZBufferParams);
             #endif
@@ -373,6 +375,9 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
             float2 uv = UnityStereoTransformScreenSpaceTex(input.uv);
+            #if _FLIP_UV
+            	uv.y = 1 - uv.y;
+            #endif
 
             //half3 color = SAMPLE_TEXTURE2D_X(_MainTex, sampler_LinearClamp, uv).xyz;
             half3 color = float3(0, 0, 0);
@@ -393,9 +398,7 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             float3 volumetricLightViewDirection = volumetricLightPositionWS - GetCameraPositionWS();
             float3 volumetricLightViewDirectionNormalized = normalize(volumetricLightViewDirection);
 
-            #define SPHERICAL_VOLUME 1
-
-            #if SPHERICAL_VOLUME
+            #if _SPHERICAL_VOLUME
                 // Sphere volume intersecion
                 volumetricLightPositionWS = _VolumePosition;
                 volumetricLightRadius = _VolumeRadius;
@@ -463,9 +466,10 @@ Shader "Hidden/Universal Render Pipeline/VolumetricLights"
             #endif
 
             // Various debugs
-            //color = cameraDirection;
+            //color = lerp(color, cameraDirection, 0.1);
+            //color = float3(uv, 0);
+            //color = viewDistance.xxx/ 100;
             //color = lerp(float3(1, 0, 0), float3(0, 0, 1), unity_StereoEyeIndex);
-            //color = float3(0.9, 0.7, 0.1);
             return half4(color, 1.0);
         }
 
